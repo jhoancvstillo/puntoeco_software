@@ -1,0 +1,25 @@
+POST http://127.0.0.1:8000/finance/create/
+Content-Type: application/json
+
+{
+    "date_time": "2024-11-18T10:25:00Z",
+    "transaction_type": "Expense",
+    "classification": "Marketing",
+    "subcategory": "Participación en Ferias",
+    "frequency": "Extraordinary",
+    "comment": "Costos de participación en feria de reciclaje",
+    "price": 900.00
+}
+####
+
+POST http://127.0.0.1:8000/clients/create/
+Content-Type: application/json
+
+{
+    "name": "Camila Rojas",
+    "mail": "camila.rojas@example.com",
+    "phoneNumber": "+56 9 0987 6543",
+    "address": "Barrio Norte 9900, Iquique, Chile"
+  }
+####
+GET http://127.0.0.1:8000/clients/getClients/
