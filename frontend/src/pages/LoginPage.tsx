@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import IconHeader from "../components/layout/IconHeader"
-import ForgotPasswordLink from "../components/form/ForgotPasswordLink"
-import InputField from '../components/form/InputField'
-import ErrorMessage from '../components/form/ErrorMessage'
+import ForgotPasswordLink from "../components/forms/ForgotPasswordLink"
+import InputField from '../components/forms/InputField'
+import ErrorMessage from '../components/forms/ErrorMessage'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { useAuth } from '@/hooks/useAuth'
 import { UserData } from '../types/user'

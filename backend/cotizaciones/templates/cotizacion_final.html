@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @page {
+        /* size: ; Tamaño de página letter */
+        size: 215.9mm 279.4mm; /* Letter size */
+        margin: 0; /* Márgenes: superior, derecha, inferior, izquierda */
+      }
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f3f3f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Asegura que el contenedor ocupe toda la altura */
+        width: 100vw; /* Asegura que ocupe todo el ancho */
+        box-sizing: border-box;
+      }
+
+      .card {
+        background: white;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+        max-width: 100%; /* Restringe cualquier ajuste por defecto */
+        max-height: 100%;
+        height: 100%;
+      }
+
+      .card {
+        background: white;
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .card-header {
+        background-color: #65b867;
+        color: white;
+        /* padding: 20px; */
+        padding: 40px;
+      }
+
+      .card-header .header-content {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .card-header h1 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      .card-header p {
+        margin: 2px 0;
+        line-height: 1.2;
+      }
+
+      .card-content {
+        padding: 40px;
+        margin-bottom: 10px;
+        /* flex-grow: 1; */
+      }
+
+      .client-info {
+        background: #f9f9f9;
+        padding: 10px;
+        padding-left: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .client-info h2 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .client-info .left-column,
+      .client-info .right-column {
+        width: 48%;
+        text-align: left;
+      }
+
+      .client-info .right-column {
+        margin-top: 22px; /* Align with the left column */
+      }
+
+      .client-info p {
+        margin: 3px 0;
+        line-height: 1.2;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .client-info p strong {
+        font-weight: bold;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8em;
+        padding: 70px;
+        border-radius: 5px;
+      }
+
+      .table th,
+      .table td {
+        border: 1px solid #ddd;
+        padding: 6px;
+      }
+
+      .table th {
+        background-color: #e6e6e6;
+        color: #333;
+        text-align: left;
+      }
+
+      .table td {
+        text-align: left;
+      }
+
+      .table td:last-child,
+      .table th:last-child {
+        text-align: right;
+      }
+
+      .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .totals {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      .totals p {
+        margin: 5px 0;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 8px;
+      }
+
+      .totals .total {
+        background: #e6e6e6;
+        font-weight: bold;
+      }
+
+      .card-footer {
+        background: #f9f9f9;
+        /* padding: 30px; */
+        /* padding-bottom: 60px; Incrementa el espacio inferior */
+      }
+
+      .card-footer h3 {
+        margin-bottom: 10px;
+        margin-left: 50px;
+
+      }
+
+      .terms {
+        /* margin: 0; */
+        padding-left: 60px;
+        padding-bottom: 20px;
+        font-size: 0.8em;
+      }
+
+      .terms li {
+        margin-bottom: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <div class="header-content">
+          <div>
+            <h1>Cotización</h1>
+            <p>Número: Q-2023-001</p>
+            <p>Fecha: 6 de enero, 2025</p>
+          </div>
+          <div style="text-align: right">
+            <p>Punto Eco</p>
+            <p>Camino Internacional S/N, Barrio Industrial</p>
+            <p>Tel: +56 9 8159 0262 / + 56 9 9815 90472</p>
+            <p>puntoeco@gmail.com</p>
+            <p>www.puntoeco.cl</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="client-info">
+          <div class="left-column">
+            <h2>Cliente</h2>
+            <p><strong>Nombre:</strong> Prefabricados de hormigón Grau</p>
+            <p><strong>Rut:</strong> 96.927.190-7</p>
+            <p>
+              <strong>Dirección:</strong> Av. Las Delicias S/N Barrio
+              Industrial, Estación Paipote
+            </p>
+          </div>
+          <div class="right-column">
+            <p><strong>Correo:</strong> oalarcon@grau.cl</p>
+            <p><strong>Teléfono:</strong> 9 7666 6127</p>
+            <p><strong>Solicitado por:</strong> Oscar Alarcon</p>
+            <p><strong>Realizado por:</strong> Fabian Contreras</p>
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Servicio de reciclaje industrial</td>
+              <td>1</td>
+              <td>$5000.00</td>
+              <td>$5000.00</td>
+            </tr>
+            <tr>
+              <td>Contenedores de separación</td>
+              <td>5</td>
+              <td>$200.00</td>
+              <td>$1000.00</td>
+            </tr>
+            <tr>
+              <td>Taller de concientización ambiental</td>
+              <td>1</td>
+              <td>$800.00</td>
+              <td>$800.00</td>
+            </tr>
+            <tr>
+              <td>Material adicional</td>
+              <td>2</td>
+              <td>$300.00</td>
+              <td>$600.00</td>
+            </tr>
+            <tr>
+              <td>Transporte</td>
+              <td>1</td>
+              <td>$150.00</td>
+              <td>$150.00</td>
+            </tr>
+            <tr>
+              <td>Asesoramiento ambiental</td>
+              <td>1</td>
+              <td>$400.00</td>
+              <td>$400.00</td>
+            </tr>
+            <tr>
+              <td>Material de capacitación</td>
+              <td>3</td>
+              <td>$250.00</td>
+              <td>$750.00</td>
+            </tr>
+            <tr>
+              <td>Monitoreo de residuos</td>
+              <td>1</td>
+              <td>$350.00</td>
+              <td>$350.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <p class="iva">IVA (19%): $1292.00</p>
+          <p class="discounts">Descuentos: $200.00</p>
+          <p class="total">Total: $6892.00</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <h3>Términos y condiciones:</h3>
+        <ul class="terms">
+          <li>Aceptada la cotización, generar OC si corresponde.</li>
+          <li>El pago será contra factura o según lo acordado vía email.</li>
+          <li>
+            Servicios mensuales: EDP se envía los primeros 3 días hábiles del
+            mes siguiente.
+          </li>
+          <li>
+            OC y HES deben enviarse en máximo 5 días hábiles tras la emisión del
+            EDP.
+          </li>
+          <li>
+            Las facturas deben pagarse en máximo 10 días desde su emisión.
+          </li>
+          <li>
+            Cuenta corriente: 3460003211 SCOTIABANK-DESARROLLO, Mario Espejo
+            Paredes, Rut: 6.959.040-3.
+          </li>
+          <li>
+            Precios de productos revalorizables se confirman al recibir los
+            materiales (fluctúan semanalmente).
+          </li>
+          <li>Tolvas: Cartón (28 m³) y Chatarra (máximo 7 toneladas).</li>
+          <li>
+            Residuos no valorizables se disponen en el vertedero "El Chulo"
+            (costo asumido por el cliente).
+          </li>
+          <li>Precio promedio por kilo ingresado: $30.</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

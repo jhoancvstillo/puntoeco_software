@@ -1,0 +1,60 @@
+{
+    "locations": [
+        {
+            "id": 1,
+            "name": "Estante C1"
+        },
+        {
+            "id": 2,
+            "name": "\u00c1rea de almacenamiento"
+        },
+        {
+            "id": 3,
+            "name": "Estante B6"
+        },
+        {
+            "id": 4,
+            "name": "Estante B7"
+        },
+        {
+            "id": 5,
+            "name": "Estante B5"
+        },
+        {
+            "id": 6,
+            "name": "Estante A1"
+        },
+        {
+            "id": 7,
+            "name": "Estante C2"
+        },
+        {
+            "id": 8,
+            "name": "Estante B2"
+        },
+        {
+            "id": 9,
+            "name": "Estante A3"
+        },
+        {
+            "id": 10,
+            "name": "Estante B3"
+        },
+        {
+            "id": 11,
+            "name": "Estante B4"
+        },
+        {
+            "id": 12,
+            "name": "Estante A4"
+        },
+        {
+            "id": 13,
+            "name": "Estante B1"
+        },
+        {
+            "id": 14,
+            "name": "Estante A2"
+        }
+    ]
+}

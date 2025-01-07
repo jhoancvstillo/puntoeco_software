@@ -1,9 +1,13 @@
-from django.urls import path
-from .views import finance_create
-from .views import finance_list
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from .views import TransactionViewSet
+from .views import ClassificationViewSet, SubcategoryViewSet
 
+router = DefaultRouter()
+router.register(r'transactions', TransactionViewSet, basename='transaction')
+router.register(r'classifications', ClassificationViewSet, basename='classification')
+router.register(r'subcategories', SubcategoryViewSet, basename='subcategory')
 
 urlpatterns = [
-    path('create/', finance_create),
-    path('list/', finance_list),
+    path('', include(router.urls)),
 ]

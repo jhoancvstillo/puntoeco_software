@@ -1,0 +1,291 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Equipo de Protecci\u00f3n Personal",
+            "description": "Art\u00edculos relacionados con la seguridad personal"
+        },
+        {
+            "id": 2,
+            "name": "Herramientas",
+            "description": "Herramientas manuales e industriales"
+        },
+        {
+            "id": 3,
+            "name": "Materiales de Embalaje",
+            "description": "Materiales para embalar y proteger productos"
+        }
+    ],
+    "items": [
+        {
+            "id": 1,
+            "name": "Guantes de seguridad",
+            "category_id": 1,
+            "brand": "Ansell",
+            "model": "HyFlex 11-724",
+            "description": "Guantes de seguridad anticorte nivel 5, talla L",
+            "unit": "pares",
+            "quantity": 10,
+            "location": "Estante A1",
+            "min_stock": 5,
+            "price_per_unit": 15.5,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 2,
+            "name": "Cascos de seguridad",
+            "category_id": 1,
+            "brand": "3M",
+            "model": "H-700",
+            "description": "Cascos de seguridad con ajuste de trinquete, color amarillo",
+            "unit": "unidades",
+            "quantity": 5,
+            "location": "Estante A2",
+            "min_stock": 3,
+            "price_per_unit": 20.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 3,
+            "name": "Destornilladores",
+            "category_id": 2,
+            "brand": "Stanley",
+            "model": "Juego de 10 piezas",
+            "description": "Juego de destornilladores planos y de cruz",
+            "unit": "juegos",
+            "quantity": 2,
+            "location": "Estante B1",
+            "min_stock": 1,
+            "price_per_unit": 50.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 4,
+            "name": "Cinta adhesiva industrial",
+            "category_id": 3,
+            "brand": "3M",
+            "model": "Duct Tape",
+            "description": "Cinta adhesiva de 50 mm x 50 m, color gris",
+            "unit": "rollos",
+            "quantity": 10,
+            "location": "Estante C1",
+            "min_stock": 5,
+            "price_per_unit": 5.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 5,
+            "name": "Botas de seguridad",
+            "category_id": 1,
+            "brand": "Bata Industrials",
+            "model": "SteelForce",
+            "description": "Botas con puntera de acero y suela antideslizante, talla 42",
+            "unit": "pares",
+            "quantity": 8,
+            "location": "Estante A3",
+            "min_stock": 4,
+            "price_per_unit": 35.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 6,
+            "name": "Cinta m\u00e9trica retr\u00e1ctil",
+            "category_id": 2,
+            "brand": "Komelon",
+            "model": "8m Pro",
+            "description": "Cinta m\u00e9trica de 8 m con bloqueo autom\u00e1tico",
+            "unit": "unidades",
+            "quantity": 5,
+            "location": "Estante B2",
+            "min_stock": 2,
+            "price_per_unit": 10.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 7,
+            "name": "Palets de pl\u00e1stico",
+            "category_id": 3,
+            "brand": "Ecopallets",
+            "model": "120x100cm",
+            "description": "Palets reciclados de pl\u00e1stico, capacidad 500 kg",
+            "unit": "unidades",
+            "quantity": 20,
+            "location": "\u00c1rea de almacenamiento",
+            "min_stock": 10,
+            "price_per_unit": 25.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 8,
+            "name": "Stretch film",
+            "category_id": 3,
+            "brand": "Sigma",
+            "model": "50cmx300m",
+            "description": "Pel\u00edcula pl\u00e1stica de 50 cm x 300 m, grosor 20 micras",
+            "unit": "rollos",
+            "quantity": 15,
+            "location": "Estante C2",
+            "min_stock": 5,
+            "price_per_unit": 12.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 9,
+            "name": "Brochas para limpieza",
+            "category_id": 2,
+            "brand": "Redtree",
+            "model": "SoftClean",
+            "description": "Brochas de cerdas suaves de 2 pulgadas",
+            "unit": "unidades",
+            "quantity": 12,
+            "location": "Estante B3",
+            "min_stock": 6,
+            "price_per_unit": 3.5,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 10,
+            "name": "Cepillos industriales",
+            "category_id": 2,
+            "brand": "Stanley",
+            "model": "SteelNylon Pro",
+            "description": "Cepillos con cerdas met\u00e1licas y mango ergon\u00f3mico",
+            "unit": "unidades",
+            "quantity": 7,
+            "location": "Estante B4",
+            "min_stock": 3,
+            "price_per_unit": 8.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 11,
+            "name": "L\u00e1mparas port\u00e1tiles LED",
+            "category_id": 2,
+            "brand": "Energizer",
+            "model": "1000 Lumens",
+            "description": "L\u00e1mparas recargables con bater\u00eda de litio",
+            "unit": "unidades",
+            "quantity": 5,
+            "location": "Estante B5",
+            "min_stock": 2,
+            "price_per_unit": 25.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 12,
+            "name": "Mascarillas N95",
+            "category_id": 1,
+            "brand": "3M",
+            "model": "8210V",
+            "description": "Mascarillas con v\u00e1lvula de exhalaci\u00f3n",
+            "unit": "unidades",
+            "quantity": 20,
+            "location": "Estante A4",
+            "min_stock": 10,
+            "price_per_unit": 2.5,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 13,
+            "name": "Cizallas industriales",
+            "category_id": 2,
+            "brand": "Truper",
+            "model": "CutForce 24",
+            "description": "Cizallas de corte para metales, mango antideslizante",
+            "unit": "unidades",
+            "quantity": 3,
+            "location": "Estante B6",
+            "min_stock": 1,
+            "price_per_unit": 45.0,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        },
+        {
+            "id": 14,
+            "name": "Aceite lubricante",
+            "category_id": 2,
+            "brand": "WD-40",
+            "model": "400ml Spray",
+            "description": "Lubricante multifuncional en aerosol",
+            "unit": "unidades",
+            "quantity": 12,
+            "location": "Estante B7",
+            "min_stock": 6,
+            "price_per_unit": 5.5,
+            "date_added": "2024-12-11",
+            "last_updated": "2024-12-11"
+        }
+    ],
+    "suppliers": [
+        {
+            "id": 1,
+            "name": "Distribuidora Industrial",
+            "contact_person": "Juan P\u00e9rez",
+            "phone": "123456789",
+            "email": "contacto@distribuidora.com",
+            "address": "Calle Falsa 123",
+            "notes": "Proveedor confiable para EPP"
+        },
+        {
+            "id": 2,
+            "name": "Herramientas XYZ",
+            "contact_person": "Ana L\u00f3pez",
+            "phone": "987654321",
+            "email": "ventas@herramientasxyz.com",
+            "address": "Av. Principal 456",
+            "notes": "Especialistas en herramientas"
+        }
+    ],
+    "orders": [
+        {
+            "id": 1,
+            "item_id": 1,
+            "supplier_id": 1,
+            "quantity": 15,
+            "order_date": "2024-11-01",
+            "arrival_date": "2024-11-05",
+            "status": "Recibido",
+            "total_cost": 232.5
+        },
+        {
+            "id": 2,
+            "item_id": 3,
+            "supplier_id": 2,
+            "quantity": 3,
+            "order_date": "2024-11-10",
+            "arrival_date": "2024-11-12",
+            "status": "Pendiente",
+            "total_cost": 150.0
+        }
+    ],
+    "stock_movements": [
+        {
+            "id": 1,
+            "item_id": 1,
+            "movement_type": "Ingreso",
+            "quantity": 10,
+            "date": "2024-12-01",
+            "notes": "Nuevo lote recibido"
+        },
+        {
+            "id": 2,
+            "item_id": 4,
+            "movement_type": "Salida",
+            "quantity": 3,
+            "date": "2024-12-05",
+            "notes": "Uso en embalaje de fardos"
+        }
+    ]
+}

@@ -1,67 +1,58 @@
-
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import ClientsSerializer
-from .models import Clients
+from rest_framework.decorators import action
+from .serializers import ClientsSerializer, ConductorSerializer
+from .models import Clients, Conductor
+from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
 
+# Configuración de paginación personalizada (opcional)
+class CustomPagination(PageNumberPagination):
+    page_size = 10  # Número de elementos por página
+    page_size_query_param = 'page_size'
 
-@api_view(['GET'])
-def get_clients(request):
-    clients = Clients.objects.all()
-    serializer = ClientsSerializer(clients, many=True)
-    return Response(serializer.data)
+class ClientsViewSet(ModelViewSet):
+    queryset = Clients.objects.all()
+    serializer_class = ClientsSerializer
+    pagination_class = CustomPagination
 
-@api_view(['POST'])
-def create_client(request):
-    serializer = ClientsSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Filtro personalizado basado en parámetros de consulta
+    def get_queryset(self):
+        filter_text = self.request.query_params.get('filter', '')
+        queryset = super().get_queryset()
+        if filter_text:
+            queryset = queryset.filter(Q(name__icontains=filter_text) | Q(rut__icontains=filter_text))
+        return queryset
 
-@api_view(['PUT'])
-def update_client(request, pk):
-    try:
-        client = Clients.objects.get(pk=pk)
-    except Clients.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    # Acción personalizada para obtener los conductores asociados a un cliente
+    @action(detail=True, methods=['get'], url_path='conductor')
+    def get_conductors(self, request, pk=None):
+        """
+        Devuelve los conductores asociados al cliente con el id proporcionado.
+        """
+        try:
+            client = self.get_object()  # Verifica que este cliente exista
+            conductors = Conductor.objects.filter(cliente=client)
+            if not conductors.exists():
+                return Response({"detail": "No conductors found for this client."}, status=status.HTTP_404_NOT_FOUND)
+            serializer = ConductorSerializer(conductors, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Clients.DoesNotExist:
+            return Response({"detail": "Client not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = ClientsSerializer(client, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ClientsNormal(ModelViewSet):
+    queryset = Clients.objects.all()
+    serializer_class = ClientsSerializer
 
-@api_view(['DELETE'])
-def delete_client(request, pk):
-    try:
-        client = Clients.objects.get(pk=pk)
-    except Clients.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class ConductorViewSet(ModelViewSet):
+    queryset = Conductor.objects.all()
+    serializer_class = ConductorSerializer
 
-    client.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def client_detail(request, pk):
-    try:
-        client = Clients.objects.get(pk=pk)
-    except Clients.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = ClientsSerializer(client)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = ClientsSerializer(client, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        client.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # Filtro personalizado basado en parámetros de consulta
+    def get_queryset(self):
+        filter_text = self.request.query_params.get('filter', '')
+        queryset = super().get_queryset()
+        if filter_text:
+            queryset = queryset.filter(Q(nombre__icontains=filter_text) | Q(rut__icontains=filter_text))
+        return queryset

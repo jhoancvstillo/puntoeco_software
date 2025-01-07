@@ -1,0 +1,78 @@
+{
+  "control_interno_vertedero": [
+    {
+      "records": [
+        { "date": "2024-07-04", "weight_kg": 1690, "value": 48966 },
+        { "date": "2024-07-12", "weight_kg": 580, "value": 16805 },
+        { "date": "2024-07-19", "weight_kg": 1880, "value": 54471 },
+        { "date": "2024-07-20", "weight_kg": 1940, "value": 56210 },
+        { "date": "2024-07-26", "weight_kg": 1470, "value": 42592 },
+        { "date": "2024-07-31", "weight_kg": 2110, "value": 61135 }
+      ],
+      "total": { "weight_kg": 280179, "value": 0 }
+    },
+    {
+      "records": [
+        { "date": "2024-08-02", "weight_kg": 850, "value": 24628 },
+        { "date": "2024-08-05", "weight_kg": 1730, "value": 50125 },
+        { "date": "2024-08-05", "weight_kg": 470, "value": 14100 },
+        { "date": "2024-08-08", "weight_kg": 1170, "value": 33900 },
+        { "date": "2024-08-12", "weight_kg": 440, "value": 13200 },
+        { "date": "2024-08-17", "weight_kg": 1190, "value": 34479 },
+        { "date": "2024-08-20", "weight_kg": 1520, "value": 44041 },
+        { "date": "2024-08-21", "weight_kg": 670, "value": 19430 },
+        { "date": "2024-08-28", "weight_kg": 2110, "value": 61135 }
+      ],
+      "total": { "weight_kg": 295038, "value": 0 }
+    },
+    {
+      "records": [
+        { "date": "2024-09-02", "weight_kg": 1200, "value": 34769 },
+        { "date": "2024-09-03", "weight_kg": 1080, "value": 31292 },
+        { "date": "2024-09-06", "weight_kg": 900, "value": 26077 },
+        { "date": "2024-09-09", "weight_kg": 1010, "value": 29264 },
+        { "date": "2024-09-16", "weight_kg": 1520, "value": 44041 }
+      ],
+      "total": { "weight_kg": 165443, "value": 0 }
+    },
+    {
+      "records": [
+        { "date": "2024-10-04", "weight_kg": 870, "value": 25207 },
+        { "date": "2024-10-15", "weight_kg": 1240, "value": 35928 },
+        { "date": "2024-10-16", "weight_kg": 1920, "value": 55630 },
+        { "date": "2024-10-18", "weight_kg": 1470, "value": 42592 },
+        { "date": "2024-10-23", "weight_kg": 800, "value": 23179 },
+        { "date": "2024-10-30", "weight_kg": 1120, "value": 32451 }
+      ],
+      "total": { "weight_kg": 214987, "value": 0 }
+    },
+    {
+      "records": [
+        { "date": "2024-11-08", "weight_kg": 1400, "value": 40564 },
+        { "date": "2024-11-09", "weight_kg": 2250, "value": 65192 },
+        { "date": "2024-11-11", "weight_kg": 490, "value": 14197 },
+        { "date": "2024-11-14", "weight_kg": 1180, "value": 34189 },
+        { "date": "2024-11-18", "weight_kg": 1090, "value": 31610 },
+        { "date": "2024-11-20", "weight_kg": 1330, "value": 32535 },
+        { "date": "2024-11-28", "weight_kg": 1080, "value": 31320 },
+        { "date": "2024-11-28", "weight_kg": 1930, "value": 55970 },
+        { "date": "2024-11-30", "weight_kg": 430, "value": 12470 },
+        { "date": "2024-11-30", "weight_kg": 1950, "value": 56550 }
+      ],
+      "total": { "weight_kg": 374597, "value": 0 }
+    },
+    {
+      "records": [
+        { "date": "2024-12-02", "weight_kg": 1410, "value": 40854 },
+        { "date": "2024-12-09", "weight_kg": 2030, "value": 58817 },
+        { "date": "2024-12-11", "weight_kg": 2180, "value": 63163 },
+        { "date": "2024-12-12", "weight_kg": 760, "value": 22020 },
+        { "date": "2024-12-16", "weight_kg": 1290, "value": 37376 },
+        { "date": "2024-12-18", "weight_kg": 2460, "value": 71340 },
+        { "date": "2024-12-26", "weight_kg": 720, "value": 20861 },
+        { "date": "2024-12-26", "weight_kg": 1240, "value": 35928 }
+      ],
+      "total": { "weight_kg": 350359, "value": 0 }
+    }
+  ]
+}

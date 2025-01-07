@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '@/utils/api';
+import { loginUser } from '@/api/api';
 import { UserData, LoginResponse } from '@/types/user';
 
 export function useAuth() {

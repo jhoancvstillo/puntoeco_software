@@ -1,0 +1,60 @@
+{
+    "models": [
+        {
+            "id": 1,
+            "name": "Juego de 10 piezas"
+        },
+        {
+            "id": 2,
+            "name": "8210V"
+        },
+        {
+            "id": 3,
+            "name": "HyFlex 11-724"
+        },
+        {
+            "id": 4,
+            "name": "Duct Tape"
+        },
+        {
+            "id": 5,
+            "name": "SteelNylon Pro"
+        },
+        {
+            "id": 6,
+            "name": "1000 Lumens"
+        },
+        {
+            "id": 7,
+            "name": "400ml Spray"
+        },
+        {
+            "id": 8,
+            "name": "SteelForce"
+        },
+        {
+            "id": 9,
+            "name": "SoftClean"
+        },
+        {
+            "id": 10,
+            "name": "CutForce 24"
+        },
+        {
+            "id": 11,
+            "name": "120x100cm"
+        },
+        {
+            "id": 12,
+            "name": "50cmx300m"
+        },
+        {
+            "id": 13,
+            "name": "8m Pro"
+        },
+        {
+            "id": 14,
+            "name": "H-700"
+        }
+    ]
+}

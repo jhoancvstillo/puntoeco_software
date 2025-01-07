@@ -9,6 +9,8 @@
     }
   ],
   "compilerOptions": {
+        "typeRoots": ["./types", "./node_modules/@types"],
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

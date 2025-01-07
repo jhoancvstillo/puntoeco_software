@@ -1,5 +1,5 @@
 
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,11 +31,22 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'finance',
-    'clients'
+    'clients',
+    'hr',
+    'trabajadores',
+    'bodega',
+    'pesajes',
+    'cotizaciones',
+    'destinofinal',
+    'combustible',
+    'fardos',
+    'vertedero'
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -43,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -51,8 +61,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # Aquí puedes agregar rutas globales si necesitas
+        'APP_DIRS': True,  # Importante: activa la búsqueda en carpetas `templates` de apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -64,6 +74,16 @@ TEMPLATES = [
     },
 ]
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
+}
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -114,6 +134,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Carpeta donde colocarás tus archivos estáticos durante el desarrollo
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Carpeta global de archivos estáticos
+]
+
+# Carpeta donde Django recopilará los archivos estáticos para producción
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -122,7 +151,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
                
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:5173',  # Puerto de React
-)
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

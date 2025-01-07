@@ -1,0 +1,105 @@
+.ticket-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .logo {
+    width: 80px;
+    height: 80px;
+    background-color: #f0f0f0;
+    margin-right: 20px;
+  }
+  
+  .title-section {
+    flex-grow: 1;
+  }
+  
+  .title-section h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .title-section p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .info-item {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .info-item span:first-child {
+    font-weight: bold;
+    min-width: 120px;
+  }
+  
+  .weight-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .weight-table th, .weight-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .weight-table th {
+    background-color: #f5f5f5;
+  }
+  
+  .weight-summary {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .stamp-area {
+    width: 200px;
+    height: 150px;
+    border: 1px dashed #ccc;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+  }
+  
+  .footer-note {
+    font-size: 12px;
+    color: #666;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+  
+  .datetime-section {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  
+  

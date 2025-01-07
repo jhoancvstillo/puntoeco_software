@@ -1,2 +1,117 @@
 venv/
 db.sqlite3
+
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE-specific files
+.idea/
+.vscode/
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Optional npm cache directory
+.npm/
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage directory used by testing tools like jest
+coverage/
+
+# Vite cache
+.vite/
+
+# Typescript specific
+*.tsbuildinfo
+
+# Storybook files (if using Storybook)
+storybook-static/
+
+# Mac-specific system files
+.AppleDouble
+.LSOverride
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django specific
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.out
+*.pid
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+*.env
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Static and media files
+staticfiles/
+media/
+*.bak
+*.swp
+
+# Migrations (optional: include if you want fresh migrations every time)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Temporary files and backups
+*.tmp
+*.temp
+*.backup
+*.bak
+*.orig
+
+# Tests and coverage reports
+.coverage
+.tox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# Docker specific (if using Docker)
+*.log
+docker-compose.override.yml
+
+# System files
+.DS_Store
+Thumbs.db

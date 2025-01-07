@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -14,26 +14,26 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-import { 
-  LayoutDashboard, 
-  Package, 
-  Truck, 
-  Warehouse, 
-  Users, 
-  UserCheck, 
+import {
+  LayoutDashboard,
+  Package,
+  Truck,
+  Warehouse,
+  Users,
+  UserCheck,
   DollarSign,
-  Settings, 
   LogOut,
   Recycle,
   CreditCard,
-  LineChart
-} from 'lucide-react'
-import { ActivePage } from '@/pages/WelcomePage'
-import { SettingsPopup } from '@/components/Settings/Settings'
-import LogoutConfirmDialog from '@/components/logout/LogoutConfirmDialog'
-import { useNavigate } from 'react-router-dom'
+  LineChart,
+  Settings2
+} from 'lucide-react';
+import { ActivePage } from '@/pages/WelcomePage';
+import LogoutConfirmDialog from '@/components/logout/LogoutConfirmDialog';
+import { useNavigate } from 'react-router-dom';
+import Settings from '@/pages/Settings/Settings'
 
 interface MenuItem {
   icon: React.ElementType;
@@ -44,11 +44,32 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { icon: LayoutDashboard, label: 'Dashboard', action: 'dashboard' },
-  { icon: Package, label: 'Gestión de Fardos', action: 'bales' },
-  { icon: Warehouse, label: 'Administración de Tolvas', action: 'hoppers' },
+  // { icon: Package, label: 'Gestión de Fardos', action: 'bales' }, also add this to the menuItems array GetionCombustible
+  { icon:Package, label: 'Gestion', action: 'bales', subItems: [
+    { label: 'Gestión de Combustible', action: 'gestionCombustible' },
+    { label: 'Gestión de Fardos', action: 'bales' },
+    { label: 'Gestión de Vertedero', action: 'vertedero' },
+  ]
+
+  },
+  { icon: Warehouse, label: 'Generar Certificados',action:'pesaje', subItems:[
+    { label: 'Generar Pesaje', action: 'pesaje' },
+    { label: 'Generar Cotizaciones', action: 'cotizacion' },
+    { label: 'Generar DF', action: 'disposicionfinal' },
+    
+  ] 
+},
+    
   { icon: Truck, label: 'Control de Flotas', action: 'fleet' },
   { icon: Warehouse, label: 'Inventario de Almacén', action: 'inventory' },
-  { icon: Users, label: 'Recursos Humanos', action: 'hr' },
+  { 
+    icon: Users, 
+    label: 'Recursos Humanos', 
+    action: 'rh',
+    subItems: [
+      { label: 'Lista de Trabajadores', action: 'rh_list' },
+    ],
+  },
   { icon: UserCheck, label: 'Gestión de Clientes', action: 'clients' },
   { 
     icon: DollarSign, 
@@ -59,10 +80,13 @@ const menuItems: MenuItem[] = [
       { label: 'Flujo de Caja', action: 'cashflow' }
     ]
   },
-]
+  
+];
+
+
 
 const footerItems: MenuItem[] = [
-  { icon: Settings, label: 'Configuración', action: 'settings' },
+  { icon: Settings2, label: 'Configuración', action: 'settings' },
   { icon: LogOut, label: 'Cerrar sesión', action: 'logout' },
 ]
 
@@ -189,7 +213,7 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
           setIsLogoutOpen(false)
         }} 
       />   
-      <SettingsPopup open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
+      <Settings open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
     </SidebarProvider>
   )
 }

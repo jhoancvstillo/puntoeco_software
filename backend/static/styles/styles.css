@@ -1,0 +1,27 @@
+/* styles.css */
+
+/* tamano carta */
+
+@page {
+    size: letter; /* Tamaño carta */
+    max-width: 21.59em;  /* Ancho de página carta */
+    max-height: 27.94em; /* Alto de página carta */
+    background-color: black;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+.page {
+    background-color: white;
+}
+h1 {
+    text-align: center;
+    color: #333;
+    font-family: Arial, sans-serif;
+}

@@ -1,0 +1,48 @@
+{
+    "brands": [
+        {
+            "id": 1,
+            "name": "WD-40"
+        },
+        {
+            "id": 2,
+            "name": "Redtree"
+        },
+        {
+            "id": 3,
+            "name": "Energizer"
+        },
+        {
+            "id": 4,
+            "name": "Bata Industrials"
+        },
+        {
+            "id": 5,
+            "name": "Sigma"
+        },
+        {
+            "id": 6,
+            "name": "Ecopallets"
+        },
+        {
+            "id": 7,
+            "name": "Komelon"
+        },
+        {
+            "id": 8,
+            "name": "Stanley"
+        },
+        {
+            "id": 9,
+            "name": "Truper"
+        },
+        {
+            "id": 10,
+            "name": "3M"
+        },
+        {
+            "id": 11,
+            "name": "Ansell"
+        }
+    ]
+}

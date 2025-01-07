@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificado de Disposición Final</title>
+    <style>
+      @page {
+        size: letter;
+        margin: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f3f3f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin-left: 40px;
+        margin-right: 40px;
+      }
+      .certificate {
+        width: 215.9mm;
+        height: 279.4mm;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+        position: relative;
+        margin-bottom: 2.5rem;
+      }
+      .folio {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 0.75rem;
+      }
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1.5rem;
+      }
+      .logo {
+        width: 80px;
+        height: 80px;
+      }
+      .title {
+        text-align: center;
+        flex-grow: 1;
+      }
+      .title h1 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin: 0 0 0.25rem;
+      }
+      .title h2,
+      .title h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+      }
+      .content {
+        flex-grow: 1;
+        font-size: 0.875rem;
+        border-top: 1px solid #e5e5e5;
+        padding-top: 1.25rem;
+      }
+      .content p {
+        margin: 0 0 1.25rem;
+        line-height: 1.5;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+      }
+      th,
+      td {
+        border: 1px solid #e5e5e5;
+        padding: 0.5rem;
+        text-align: left;
+      }
+      th {
+        background-color: #f8f8f8;
+        font-weight: 600;
+      }
+     
+      @media print {
+        body {
+          background-color: white;
+        }
+        .certificate {
+          box-shadow: none;
+        }
+      }
+
+      .stamp-spacing {
+            /* margin-top: 80px; */
+            /* top: 100px; */
+            margin-bottom: 200px;
+        }
+
+        .stamp-area {
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            /* color: #888; */
+        }
+        .stamp-images {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 600px;
+        }
+        .stamp-image1 {
+          margin-top:20px;
+          width: 150px;
+          height: auto;
+          scale: 0.5;
+        }
+        .stamp-image2 {
+          width: 150px;
+          height: auto;
+        }
+        .stamp-image3 {
+          width: 100px;
+          height: auto;
+        }
+        .stamp-container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="certificate">
+      <div class="header">
+        <div class="folio">FOLIO: {{folio}}</div>
+        <div class="header-content">
+            <img src="file:///C:/Users/jhoan/OneDrive/Desktop/Startup/PuntoecoSoftware/backend/cotizaciones/templates/logo_small_nbg.png" alt="Logo" class="logo">
+          <div class="title">
+            <h1>CERTIFICADO</h1>
+            <h2>DE DISPOSICIÓN FINAL</h2>
+            <h3>MATERIAL RECUPERADO</h3>
+          </div>
+          <div style="width: 80px"></div>
+        </div>
+      </div>
+      <div class="content">
+        <p>
+          La empresa MARIO ESPEJO PAREDES (PUNTOECO), R.U.T. 6.959.040-3,
+          domiciliada en Ruta Internacional 31-CH, Barrio Industrial, Paipote,
+          Comuna de Copiapó, III Región de Atacama, está autorizada por la
+          SEREMI DE SALUD ATACAMA mediante la Resolución Sanitaria Exenta Nro.
+          8026 del 13 de abril de 2021, que modifica la Resolución Sanitaria
+          Exenta Nro. 139, con fecha 20 de enero de 2015.
+        </p>
+        <p>Certifica que:</p>
+        <p>
+          {{client}}<br />
+          {{rut}}<br />
+          {{domicilio}}
+        </p>
+        <p>
+          Ha entregado a Punto Eco productos prioritarios en desuso
+          correspondiente a {{categoria}} que ha generado en sus instalaciones, según
+          Ley 20.920 REP.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>MATERIAL ENTREGADO</th>
+              <th>{{cantidad_kg}} kg</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CLASIFICACIÓN CÓDIGO RESINAS</td>
+              <td>{{clasificacion}}</td>
+            </tr>
+            <tr>
+              <td>SEGÚN GUÍA N°</td>
+              <td>{{numero_guia}}</td>
+            </tr>
+            <tr>
+              <td>CERTIFICADO N°</td>
+              <td>{{numero_certificado}}</td>
+            </tr>
+            <tr>
+              <td>DESTINO FINAL</td>
+              <td>{{destino_final}}</td>
+            </tr>
+            <tr>
+              <td>PERÍODO</td>
+              <td>{{fecha}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Se extiende el presente Certificado a solicitud del interesado para
+          los fines que estime conveniente.
+        </p>
+      </div>
+
+      <div class="stamp-spacing">
+        <div class="stamp-container">
+            <div class="stamp-area">
+                <div class="stamp-images">
+                    <img src="file:///C:/Users/jhoan/OneDrive/Desktop/Startup/PuntoecoSoftware/backend/pesajes/templates/timbre1.jpg" alt="Timbre 1" class="stamp-image1">
+                    <img src="file:///C:/Users/jhoan/OneDrive/Desktop/Startup/PuntoecoSoftware/backend/pesajes/templates/timbre2.jpg" alt="Timbre 2" class="stamp-image2">
+                    <img src="file:///C:/Users/jhoan/OneDrive/Desktop/Startup/PuntoecoSoftware/backend/pesajes/templates/timbre3.jpg" alt="Timbre 3" class="stamp-image3">
+                </div>
+            </div>
+        </div>
+      
+    </div>
+  </body>
+</html>

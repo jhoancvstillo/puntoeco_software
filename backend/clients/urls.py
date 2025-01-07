@@ -1,14 +1,9 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
+from .views import ClientsViewSet, ConductorViewSet
 
+router = DefaultRouter()
+router.register(r'clients', ClientsViewSet, basename='clients')
+router.register(r'conductor', ConductorViewSet, basename='conductor')
+router.register(r'clientsnormal', ClientsViewSet, basename='clientsnormal')
 
-from .views import get_clients, create_client, client_detail, update_client, delete_client
-
-urlpatterns = [
-
-    path('getClients/', get_clients),
-    path('create/', create_client),
-    path('profile_<int:pk>/', client_detail),  # GET, PUT, DELETE para un cliente específico
-    path('update/profile_<int:pk>/', update_client),
-    path('delete/profile_<int:pk>/', delete_client),
-]
-
+urlpatterns = router.urls
