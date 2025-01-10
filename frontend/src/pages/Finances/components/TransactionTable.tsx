@@ -31,7 +31,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
         {transactions.map((transaction) => (
           <TableRow key={transaction.id}>
             <TableCell>{formatDateTime(transaction.date_time)}</TableCell>
-            <TableCell>{transaction.transaction_type}</TableCell>
+            <TableCell>{transaction.transaction_type === 'Expense' ? 'Gasto' : 'Ingreso'}</TableCell>
             <TableCell>{transaction.classification.name}</TableCell>
             <TableCell>{transaction.subcategory.name}</TableCell>
             <TableCell>{transaction.comment}</TableCell>

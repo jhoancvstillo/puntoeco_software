@@ -2,26 +2,23 @@ from io import BytesIO
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from destinofinal.models import FitosanitarioDetalle, MaterialDetalle,PlasticoDetalle
+import os
+from django.conf import settings
+# imoprt base_dir
 
 
+
+def convertir_numero_a_miles(numero): 
+    return f"{numero:,.2f}".replace(',', '#').replace('.', ',').replace('#', '.')
 
 # formatear rut chileno
 def format_rut(rut):
-    # Remover puntos y guiones del RUT
     rut = rut.replace('.', '').replace('-', '')
-
-    # Validar si el RUT tiene al menos 8 caracteres (7 dígitos + dígito verificador)
     if len(rut) < 8:
         return rut  # Retorna sin formato si no tiene la longitud mínima
-
-    # Separar dígitos del RUT y dígito verificador
     rut_digits = rut[:-1]  # Todos menos el último carácter
     rut_verification = rut[-1].upper()  # Último carácter en mayúsculas
-
-    # Insertar puntos cada tres dígitos desde la derecha
     rut_digits_formatted = f"{int(rut_digits):,}".replace(',', '.')
-
-    # Combinar con el dígito verificador
     formatted_rut = f"{rut_digits_formatted}-{rut_verification}"
     return formatted_rut
 
@@ -52,6 +49,9 @@ def generate_pdf_certificado(certificado):
         rut = certificado.client.rut
         domicilio = certificado.client.address
 
+        image_path = os.path.join(settings.BASE_DIR, 'static/images/logo_nbg.png')
+        absolute_path = f"file:///{image_path}"
+
         template = None
         if certificado.categoria == 'Plásticos':
             detalle = PlasticoDetalle.objects.filter(certificado=certificado).first()
@@ -69,10 +69,11 @@ def generate_pdf_certificado(certificado):
                 'numero_guia': numero_guia,
                 'destino_final': destino_final,
                 'id': id,
-                'cantidad_kg': cantidad_kg,
+                'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
                 'rut': format_rut(rut),
                 'domicilio': domicilio,
-                'clasificacion': clasificacion
+                'clasificacion': clasificacion,
+                'image': absolute_path
             })
 
         elif certificado.categoria == 'Fitosanitarios':
@@ -81,7 +82,7 @@ def generate_pdf_certificado(certificado):
                 return None
 
             context =  {
-                'categoria': toUpperCase(categoria),
+                'categoria': "FITOS SANITARIOS",
                 'folio': folio,
                 'numero_certificado': numero_certificado,
                 'client': client,
@@ -109,6 +110,7 @@ def generate_pdf_certificado(certificado):
 
                 'rut': format_rut(rut),
                 'domicilio': domicilio,
+                'image': absolute_path
             }
             
             template = render_to_string('certificadoDF_fitos.html',context)
@@ -128,9 +130,10 @@ def generate_pdf_certificado(certificado):
                 'numero_guia': numero_guia,
                 'destino_final': destino_final,
                 'id': id,
-                'cantidad_kg': cantidad_kg,
+                'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
                 'rut': format_rut(rut),
                 'domicilio': domicilio,
+                'image': absolute_path
             })
 
         else:

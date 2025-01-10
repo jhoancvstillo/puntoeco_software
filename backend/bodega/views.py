@@ -1,9 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import Categoria, Marca, Modelo, Producto, Stock
+from .models import Categoria, Marca, Producto, Stock
 from .serializers import (
     CategoriaSerializer,
     MarcaSerializer,
-    ModeloSerializer,
     ProductoSerializer,
     StockSerializer,
 )
@@ -19,11 +18,6 @@ class MarcaViewSet(ModelViewSet):
     serializer_class = MarcaSerializer
 
 
-class ModeloViewSet(ModelViewSet):
-    queryset = Modelo.objects.all()
-    serializer_class = ModeloSerializer
-
-
 class StockViewSet(ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
@@ -31,6 +25,6 @@ class StockViewSet(ModelViewSet):
 
 class ProductoViewSet(ModelViewSet):
     queryset = Producto.objects.prefetch_related("stocks").select_related(
-        "categoria", "marca", "modelo"
+        "categoria", "marca"
     )
     serializer_class = ProductoSerializer

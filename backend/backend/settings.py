@@ -5,6 +5,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# imprimir el BASE_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -141,6 +142,8 @@ STATICFILES_DIRS = [
 
 # Carpeta donde Django recopilará los archivos estáticos para producción
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 
 
 # Default primary key field type

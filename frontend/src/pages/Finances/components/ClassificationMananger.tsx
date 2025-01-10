@@ -111,7 +111,7 @@ export const ClassificationManager: React.FC<ClassificationManagerProps> = ({
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>{type === "classification" ? "Add Classification" : "Add Subcategory"}</CardTitle>
+          <CardTitle>{type === "classification" ? "Añadir clasificación" : "Añadir subcategoría"}</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -185,7 +185,7 @@ export const ClassificationManager: React.FC<ClassificationManagerProps> = ({
 
       <Card>
         <CardHeader>
-          <CardTitle>{type === "classification" ? "Classifications" : "Subcategories"}</CardTitle>
+          <CardTitle>{type === "classification" ? "Clasificación" : "Subcategoría"}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>

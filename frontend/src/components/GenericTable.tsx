@@ -66,6 +66,8 @@ export default function GenericTable<T extends Record<string, any>>({
     // Si no se puede analizar, devuelve una fecha mínima
     return new Date(0);
   };
+
+  
   
   const filteredAndSortedRecords = useMemo(() => {
     return records
@@ -102,6 +104,31 @@ export default function GenericTable<T extends Record<string, any>>({
     setSortOrder('desc');
   }, []);
 
+  useEffect(() => {
+    setTotalPages(Math.ceil(filteredAndSortedRecords.length / itemsPerPage));
+  }, [filteredAndSortedRecords]);
+
+  useEffect(() => {
+    const hasIDColumn = initialRecords.length > 0 && 'ID' in initialRecords[0];
+    const sortedRecords = [...initialRecords];
+    if (hasIDColumn) {
+      setSortBy('ID' as keyof T);
+      setSortOrder('desc');
+      sortedRecords.sort((a, b) => (b['ID'] as number) - (a['ID'] as number));
+    } else {
+      setSortBy('fecha' as keyof T);
+      setSortOrder('desc');
+      sortedRecords.sort((a, b) => {
+        const dateA = parseDate(a.fecha as unknown as string);
+        const dateB = parseDate(b.fecha as unknown as string);
+        return compareDesc(dateA, dateB);
+      });
+    }
+    setRecords(sortedRecords);
+  }, [initialRecords]);
+
+  
+
   const handleSort = (column: keyof T) => {
     if (column === sortBy) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -110,6 +137,7 @@ export default function GenericTable<T extends Record<string, any>>({
       setSortOrder('desc');
     }
   };
+
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);

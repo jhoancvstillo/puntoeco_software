@@ -32,14 +32,7 @@ import { createCombustible } from "@/api/combustible"
 import { Combustible, CombustibleSinTotal } from "@/types/combustible"
 import { Conductor } from "@/types/conductor"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import DialogConfirmation from "@/components/DialogConfirmation"
 
 
 interface FuelFormProps {
@@ -327,45 +320,30 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
         </Button>
       </form>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmar ingreso de combustible</DialogTitle>
-            <DialogDescription>
-              ¿Está seguro que desea ingresar los siguientes datos?
-            </DialogDescription>
-          </DialogHeader>
-          {formData && (
-            <div className="grid grid-cols-2 gap-4">
-              <div>Fecha: {format(formData.fecha, "P", { locale: es })}</div>
-              <div>Hora: {formData.hora}</div>
-              <div>Guía: {formData.guia}</div>
-              <div>Conductor: {formData.conductor.nombre}</div>
-              <div>Patente: {formData.patente}</div>
-              <div>Tarjeta: {formData.tarjeta}</div>
-              <div>Litros: {formData.litros}</div>
-              <div>Valor por Litro: {formData.valor_litro}</div>
-              <div className="col-span-2">
-                Total: {(formData.litros * formData.valor_litro).toLocaleString('es-CL', { 
-                  style: 'currency', 
-                  currency: 'CLP' 
-                })}
-              </div>
-              {formData.observaciones && (
-                <div className="col-span-2">
-                  Observaciones: {formData.observaciones}
-                </div>
-              )}
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleConfirm}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DialogConfirmation 
+      list= {[
+        { key: "fecha", header: "Fecha" },
+        { key: "hora", header: "Hora" },
+        { key: "guia", header: "Guía" },
+        { key: "conductor", header: "Conductor" },
+        { key: "patente", header: "Patente" },
+        { key: "tarjeta", header: "Tarjeta" },
+        { key: "litros", header: "Litros" },
+        { key: "valor_litro", header: "Valor por Litro" },
+        { key: "observaciones", header: "Observaciones" },
+      ]}
+      isDialogOpen={isDialogOpen}
+      setIsDialogOpen={setIsDialogOpen}
+      formData={formData ? {
+        ...formData,
+        conductor: formData.conductor.nombre,
+        fecha: formData.fecha ? format(formData.fecha, "P", { locale: es }) : null,
+      } : null
+      }
+      handleDialogCancel={() => setIsDialogOpen(false)}
+      handleDialogConfirm={handleConfirm}
+      />
+      
     </Form>
   )
 }

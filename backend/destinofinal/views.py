@@ -50,11 +50,10 @@ class CertificadoViewSet(ModelViewSet):
                 ContentFile(pdf_file.getvalue()),
                 save=True,
             )
+            
+            serializer = self.get_serializer(certificado)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-            return Response(
-                {"message": "PDF generado exitosamente.", "file_url": certificado.file.url},
-                status=status.HTTP_200_OK,
-            )
         except Exception as e:
             return Response(
                 {"error": f"No se pudo generar el PDF: {str(e)}"},

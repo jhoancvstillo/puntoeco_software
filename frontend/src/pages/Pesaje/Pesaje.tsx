@@ -14,6 +14,7 @@ interface Column<T extends Record<string, any>> {
 
 
 const COLUMNS_TABLE_CERTIFICATES: Column<CertificadoPesajeNombres>[] = [
+  { key: 'id', header: 'ID' },
   { key: 'fecha', header: 'Fecha' },
   { key: 'cliente', header: 'Cliente' },
   { key: 'conductor', header: 'Conductor' },
@@ -46,6 +47,7 @@ export default function Pesaje() {
         }));
   
         setCertificadosWithNames(transformedData);
+        
       });
     });
   };
@@ -100,13 +102,13 @@ export default function Pesaje() {
       );
     }
   }
-
+  console.log(certificadosWithNames)
   return (
     <div>
-      {/* <PesajeForm onSubmit={handleFormSubmit} /> */}
       <DashTableForm
         dashboardContent={<Dashboard data={certificados} />}
-        tableContent={<GenericTable columns={COLUMNS_TABLE_CERTIFICATES} initialRecords={certificadosWithNames} 
+        tableContent={<GenericTable columns={COLUMNS_TABLE_CERTIFICATES}
+        initialRecords={certificadosWithNames} 
         title='Historial' 
         description='Histotrial de todos los certificados de pesaje'
         onDelete={handleOnDelete}

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -175,7 +177,9 @@
     <div class="ticket">
         <div class="header-spacing">
             <div class="header">
-                <img src="file:///C:/Users/jhoan/OneDrive/Desktop/Startup/PuntoecoSoftware/backend/pesajes/templates/logo.jpg" alt="Logo" class="logo">
+                <!-- cargar static image -->
+                <img src="{{image_path}}" alt="Logo">
+
                 <div class="title">
                     <h1>TICKET DE PESAJE PUNTO ECO</h1>
                     <p>Ley N°. 19.171/92 Decreto MOP N° 18/93</p>

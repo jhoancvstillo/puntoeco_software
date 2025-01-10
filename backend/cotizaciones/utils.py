@@ -12,6 +12,8 @@ import os
 def generate_pdf_cotizacion(cotizacion):
     # Obtener los detalles como una lista
     detalles = list(cotizacion.detalles.all())
+    image_path = os.path.join(settings.BASE_DIR, 'static/images/logo_nbg.png')
+    absolute_path = f"file:///{image_path}"
 
     # Calcular subtotales, IVA y total
     try:
@@ -89,6 +91,7 @@ def generate_pdf_cotizacion(cotizacion):
         'subtotal': formatted_subtotal,
         'iva': formatted_iva,
         'total': formatted_total,
+        'image': absolute_path,
     }
 
     # Renderizar la plantilla

@@ -13,6 +13,7 @@ const getHeaders = () => ({
 export const getCertificados = async () => {
     try {
         const response = await axios.get(`${API_URL}certificados/`, { headers: getHeaders() });
+        console.log('Certificados from api:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching certificados:', error);

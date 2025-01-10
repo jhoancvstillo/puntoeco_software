@@ -18,14 +18,14 @@ class Marca(models.Model):
         return self.nombre
 
 
-# Modelo
-class Modelo(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(null=True, blank=True)
-    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="modelos")
+# # Modelo
+# class Modelo(models.Model):
+#     nombre = models.CharField(max_length=100)
+#     descripcion = models.TextField(null=True, blank=True)
+#     marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="modelos")
 
-    def __str__(self):
-        return f"{self.nombre} - {self.marca.nombre}"
+#     def __str__(self):
+#         return f"{self.nombre} - {self.marca.nombre}"
 
 
 # Productos
@@ -33,7 +33,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="productos")
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="productos")
-    modelo = models.ForeignKey(Modelo, on_delete=models.CASCADE, related_name="productos", null=True, blank=True)
+    # modelo = models.ForeignKey(Modelo, on_delete=models.CASCADE, related_name="productos", null=True, blank=True)
     precio_por_unidad = models.DecimalField(max_digits=10, decimal_places=2)
 
 

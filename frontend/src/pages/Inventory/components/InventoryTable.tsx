@@ -23,7 +23,6 @@ const InventoryTable: React.FC<InventoryTableProps> = ({ productos }) => {
           <TableHead>Nombre</TableHead>
           <TableHead>Categoría</TableHead>
           <TableHead>Marca</TableHead>
-          <TableHead>Modelo</TableHead>
           <TableHead>Ubicación</TableHead>
           <TableHead>Precio por Unidad</TableHead>
         </TableRow>
@@ -34,7 +33,6 @@ const InventoryTable: React.FC<InventoryTableProps> = ({ productos }) => {
             <TableCell>{prod.nombre}</TableCell>
             <TableCell>{prod.categoria.nombre}</TableCell>
             <TableCell>{prod.marca.nombre}</TableCell>
-            <TableCell>{prod.modelo?.nombre ?? "—"}</TableCell>
             <TableCell>
               {prod.stocks.map((stock) => stock.ubicacion).join(", ")}
             </TableCell>

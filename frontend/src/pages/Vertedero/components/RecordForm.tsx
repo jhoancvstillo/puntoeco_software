@@ -13,15 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { VertederoData, VertederoDataForm } from "../types/Vertedero";
+import DialogConfirmation from "@/components/DialogConfirmation";
 
 const formSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Formato de fecha inválido"),
@@ -141,28 +134,21 @@ export default function RecordForm({ onSubmit, initialData }: RecordFormProps) {
         </form>
       </Form>
 
-      {/* Diálogo de confirmación */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmar Registro</DialogTitle>
-            <DialogDescription>
-              ¿Está seguro de que desea registrar esta información?
-            </DialogDescription>
-          </DialogHeader>
-          {formData && (
-            <div className="py-4">
-              <p><strong>Fecha:</strong> {formData.date}</p>
-              <p><strong>Peso (kg):</strong> {formData.weight_kg} kg</p>
-              <p><strong>Valor:</strong> ${formData.value}</p>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={handleDialogCancel}>Cancelar</Button>
-            <Button onClick={handleDialogConfirm}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        <DialogConfirmation
+        list = {[
+          // key and header
+          { key: "date", header: "Fecha" },
+          { key: "weight_kg", header: "Peso" },
+          { key: "value", header: "Valor" },
+          
+        ]}
+        formData={formData}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        handleDialogCancel={handleDialogCancel}
+        handleDialogConfirm={handleDialogConfirm}
+
+        />
     </>
   );
 }

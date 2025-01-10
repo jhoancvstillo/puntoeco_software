@@ -69,7 +69,6 @@ export default function Dashboard() {
     },
   ];
 
-
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -91,10 +90,18 @@ export default function Dashboard() {
       <Tabs defaultValue="historial" className="w-full">
         <TabsList className="w-full">
           <div className="flex w-full">
-            <TabsTrigger value="historial" className="flex-1">Historial</TabsTrigger>
-            <TabsTrigger value="fardos" className="flex-1">Agregar Fardos</TabsTrigger>
-            <TabsTrigger value="deuda" className="flex-1">Agregar Deuda</TabsTrigger>
-            <TabsTrigger value="envio" className="flex-1">Agregar Envío</TabsTrigger>
+            <TabsTrigger value="historial" className="flex-1">
+              Historial
+            </TabsTrigger>
+            <TabsTrigger value="fardos" className="flex-1">
+              Agregar Fardos
+            </TabsTrigger>
+            <TabsTrigger value="deuda" className="flex-1">
+              Agregar Deuda
+            </TabsTrigger>
+            <TabsTrigger value="envio" className="flex-1">
+              Agregar Envío
+            </TabsTrigger>
           </div>
         </TabsList>
         <TabsContent value="historial">

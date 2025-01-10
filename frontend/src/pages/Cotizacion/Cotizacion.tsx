@@ -19,6 +19,7 @@ interface CotizacionTable {
 
 
 const COLUMNS_TABLE_CERTIFICATES: { key: keyof CotizacionTable; header: string }[] = [
+  { key: 'id', header: 'ID' },
   { key: 'date_time', header: 'Fecha' },
   { key: 'client', header: 'Cliente' },
   { key: 'requested_by', header: 'Solicitante' },
@@ -31,7 +32,7 @@ export default function Page() {
   const [certificados, setCertificados] = useState<CotizacionTable[]>([]);
 
 
-
+  console.log(certificados);
   const convertTime = (time: string) => {
     const date = new Date(time);
     // fecha con hora
@@ -48,6 +49,7 @@ export default function Page() {
 
         setCertificados(
           certificatesData.map((certificate: any) => ({
+            id: certificate.id,
             date_time: convertTime(certificate.date_time),
             client: certificate.client.name,
             requested_by: certificate.requested_by,

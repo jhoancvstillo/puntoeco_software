@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getProductos, getCategorias, getMarcas, getModelos } from "@/api/productos";
-import { Producto, Categoria, Marca, Modelo } from "../types/inventory";
+import { getProductos, getCategorias, getMarcas } from "@/api/productos";
+import { Producto, Categoria, Marca } from "../types/inventory";
 import { ProductManager } from './ProductManager';
 import { CategoryManager } from './CategoryManager';
 import { BrandManager } from './BrandManager';
-import { ModelManager } from './ModelManager';
 import InventoryFilters from "./InventoryFilters";
 import InventoryTable from "./InventoryTable";
 
@@ -16,12 +15,6 @@ export function InventoryManager() {
       nombre: "",
       categoria: { id: 0, nombre: "", descripcion: null },
       marca: { id: 0, nombre: "", descripcion: null },
-      modelo: {
-        id: 0,
-        nombre: "",
-        descripcion: "",
-        marca: { id: 0, nombre: "", descripcion: null },
-      },
       precio_por_unidad: "",
       stocks: [
         {
@@ -42,14 +35,6 @@ export function InventoryManager() {
     { id: 0, nombre: "", descripcion: "" },
   ]);
   
-  const [modelos, setModelos] = useState<Modelo[]>([
-    {
-      id: 0,
-      nombre: "",
-      descripcion: "",
-      marca: { id: 0, nombre: "", descripcion: "" },
-    },
-  ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -57,16 +42,14 @@ export function InventoryManager() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productosData, categoriasData, marcasData, modelosData] = await Promise.all([
+        const [productosData, categoriasData, marcasData] = await Promise.all([
           getProductos(),
           getCategorias(),
           getMarcas(),
-          getModelos()
         ]);
         setProductos(productosData);
         setCategorias(categoriasData);
         setMarcas(marcasData);
-        setModelos(modelosData);
       } catch (error) {
         console.error("Error al obtener datos", error);
       }
@@ -94,19 +77,17 @@ export function InventoryManager() {
   return (
     <div className="container mx-auto p-4">
       <Tabs defaultValue="tabla" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="tabla">Tabla General</TabsTrigger>
           <TabsTrigger value="productos">Productos</TabsTrigger>
           <TabsTrigger value="categorias">Categorías</TabsTrigger>
           <TabsTrigger value="marcas">Marcas</TabsTrigger>
-          <TabsTrigger value="modelos">Modelos</TabsTrigger>
         </TabsList>
         <TabsContent value="productos">
           <ProductManager 
             productos={productos} 
             categorias={categorias} 
             marcas={marcas} 
-            modelos={modelos}
             setProductos={setProductos}
           />
         </TabsContent>
@@ -115,9 +96,6 @@ export function InventoryManager() {
         </TabsContent>
         <TabsContent value="marcas">
           <BrandManager marcas={marcas} setMarcas={setMarcas} />
-        </TabsContent>
-        <TabsContent value="modelos">
-          <ModelManager modelos={modelos} setModelos={setModelos} marcas={marcas} />
         </TabsContent>
         <TabsContent value="tabla">
           <div className="space-y-4">

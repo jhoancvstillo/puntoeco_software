@@ -1,22 +1,25 @@
 from io import BytesIO
 from django.template.loader import render_to_string
 from weasyprint import HTML
+from django.conf import settings
+import os
 
 def generate_pdf_ticket(certificado):
     
-    
+    image_path = os.path.join(settings.BASE_DIR, 'static/images/logo_nbg.png')
+    absolute_path = f"file:///{image_path}"
+    print("image_path", absolute_path)
     fecha = certificado.fecha.strftime("%d/%m/%Y")
     hora_ingreso = certificado.hora_ingreso.strftime("%H:%M")
     hora_salida = certificado.hora_salida.strftime("%H:%M")
     peso_1 = certificado.peso_1
     peso_2 = certificado.peso_2
-    diff = peso_2 - peso_1
-    
+    diff = peso_1 - peso_2
     print("fecha", fecha)
 
 
     
-    context = {'certificado': certificado, 'fecha': fecha, 'hora_ingreso': hora_ingreso, 'hora_salida': hora_salida, 'peso_1': peso_1, 'peso_2': peso_2, 'diff': diff}
+    context = {'certificado': certificado, 'fecha': fecha, 'hora_ingreso': hora_ingreso, 'hora_salida': hora_salida, 'peso_1': peso_1, 'peso_2': peso_2, 'diff': diff, 'image_path': absolute_path}
     
     template = render_to_string('pesajes.html', context=context)
     pdf_file = BytesIO()

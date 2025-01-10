@@ -17,7 +17,6 @@ const COLUMNS_TABLE_CERTIFICATES: { key: keyof VertederoData; header: string }[]
 
 export default function VertederoDashboard() {
   const [data, setData] = useState<VertederoData[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,9 +25,7 @@ export default function VertederoDashboard() {
         setData(records || []); // Asegurar un arreglo vacío si la API devuelve undefined o null
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     fetchData();
   }, []);
@@ -42,14 +39,6 @@ export default function VertederoDashboard() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!data.length) {
-    return <div>No hay registros disponibles.</div>;
-  }
-
 
   const handleDelete = async (data: VertederoData) => {
     try {
@@ -62,7 +51,6 @@ export default function VertederoDashboard() {
     }
   }
 
-  console.log(data);
   return (
     <DashTableForm
       dashboardContent={<Dashboard data={data}/>}

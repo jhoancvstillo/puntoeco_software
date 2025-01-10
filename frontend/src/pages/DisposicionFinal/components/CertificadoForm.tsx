@@ -246,12 +246,8 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
             return acc;
           }, {} as Record<string, number>),
         };
-        
-        console.log("Datos para fitosanitarios: ", fitoData);
-        
         try {
-          const response = await createFitosanitario(fitoData);
-          console.log("Respuesta de fitosanitarios: ", response);
+          await createFitosanitario(fitoData);
         } catch (error) {
           console.error("Error al crear fitosanitarios: ", error);
         }
@@ -262,21 +258,13 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
           material: data.material?.tipo || "",
           cantidad_kg: parseFloat(data.material?.cantidad || "0") || 0,
         };
-        console.log(
-          "El material  y cantidad es:  " +
-            material +
-            " y " +
-            material.cantidad_kg
-        );
 
-        const response = await createMaterial(material);
-        console.log("La respuesta es: ", response);
+        await createMaterial(material);
       }
 
-      // Actualizar la lista de certificados
-      onUpdate(data);
-      generate_pdf(certificadoId); // Generar PDF después de crear el certificado y su detalle
-
+      await generate_pdf(certificadoId); // Generar PDF después de crear el certificado y su detalle
+      await onUpdate(data);
+      
       alert("Certificado y detalle creados exitosamente!");
     } catch (error) {
       console.error(error);

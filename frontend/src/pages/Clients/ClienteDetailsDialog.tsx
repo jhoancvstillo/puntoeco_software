@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Dialog,
   DialogContent,
@@ -16,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, UserX } from 'lucide-react';
 import { Cliente } from '@/types/client';
 import { Conductor } from '@/types/conductor';
 import { getDriverById, deleteDriver, createDriver } from '@/api/clients';
@@ -124,114 +125,176 @@ export const ClienteDetailsDialog: React.FC<ClienteDetailsDialogProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[80vh] flex flex-col bg-white dark:bg-gray-800 text-black dark:text-white">
           <DialogHeader>
-            <DialogTitle>Detalles del Cliente y Conductores Referidos</DialogTitle>
+            <DialogTitle className="text-2xl font-bold mb-4">Detalles del Cliente y Conductores Referidos</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <span className="font-bold">Nombre:</span>
-              <span className="col-span-3">{cliente.name}</span>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <span className="font-bold">RUT:</span>
-              <span className="col-span-3">{cliente.rut}</span>
-            </div>
-            
-            <div className="mt-4">
-              <h3 className="font-bold mb-2">Conductores Referidos:</h3>
-              {isLoading ? (
-                <p>Cargando conductores...</p>
-              ) : error ? (
-                <p className="text-red-500">{error}</p>
-              ) : conductores.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Nombre</TableHead>
-                      <TableHead>RUT</TableHead>
-                      <TableHead className="text-right">Acciones</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {conductores.map((conductor) => (
-                      <TableRow key={conductor.id}>
-                        <TableCell>{conductor.nombre}</TableCell>
-                        <TableCell>{conductor.rut}</TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setConductorToDelete(conductor)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p>No hay conductores referidos para este cliente.</p>
-              )}
-            </div>
-
-            {/* Fin de la sección de la tabla de conductores */}
-
-            {/* Botón de Agregar Conductor */}
-            <div className="mt-6">
+          <div className="flex-grow overflow-y-auto pr-4 -mr-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="grid gap-4 py-4"
+            >
+              <div className="grid grid-cols-4 items-center gap-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <span className="font-bold">Nombre:</span>
+                <span className="col-span-3">{cliente.name}</span>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <span className="font-bold">RUT:</span>
+                <span className="col-span-3">{cliente.rut}</span>
+              </div>
+              
+              <div className="mt-4">
+                <h3 className="font-bold mb-2 text-xl">Conductores Referidos:</h3>
+                {isLoading ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex justify-center items-center h-32"
+                  >
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                  </motion.div>
+                ) : error ? (
+                  <p className="text-red-500 dark:text-red-400">{error}</p>
+                ) : conductores.length > 0 ? (
+                  <AnimatePresence>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="dark:text-gray-300">Nombre</TableHead>
+                            <TableHead className="dark:text-gray-300">RUT</TableHead>
+                            <TableHead className="text-right dark:text-gray-300">Acciones</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {conductores.map((conductor) => (
+                            <motion.tr
+                              key={conductor.id}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <TableCell className="dark:text-gray-300">{conductor.nombre}</TableCell>
+                              <TableCell className="dark:text-gray-300">{conductor.rut}</TableCell>
+                              <TableCell className="text-right">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => setConductorToDelete(conductor)}
+                                >
+                                  <Trash2 className="h-4 w-4 text-red-500 dark:text-red-400" />
+                                </Button>
+                              </TableCell>
+                            </motion.tr>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </motion.div>
+                  </AnimatePresence>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center justify-center h-32 bg-gray-100 dark:bg-gray-700 rounded-lg"
+                  >
+                    <UserX className="h-12 w-12 text-gray-400 dark:text-gray-500 mb-2" />
+                    <p className="text-gray-600 dark:text-gray-400">No hay conductores referidos para este cliente.</p>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <AnimatePresence>
               {!isAddingConductor ? (
-                <Button 
-                  onClick={() => setIsAddingConductor(true)}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <Plus className="mr-2 h-4 w-4" /> Agregar Conductor
-                </Button>
+                  <Button 
+                    onClick={() => setIsAddingConductor(true)}
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300"
+                  >
+                    <Plus className="mr-2 h-4 w-4" /> Agregar Conductor
+                  </Button>
+                </motion.div>
               ) : (
-                <form onSubmit={handleAddConductor} className="space-y-4">
+                <motion.form
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  onSubmit={handleAddConductor}
+                  className="space-y-4"
+                >
                   <div className="space-y-2">
-                    <Label htmlFor="nombre">Nombre</Label>
+                    <Label htmlFor="nombre" className="dark:text-gray-300">Nombre</Label>
                     <Input
                       id="nombre"
                       value={newConductor.nombre}
                       onChange={(e) => setNewConductor({...newConductor, nombre: e.target.value})}
                       required
+                      className="transition-all duration-300 focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="rut">RUT</Label>
+                    <Label htmlFor="rut" className="dark:text-gray-300">RUT</Label>
                     <Input
                       id="rut"
                       value={newConductor.rut}
                       onChange={(e) => setNewConductor({...newConductor, rut: e.target.value})}
                       required
+                      className="transition-all duration-300 focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
                     />
                   </div>
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsAddingConductor(false)}>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => setIsAddingConductor(false)}
+                      className="dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
+                    >
                       Cancelar
                     </Button>
-                    <Button type="submit">Agregar</Button>
+                    <Button 
+                      type="submit" 
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300"
+                    >
+                      Agregar
+                    </Button>
                   </div>
-                </form>
+                </motion.form>
               )}
-            </div>
+            </AnimatePresence>
           </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!conductorToDelete} onOpenChange={() => setConductorToDelete(null)}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white dark:bg-gray-800 text-black dark:text-white">
           <AlertDialogHeader>
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="dark:text-gray-300">
               ¿Estás seguro que quieres eliminar al conductor {conductorToDelete?.nombre} con RUT {conductorToDelete?.rut}?
               Esta acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConductor}>Eliminar</AlertDialogAction>
+            <AlertDialogCancel className="dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConductor} className="bg-red-500 text-white hover:bg-red-600 transition-colors duration-300">Eliminar</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

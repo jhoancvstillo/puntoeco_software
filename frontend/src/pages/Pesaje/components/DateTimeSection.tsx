@@ -25,6 +25,7 @@ export function DateTimeSection({ form }: DateTimeSectionProps) {
           <FormItem>
             <FormLabel>Fecha</FormLabel>
             <FormControl>
+              {/* fecha debe ser hoy por defecto */}
               <Input type="date" {...field} />
             </FormControl>
             <FormMessage />

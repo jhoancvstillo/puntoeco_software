@@ -32,13 +32,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import { Producto, Categoria, Marca, Modelo } from "../types/inventory";
+import { Producto, Categoria, Marca } from "../types/inventory";
 
 interface ProductManagerProps {
   productos: Producto[];
   categorias: Categoria[];
   marcas: Marca[];
-  modelos: Modelo[];
   setProductos: React.Dispatch<React.SetStateAction<Producto[]>>;
 }
 
@@ -46,7 +45,6 @@ export interface ProductManagerFormProps {
   nombre: string;
   categoria: number;
   marca: number;
-  modelo: number;
   precio_por_unidad: string;
   stocks: {
     id: number;
@@ -61,21 +59,18 @@ interface ProductManagerProps {
   productos: Producto[];
   categorias: Categoria[];
   marcas: Marca[];
-  modelos: Modelo[];
   setProductos: React.Dispatch<React.SetStateAction<Producto[]>>;
 }
 export function ProductManager({
   productos,
   categorias,
   marcas,
-  modelos,
   setProductos,
 }: ProductManagerProps) {
   const [newProducto, setNewProducto] = useState<ProductManagerFormProps>({
     nombre: "",
     categoria: 0,
     marca: 0,
-    modelo: 0,
     precio_por_unidad: "",
     stocks: [{ id: 0, ubicacion: "", cantidad: 0, stock_minimo: 0 }],
   });
@@ -99,7 +94,6 @@ export function ProductManager({
         nombre: "",
         categoria: 0,
         marca: 0,
-        modelo: 0,
         precio_por_unidad: "",
         stocks: [{ id: 0, ubicacion: "", cantidad: 0, stock_minimo: 0 }],
       });
@@ -131,13 +125,7 @@ export function ProductManager({
       if (editingProducto.marca.id !== originalProducto.marca.id) {
         productChanges.marca = editingProducto.marca.id;
       }
-      if (
-        editingProducto.modelo &&
-        originalProducto.modelo &&
-        editingProducto.modelo.id !== originalProducto.modelo.id
-      ) {
-        productChanges.modelo = editingProducto.modelo.id;
-      }
+      
 
       // Detectar cambios en el stock
       const stock = editingProducto.stocks[0];
@@ -284,32 +272,7 @@ export function ProductManager({
               </Select>
             </div>
 
-            {/* MODELO */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="modelo" className="text-right">
-                Modelo
-              </Label>
-              <Select
-                onValueChange={(value) =>
-                  setNewProducto({
-                    ...newProducto,
-                    modelo:
-                      modelos.find((m) => m.id.toString() === value)?.id || 0,
-                  })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Seleccionar modelo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {modelos.map((modelo) => (
-                    <SelectItem key={modelo.id} value={modelo.id.toString()}>
-                      {modelo.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          
 
             {/* PRECIO */}
             <div className="grid grid-cols-4 items-center gap-4">
@@ -411,7 +374,6 @@ export function ProductManager({
             <TableHead>Nombre</TableHead>
             <TableHead>Categoría</TableHead>
             <TableHead>Marca</TableHead>
-            <TableHead>Modelo</TableHead>
             <TableHead>Precio</TableHead>
             <TableHead>Stock</TableHead>
             <TableHead>Acciones</TableHead>
@@ -423,9 +385,7 @@ export function ProductManager({
               <TableCell>{producto.nombre}</TableCell>
               <TableCell>{producto.categoria.nombre}</TableCell>
               <TableCell>{producto.marca.nombre}</TableCell>
-              <TableCell>
-                {producto.modelo ? producto.modelo.nombre : ""}
-              </TableCell>
+       
               <TableCell>${producto.precio_por_unidad}</TableCell>
               <TableCell>
                 {producto.stocks.length > 0
@@ -569,42 +529,7 @@ export function ProductManager({
                 </Select>
               </div>
 
-              {/* MODELO */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-modelo" className="text-right">
-                  Modelo
-                </Label>
-                <Select
-                  onValueChange={(value) =>
-                    setEditingProducto({
-                      ...editingProducto,
-                      modelo: {
-                        id: parseInt(value),
-                        nombre:
-                          modelos.find((m) => m.id === parseInt(value))
-                            ?.nombre || "",
-                        descripcion:
-                          modelos.find((m) => m.id === parseInt(value))
-                            ?.descripcion || "",
-                        marca: modelos.find((m) => m.id === parseInt(value))
-                          ?.marca || { id: 0, nombre: "", descripcion: "" },
-                      },
-                    })
-                  }
-                  value={editingProducto.modelo?.id?.toString() || ""}
-                >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Seleccionar modelo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {modelos.map((modelo) => (
-                      <SelectItem key={modelo.id} value={modelo.id.toString()}>
-                        {modelo.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            
 
               {/* PRECIO */}
               <div className="grid grid-cols-4 items-center gap-4">

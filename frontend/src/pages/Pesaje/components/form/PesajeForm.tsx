@@ -17,20 +17,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getClientsNormal, getDrivers } from "@/api/clients";
 import { Conductor } from "@/types/conductor";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import DialogConfirmation from "@/components/DialogConfirmation";
 
 interface PesajeFormProps {
   onSubmit: (data: PesajeProps) => void;
 }
 
 export function PesajeForm({ onSubmit }: PesajeFormProps) {
+
+  const getFormattedTime = (date: Date) => {
+    return date.toTimeString().slice(0, 5); // Devuelve HH:mm
+  };
+  
+  const now = new Date();
+  const fiveMinutesBefore = new Date(now.getTime() - 5 * 60 * 1000); // Resta 5 minutos
+  
+
+  
   const form = useForm<PesajeProps>({
     resolver: zodResolver(pesajeSchema),
     defaultValues: {
@@ -40,9 +43,9 @@ export function PesajeForm({ onSubmit }: PesajeFormProps) {
       cliente: 0,
       conductor: 0,
       patente: "",
-      fecha: "",
-      hora_ingreso: "",
-      hora_salida: "",
+      fecha: new Date().toISOString().split("T")[0],
+      hora_ingreso: getFormattedTime(fiveMinutesBefore),
+      hora_salida: getFormattedTime(now),
       peso_1: "",
       peso_2: "",
     },
@@ -68,11 +71,9 @@ export function PesajeForm({ onSubmit }: PesajeFormProps) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
-  console.log("los conductores son", drivers);
 
   const handleDialogConfirm = () => {
     if (formData) {
@@ -110,7 +111,9 @@ export function PesajeForm({ onSubmit }: PesajeFormProps) {
               <VehicleSection
                 form={form}
                 drivers={drivers}
-                selectedClientId={selectedClient ? String(selectedClient.id) : null} // Pasamos el id del cliente seleccionado
+                selectedClientId={
+                  selectedClient ? String(selectedClient.id) : null
+                } // Pasamos el id del cliente seleccionado
               />
               <DateTimeSection form={form} />
               <WeightsSection form={form} />
@@ -127,33 +130,29 @@ export function PesajeForm({ onSubmit }: PesajeFormProps) {
         </form>
       </Form>
 
-      {/* Diálogo de confirmación */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmar Ticket de Pesaje</DialogTitle>
-            <DialogDescription>
-              ¿Está seguro de que desea registrar este ticket?
-            </DialogDescription>
-          </DialogHeader>
-          {formData && (
-            <div className="py-4">
-              <p><strong>Código Producto:</strong> {formData.codigo_producto}</p>
-              <p><strong>Cliente:</strong> {formData.cliente}</p>
-              <p><strong>Patente:</strong> {formData.patente}</p>
-              <p><strong>Fecha:</strong> {formData.fecha}</p>
-              <p><strong>Peso 1:</strong> {formData.peso_1} kg</p>
-              <p><strong>Peso 2:</strong> {formData.peso_2} kg</p>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={handleDialogCancel}>
-              Cancelar
-            </Button>
-            <Button onClick={handleDialogConfirm}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DialogConfirmation
+        list={
+          [
+            { key: "codigo_producto", header: "Código de Producto" },
+            { key: "dispatch_guide", header: "Guía de Despacho" },
+            { key: "tipo_camion", header: "Tipo de Camión" },
+            { key: "cliente", header: "Cliente" },
+            { key: "conductor", header: "Conductor" },
+            { key: "patente", header: "Patente" },
+            { key: "fecha", header: "Fecha" },
+            { key: "hora_ingreso", header: "Hora de Ingreso" },
+            { key: "hora_salida", header: "Hora de Salida" },
+            { key: "peso_1", header: "Peso 1" },
+            { key: "peso_2", header: "Peso 2" },
+          ]
+        }
+        formData={formData}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        handleDialogCancel={handleDialogCancel}
+        handleDialogConfirm={handleDialogConfirm}
+      />
+
     </>
   );
 }

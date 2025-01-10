@@ -11,16 +11,6 @@ export interface Producto {
     nombre: string;
     descripcion: string | null;
   };
-  modelo: {
-    id: number;
-    nombre: string;
-    descripcion: string;
-    marca: {
-      id: number;
-      nombre: string;
-      descripcion: string | null;
-    };
-  } | null;
   precio_por_unidad: string; // Viene como string en tu JSON
   stocks: {
     id: number;
@@ -44,22 +34,7 @@ export interface Marca {
   descripcion: string;
 }
 
-export interface Modelo {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  marca: {
-    id: number;
-    nombre: string;
-    descripcion: string;
-  }
-}
 
-export interface ModeloFormProps{
-  modelos: Modelo[];
-  marcas: Marca[];
-  setModelos: React.Dispatch<React.SetStateAction<Modelo[]>>;
-}
 
 export interface CategoryFormProps{
   categorias: Categoria[];
@@ -70,6 +45,5 @@ export interface ProductFormProps{
   productos: Producto[];
   categorias: Categoria[];
   marcas: Marca[];
-  modelos: Modelo[];
   setProductos: React.Dispatch<React.SetStateAction<Producto[]>>;
 }
