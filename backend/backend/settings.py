@@ -154,8 +154,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'puntoecowebapp.s3-website-us-east-1.amazonaws.com', '54.87.57.69']
                
-CORS_ALLOW_ALL_ORIGINS = True
-
+CORS_ALLOWED_ORIGINS = [
+    "http://puntoecowebapp.s3-website-us-east-1.amazonaws.com",
+    "http://54.87.57.69",
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
