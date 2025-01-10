@@ -1,7 +1,10 @@
 import { UserData, LoginResponse } from '@/types/user';
 
+const url = 'http://54.87.57.69:8000/users/';
+
+
 export async function loginUser(loginData: UserData): Promise<LoginResponse> {
-  const response = await fetch('http://localhost:8000/users/login/', {
+  const response = await fetch(`${url}login/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
