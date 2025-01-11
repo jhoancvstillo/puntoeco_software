@@ -10,24 +10,50 @@ export type EstadoFinanciero = {
     egresos: EntradaFinanciera[]
   }
   
+  // export interface Transaction {
+  //   id: number;
+  //   date_time: string;
+  //   transaction_type: 'Expense' | 'Income';
+  //   classification: {
+  //     id: number;
+  //     name: string;
+  //     description: string | null;
+  //   };
+  //   subcategory: {
+  //     id: number;
+  //     classification: number;
+  //     name: string;
+  //     description: string | null;
+  //   };
+  //   comment: string;
+  //   price: string;
+  // }
+
   export interface Transaction {
+
     id: number;
+  
     date_time: string;
-    transaction_type: 'Expense' | 'Income';
-    classification: {
-      id: number;
-      name: string;
-      description: string | null;
-    };
-    subcategory: {
-      id: number;
-      classification: number;
-      name: string;
-      description: string | null;
-    };
+  
+    date: string; // Add this line
+  
+    transaction_type: string;
+  
+    classification: Classification;
+  
+    subcategory: Subcategory;
+  
     comment: string;
+  
     price: string;
+
+    amount: number;
+
+    description: string;
+    
+  
   }
+  
   
   export interface Classification {
     id: number;
@@ -42,3 +68,14 @@ export type EstadoFinanciero = {
     classification: number;
   }
   
+
+
+export interface TransactionTableProps {
+  id: number;
+  description: string;
+  amount: number;
+  classification: string;
+  subcategory: string;
+  date: string;
+}
+

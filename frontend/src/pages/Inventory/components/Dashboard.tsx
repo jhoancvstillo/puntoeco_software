@@ -7,6 +7,13 @@ import { AlertCircle, DollarSign, MapPin } from 'lucide-react'
 import { getProductos } from '@/api/productos'
 import { Producto } from '../types/inventory'
 
+// funcion para formatear en formato de miles 
+// 1234567,50 -> 1.234.567,50
+
+function formatNumber(number: number): string {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
 export default function DashboardInventario() {
   const [productosBajoStock, setProductosBajoStock] = useState(0)
   const [valorTotal, setValorTotal] = useState(0)
@@ -86,7 +93,7 @@ export default function DashboardInventario() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${valorTotal.toFixed(2)}</div>
+            <div className="text-2xl font-bold">${formatNumber(parseFloat(valorTotal.toFixed(2)))}</div>
             <p className="text-xs text-muted-foreground">Valor total de todos los productos</p>
           </CardContent>
         </Card>

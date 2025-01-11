@@ -1,15 +1,14 @@
 
 import axios from 'axios';
 import { CombustibleSinTotal } from '@/types/combustible'; // Ajusta la ruta al tipo que uses
-
-const API_URL = 'http://localhost:8000/combustible/';
+import { API_URL } from '.';
 
 // Obtener una lista de combustibles
 export const getCombustibles = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No token found');
   try {
-    const response = await axios.get(`${API_URL}combustible/`, {
+    const response = await axios.get(`${API_URL}combustible/combustible/`, {
       headers: {
         Authorization: `Token ${token}`,
         Accept: '*/*',
@@ -29,7 +28,7 @@ export const getCombustibleById = async (id: number) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No token found');
   try {
-    const response = await axios.get(`${API_URL}combustible${id}/`, {
+    const response = await axios.get(`${API_URL}combustible/combustible${id}/`, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -46,7 +45,7 @@ export const createCombustible = async (data: CombustibleSinTotal) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No token found');
   try {
-    const response = await axios.post(`${API_URL}combustible/`, data, {
+    const response = await axios.post(`${API_URL}combustible/combustible/`, data, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -63,7 +62,7 @@ export const deleteCombustible = async (id: number) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No token found');
   try {
-    const response = await axios.delete(`${API_URL}combustible/${id}/`, {
+    const response = await axios.delete(`${API_URL}combustible/combustible/${id}/`, {
       headers: {
         Authorization: `Token ${token}`,
       },

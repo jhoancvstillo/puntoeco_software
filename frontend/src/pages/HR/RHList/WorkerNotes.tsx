@@ -1,14 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { WorkerDetailSection } from './WorkerDetailSection';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import React, { useEffect, useState } from "react";
+import { WorkerDetailSection } from "./WorkerDetailSection";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { getNotes, editNote, deleteNote, createNote } from "@/api/trabajadores";
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, Plus } from "lucide-react";
 
 interface Note {
   id: number;
@@ -48,7 +70,7 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
       }));
       setNotes(formattedNotes);
     } catch (err: any) {
-      setError(err.message || 'Ocurrió un error al obtener las notas.');
+      setError(err.message || "Ocurrió un error al obtener las notas.");
     } finally {
       setLoading(false);
     }
@@ -73,9 +95,9 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const noteData = {
-      date: formData.get('date') as string,
-      rating: Number(formData.get('rating')),
-      observation: formData.get('observations') as string,
+      date: formData.get("date") as string,
+      rating: Number(formData.get("rating")),
+      observation: formData.get("observations") as string,
       workerId,
     };
 
@@ -88,7 +110,7 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
       fetchNotes();
       setIsDialogOpen(false);
     } catch (err: any) {
-      setError(err.message || 'Ocurrió un error al guardar la nota.');
+      setError(err.message || "Ocurrió un error al guardar la nota.");
     }
   };
 
@@ -98,7 +120,7 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
         await deleteNote(noteToDelete);
         fetchNotes();
       } catch (err: any) {
-        setError(err.message || 'Ocurrió un error al eliminar la nota.');
+        setError(err.message || "Ocurrió un error al eliminar la nota.");
       }
     }
     setIsAlertDialogOpen(false);
@@ -120,7 +142,9 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
         </Button>
       </div>
       {notes.length === 0 ? (
-        <p className="text-muted-foreground">No hay notas disponibles para este trabajador.</p>
+        <p className="text-muted-foreground">
+          No hay notas disponibles para este trabajador.
+        </p>
       ) : (
         <Table>
           <TableHeader>
@@ -139,10 +163,18 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
                 <TableCell>{note.observations}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="icon" onClick={() => handleEditNote(note)}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleEditNote(note)}
+                    >
                       <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="icon" onClick={() => handleDeleteNote(note.id)}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleDeleteNote(note.id)}
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -156,7 +188,9 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{currentNote ? 'Editar Nota' : 'Agregar Nota'}</DialogTitle>
+            <DialogTitle>
+              {currentNote ? "Editar Nota" : "Agregar Nota"}
+            </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSaveNote}>
             <div className="grid gap-4 py-4">
@@ -168,7 +202,9 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
                   id="date"
                   name="date"
                   type="date"
-                  defaultValue={currentNote?.date || new Date().toISOString().split('T')[0]}
+                  defaultValue={
+                    currentNote?.date || new Date().toISOString().split("T")[0]
+                  }
                   className="col-span-3"
                 />
               </div>
@@ -193,7 +229,7 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
                 <Textarea
                   id="observations"
                   name="observations"
-                  defaultValue={currentNote?.observations || ''}
+                  defaultValue={currentNote?.observations || ""}
                   className="col-span-3"
                 />
               </div>
@@ -210,16 +246,18 @@ export function WorkerNotes({ workerId }: WorkerNotesProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción no se puede deshacer. Esto eliminará permanentemente la nota.
+              Esta acción no se puede deshacer. Esto eliminará permanentemente
+              la nota.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDeleteNote}>Eliminar</AlertDialogAction>
+            <AlertDialogAction onClick={confirmDeleteNote}>
+              Eliminar
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </WorkerDetailSection>
   );
 }
-

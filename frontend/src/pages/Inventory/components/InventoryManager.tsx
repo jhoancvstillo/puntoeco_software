@@ -5,8 +5,7 @@ import { Producto, Categoria, Marca } from "../types/inventory";
 import { ProductManager } from './ProductManager';
 import { CategoryManager } from './CategoryManager';
 import { BrandManager } from './BrandManager';
-import InventoryFilters from "./InventoryFilters";
-import InventoryTable from "./InventoryTable";
+import GenericTable from "@/components/GenericTable";
 
 export function InventoryManager() {
   const [productos, setProductos] = useState<Producto[]>([
@@ -36,8 +35,6 @@ export function InventoryManager() {
   ]);
   
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,24 +53,8 @@ export function InventoryManager() {
     };
     fetchData();
   }, []);
-  console.log(productos);
-  const filteredProductos = productos.filter((p) => {
-    // Convierte el término de búsqueda a minúsculas para una comparación insensible a mayúsculas
-    const lowerSearchTerm = searchTerm.toLowerCase();
 
-    // Verifica si el nombre del producto incluye el término de búsqueda
-    const matchesName = p.nombre.toLowerCase().includes(lowerSearchTerm);
 
-    // Verifica si el nombre de la categoría incluye el término de búsqueda
-    const matchesCatName = p.categoria.nombre.toLowerCase().includes(lowerSearchTerm);
-
-    // Verifica si se ha seleccionado una categoría específica y coincide con la del producto
-    const matchesSelectedCat = !selectedCategory || p.categoria.id === selectedCategory;
-
-    // El producto se incluye si coincide con el término de búsqueda en nombre o categoría
-    // Y si coincide con la categoría seleccionada (o no hay categoría seleccionada)
-    return (matchesName || matchesCatName) && matchesSelectedCat;
-});
   return (
     <div className="container mx-auto p-4">
       <Tabs defaultValue="tabla" className="w-full">
@@ -99,14 +80,31 @@ export function InventoryManager() {
         </TabsContent>
         <TabsContent value="tabla">
           <div className="space-y-4">
-            <InventoryFilters
-              searchTerm={searchTerm}
-              onSearchTermChange={setSearchTerm}
-              selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
-              categories={categorias}
+      
+            <GenericTable  
+            initialRecords={
+              productos.map((p) => ({
+                ...p,
+                marca: p.marca.nombre,
+                categoria: p.categoria.nombre,
+                stocks: p.stocks.reduce((acc, stock) => acc + stock.cantidad, 0),
+                ubicacion: p.stocks.map((stock) => stock.ubicacion).join(", "),
+              }))
+            }
+            columns={[
+              { key: "nombre", header: "Nombre" },
+              { key: "categoria", header: "Categoría" },
+              { key: "marca", header: "Marca" },
+              { key: "precio_por_unidad", header: "Precio por Unidad" },
+              { key: "stocks", header: "Stocks" },
+              { key: "ubicacion", header: "Ubicación" },
+              
+            ]}
+            title="Tabla General"
+            description="Descripción de la tabla general"
+            onDelete={() => {}
+            }
             />
-            <InventoryTable productos={filteredProductos} />
           </div>
         </TabsContent>
       </Tabs>

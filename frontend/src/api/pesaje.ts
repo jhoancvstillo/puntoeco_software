@@ -1,107 +1,13 @@
-// import { PesajeProps } from '@/pages/Pesaje/components/form/schema';
-// import axios from 'axios';
-
-// const BASE_URL = 'http://localhost:8000/pesajes';
-
-// // Axios instance
-// const api = axios.create({
-//   baseURL: BASE_URL,
-// });
-
-// // CRUD operations for Certificados
-// export const certificadosAPI = {
-//   getAll: async () => {
-//     const response = await api.get('/certificados/');
-//     return response.data;
-//   },
-//   getById: async (id: number) => {
-//     const response = await api.get(`/certificados/${id}/`);
-//     return response.data;
-//   },
-//   create: async (data: PesajeProps) => {
-//     const response = await api.post('/certificados/', data);
-//     return response.data;
-//   },
-//   update: async (id: number, data:PesajeProps) => {
-//     const response = await api.put(`/certificados/${id}/`, data);
-//     return response.data;
-//   },
-//   delete: async (id: number) => {
-//     const response = await api.delete(`/certificados/${id}/`);
-//     return response.data;
-//   },
-// };
-
-// // CRUD operations for Vehiculos
-// export const vehiculosAPI = {
-//   getAll: async () => {
-//     const response = await api.get('/vehiculos/');
-//     return response.data;
-//   },
-//   getById: async (id: number) => {
-//     const response = await api.get(`/vehiculos/${id}/`);
-//     return response.data;
-//   },
-//   create: async (data: {
-//     patente: string;
-//     tipo_camion: string;
-//     conductor_id: number;
-//   }) => {
-//     const response = await api.post('/vehiculos/', data);
-//     return response.data;
-//   },
-//   update: async (id: number, data: {
-//     patente?: string;
-//     tipo_camion?: string;
-//     conductor_id?: number;
-//   }) => {
-//     const response = await api.put(`/vehiculos/${id}/`, data);
-//     return response.data;
-//   },
-//   delete: async (id: number) => {
-//     const response = await api.delete(`/vehiculos/${id}/`);
-//     return response.data;
-//   },
-// };
-
-// // CRUD operations for Conductores
-// export const conductoresAPI = {
-//   getAll: async () => {
-//     const response = await api.get('/conductores/');
-//     return response.data;
-//   },
-//   getById: async (id: number) => {
-//     const response = await api.get(`/conductores/${id}/`);
-//     return response.data;
-//   },
-//   create: async (data: {
-//     nombre: string;
-//     rut: string;
-//   }) => {
-//     const response = await api.post('/conductores/', data);
-//     return response.data;
-//   },
-//   update: async (id: number, data: {
-//     nombre?: string;
-//     rut?: string;
-//   }) => {
-//     const response = await api.put(`/conductores/${id}/`, data);
-//     return response.data;
-//   },
-//   delete: async (id: number) => {
-//     const response = await api.delete(`/conductores/${id}/`);
-//     return response.data;
-//   },
-// };
 
 import { PesajeProps } from '@/pages/Pesaje/components/form/schema';
 import axios from 'axios';
+import { API_URL } from '.';
 
-const BASE_URL = 'http://localhost:8000/pesajes';
+// const BASE_URL = 'http://localhost:8000/pesajes';
 
 // Crear una instancia de Axios con configuración base
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_URL,
 });
 
 // Función para obtener encabezados reutilizables
@@ -114,31 +20,31 @@ const getHeaders = () => ({
 // CRUD operations for Certificados
 export const certificadosAPI = {
   getAll: async () => {
-    const response = await api.get('/certificados/', {
+    const response = await api.get('pesajes/certificados/', {
       headers: getHeaders(),
     });
     return response.data;
   },
   getById: async (id: number) => {
-    const response = await api.get(`/certificados/${id}/`, {
+    const response = await api.get(`pesajes/certificados/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;
   },
   create: async (data: PesajeProps) => {
-    const response = await api.post('/certificados/', data, {
+    const response = await api.post('pesajes/certificados/', data, {
       headers: getHeaders(),
     });
     return response.data;
   },
   update: async (id: number, data: PesajeProps) => {
-    const response = await api.put(`/certificados/${id}/`, data, {
+    const response = await api.put(`pesajes/certificados/${id}/`, data, {
       headers: getHeaders(),
     });
     return response.data;
   },
   delete: async (id: number) => {
-    const response = await api.delete(`/certificados/${id}/`, {
+    const response = await api.delete(`pesajes/certificados/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;
@@ -148,13 +54,13 @@ export const certificadosAPI = {
 // CRUD operations for Vehiculos
 export const vehiculosAPI = {
   getAll: async () => {
-    const response = await api.get('/vehiculos/', {
+    const response = await api.get('pesajes/vehiculos/', {
       headers: getHeaders(),
     });
     return response.data;
   },
   getById: async (id: number) => {
-    const response = await api.get(`/vehiculos/${id}/`, {
+    const response = await api.get(`pesajes/vehiculos/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;
@@ -164,7 +70,7 @@ export const vehiculosAPI = {
     tipo_camion: string;
     conductor_id: number;
   }) => {
-    const response = await api.post('/vehiculos/', data, {
+    const response = await api.post('pesajes/vehiculos/', data, {
       headers: getHeaders(),
     });
     return response.data;
@@ -174,13 +80,13 @@ export const vehiculosAPI = {
     tipo_camion?: string;
     conductor_id?: number;
   }) => {
-    const response = await api.put(`/vehiculos/${id}/`, data, {
+    const response = await api.put(`pesajes/vehiculos/${id}/`, data, {
       headers: getHeaders(),
     });
     return response.data;
   },
   delete: async (id: number) => {
-    const response = await api.delete(`/vehiculos/${id}/`, {
+    const response = await api.delete(`pesajes/vehiculos/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;
@@ -190,13 +96,13 @@ export const vehiculosAPI = {
 // CRUD operations for Conductores
 export const conductoresAPI = {
   getAll: async () => {
-    const response = await api.get('/conductores/', {
+    const response = await api.get('pesajes/conductores/', {
       headers: getHeaders(),
     });
     return response.data;
   },
   getById: async (id: number) => {
-    const response = await api.get(`/conductores/${id}/`, {
+    const response = await api.get(`pesajes/conductores/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;
@@ -205,7 +111,7 @@ export const conductoresAPI = {
     nombre: string;
     rut: string;
   }) => {
-    const response = await api.post('/conductores/', data, {
+    const response = await api.post('pesajes/conductores/', data, {
       headers: getHeaders(),
     });
     return response.data;
@@ -214,13 +120,13 @@ export const conductoresAPI = {
     nombre?: string;
     rut?: string;
   }) => {
-    const response = await api.put(`/conductores/${id}/`, data, {
+    const response = await api.put(`pesajes/conductores/${id}/`, data, {
       headers: getHeaders(),
     });
     return response.data;
   },
   delete: async (id: number) => {
-    const response = await api.delete(`/conductores/${id}/`, {
+    const response = await api.delete(`pesajes/conductores/${id}/`, {
       headers: getHeaders(),
     });
     return response.data;

@@ -11,7 +11,6 @@ import { es } from 'date-fns/locale';
 interface Document {
   id: number;
   name: string;
-  type: string;
   upload_date: string;
   file_url: string;
 }
@@ -93,7 +92,6 @@ export function WorkerDocuments({ workerId }: WorkerDocumentsProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Nombre</TableHead>
-              <TableHead>Tipo</TableHead>
               <TableHead>Fecha de subida</TableHead>
               <TableHead>Acciones</TableHead>
             </TableRow>
@@ -102,7 +100,6 @@ export function WorkerDocuments({ workerId }: WorkerDocumentsProps) {
             {documents.map((doc) => (
               <TableRow key={doc.id}>
                 <TableCell>{doc.name}</TableCell>
-                <TableCell>{doc.type}</TableCell>
                 <TableCell>{format(new Date(doc.upload_date), 'dd MMM yyyy', { locale: es })}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">

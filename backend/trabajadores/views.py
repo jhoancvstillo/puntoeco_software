@@ -11,6 +11,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 
+
 # Trabajador ViewSet
 class TrabajadorViewSet(ModelViewSet):
     queryset = Trabajador.objects.all()
@@ -20,6 +21,16 @@ class TrabajadorViewSet(ModelViewSet):
 class AsistenciaViewSet(ModelViewSet):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
+
+    @action(detail=False, methods=['get'], url_path='worker/(?P<worker_id>[^/.]+)')
+    def get_worker_attendance(self, request, worker_id=None):
+        """
+        Retorna todas las asistencias de un trabajador específico.
+        """
+        asistencias = self.queryset.filter(worker_id=worker_id)
+        serializer = self.get_serializer(asistencias, many=True)
+        return Response(serializer.data)
+
 
 # PagoBeneficio ViewSet
 class PagoBeneficioViewSet(ModelViewSet):

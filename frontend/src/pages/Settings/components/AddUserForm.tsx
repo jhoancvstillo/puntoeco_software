@@ -51,7 +51,7 @@ export function AddUserForm({ onSubmit }: AddUserFormProps) {
             <FormItem>
               <FormLabel>Nombre de usuario</FormLabel>
               <FormControl>
-                <Input placeholder="newuser" {...field} />
+                <Input placeholder="Nombre del nuevo usuario" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,7 +79,7 @@ export function AddUserForm({ onSubmit }: AddUserFormProps) {
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="newuser@example.com"
+                  placeholder="usuario@ejemplo.com"
                   {...field}
                 />
               </FormControl>

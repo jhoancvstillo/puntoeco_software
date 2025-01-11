@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Cotizacion } from '@/types/cotizacion'; // Ajusta la ruta al tipo que uses
 import { cotizacionFormProps } from '@/pages/Cotizacion/components/schema';
+import { API_URL } from '.';
 
-const API_URL = 'http://localhost:8000/cotizaciones/';
-
+// const API_URL = 'http://localhost:8000/cotizaciones/';
 // Función para obtener encabezados reutilizables
 const getHeaders = () => ({
   'Authorization': `Token ${localStorage.getItem('token')}`,
@@ -14,7 +14,7 @@ const getHeaders = () => ({
 // Obtener una lista de cotizaciones con paginación y filtro
 export const getCotizaciones = async () => {
   try {
-    const response = await axios.get(`${API_URL}cotizaciones/`, { headers: getHeaders() });
+    const response = await axios.get(`${API_URL}cotizaciones/cotizaciones/`, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error fetching cotizaciones:', error);
@@ -25,7 +25,7 @@ export const getCotizaciones = async () => {
 // Obtener una cotización específica por su ID
 export const getCotizacionById = async (id: number) => {
   try {
-    const response = await axios.get(`${API_URL}cotizaciones/${id}/`, { headers: getHeaders() });
+    const response = await axios.get(`${API_URL}cotizaciones/cotizaciones/${id}/`, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error fetching cotizacion by ID:', error);
@@ -36,7 +36,7 @@ export const getCotizacionById = async (id: number) => {
 // Crear una nueva cotización
 export const createCotizacion = async (data: cotizacionFormProps) => {
   try {
-    const response = await axios.post(`${API_URL}cotizaciones/`, data, { headers: getHeaders() });
+    const response = await axios.post(`${API_URL}cotizaciones/cotizaciones/`, data, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error creating cotizacion:', error);
@@ -47,7 +47,7 @@ export const createCotizacion = async (data: cotizacionFormProps) => {
 // Actualizar una cotización existente
 export const updateCotizacion = async (id: number, data: Cotizacion) => {
   try {
-    const response = await axios.put(`${API_URL}cotizaciones/${id}/`, data, { headers: getHeaders() });
+    const response = await axios.put(`${API_URL}cotizaciones/cotizaciones/${id}/`, data, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error updating cotizacion:', error);
@@ -58,7 +58,7 @@ export const updateCotizacion = async (id: number, data: Cotizacion) => {
 // Eliminar una cotización
 export const deleteCotizacion = async (id: number) => {
   try {
-    const response = await axios.delete(`${API_URL}cotizaciones/${id}/`, { headers: getHeaders() });
+    const response = await axios.delete(`${API_URL}cotizaciones/cotizaciones/${id}/`, { headers: getHeaders() });
     console.log('Deleted cotizacion:', response.data);
     return response.data;
   } catch (error) {
@@ -75,7 +75,7 @@ export const getCotizacionesByClient = async (
 ) => {
   try {
     const response = await axios.get(
-      `${API_URL}cotizaciones/?client_id=${clientId}&page=${page}&page_size=${pageSize}`,
+      `${API_URL}cotizaciones/cotizaciones/?client_id=${clientId}&page=${page}&page_size=${pageSize}`,
       { headers: getHeaders() }
     );
     return response.data;

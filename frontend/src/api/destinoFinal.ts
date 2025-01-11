@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { API_URL } from '.';
 
-const API_URL = 'http://localhost:8000/destinofinal/'; // Cambia esto según la configuración de tu API
-
+// const API_URL = 'http://localhost:8000/destinofinal/'; // Cambia esto según la configuración de tu API
 // Función para obtener encabezados reutilizables
 const getHeaders = () => ({
     'Authorization': `Token ${localStorage.getItem('token')}`,
@@ -12,7 +12,7 @@ const getHeaders = () => ({
 // Operaciones para Certificados
 export const getCertificados = async () => {
     try {
-        const response = await axios.get(`${API_URL}certificados/`, { headers: getHeaders() });
+        const response = await axios.get(`${API_URL}destinofinal/certificados/`, { headers: getHeaders() });
         console.log('Certificados from api:', response.data);
         return response.data;
     } catch (error) {
@@ -24,7 +24,7 @@ export const getCertificados = async () => {
 export const createCertificado = async (data: any) => {
     try {
         console.log('Creating certificado with data:', data);
-        const response = await axios.post(`${API_URL}certificados/`, data, { headers: getHeaders() });
+        const response = await axios.post(`${API_URL}destinofinal/certificados/`, data, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error creating certificado:', error);
@@ -34,7 +34,7 @@ export const createCertificado = async (data: any) => {
 
 export const deleteCertificado = async (id: number) => {
     try {
-        const response = await axios.delete(`${API_URL}certificados/${id}/`, { headers: getHeaders() });
+        const response = await axios.delete(`${API_URL}destinofinal/certificados/${id}/`, { headers: getHeaders() });
         console.log('Deleted certificado:', response.data);
         return response.data;
     } catch (error) {
@@ -48,7 +48,7 @@ export const deleteCertificado = async (id: number) => {
 // Plásticos
 export const getPlasticos = async () => {
     try {
-        const response = await axios.get(`${API_URL}plastico-detalle/`, { headers: getHeaders() });
+        const response = await axios.get(`${API_URL}destinofinal/plastico-detalle/`, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error fetching plasticos:', error);
@@ -59,7 +59,7 @@ export const getPlasticos = async () => {
 export const createPlastico = async (data: { certificado: number, clasificacion_resinas: string, cantidad_kg: number }) => {
     console.log("creando el plastico con: ", data)
     try {
-        const response = await axios.post(`${API_URL}plastico-detalle/`, data, { headers: getHeaders() });
+        const response = await axios.post(`${API_URL}destinofinal/plastico-detalle/`, data, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error creating plastico:', error);
@@ -69,7 +69,7 @@ export const createPlastico = async (data: { certificado: number, clasificacion_
 
 export const deletePlastico = async (id: number) => {
     try {
-        const response = await axios.delete(`${API_URL}plastico-detalle/${id}/`, { headers: getHeaders() });
+        const response = await axios.delete(`${API_URL}destinofinal/plastico-detalle/${id}/`, { headers: getHeaders() });
         console.log('Deleted plastico:', response.data);
         return response.data;
     } catch (error) {
@@ -81,7 +81,7 @@ export const deletePlastico = async (id: number) => {
 // Fitosanitarios
 export const getFitosanitarios = async () => {
     try {
-        const response = await axios.get(`${API_URL}fitosanitario-detalle/`, { headers: getHeaders() });
+        const response = await axios.get(`${API_URL}destinofinal/fitosanitario-detalle/`, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error fetching fitosanitarios:', error);
@@ -91,7 +91,7 @@ export const getFitosanitarios = async () => {
 
 export const createFitosanitario = async (data: any) => {
     try {
-        const response = await axios.post(`${API_URL}fitosanitario-detalle/`, data, { headers: getHeaders() });
+        const response = await axios.post(`${API_URL}destinofinal/fitosanitario-detalle/`, data, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error creating fitosanitario:', error);
@@ -101,7 +101,7 @@ export const createFitosanitario = async (data: any) => {
 
 export const deleteFitosanitario = async (id: number) => {
     try {
-        const response = await axios.delete(`${API_URL}fitosanitario-detalle/${id}/`, { headers: getHeaders() });
+        const response = await axios.delete(`${API_URL}destinofinal/fitosanitario-detalle/${id}/`, { headers: getHeaders() });
         console.log('Deleted fitosanitario:', response.data);
         return response.data;
     } catch (error) {
@@ -113,7 +113,7 @@ export const deleteFitosanitario = async (id: number) => {
 // Materiales (Metales y Fibras)
 export const getMateriales = async () => {
     try {
-        const response = await axios.get(`${API_URL}material-detalle/`, { headers: getHeaders() });
+        const response = await axios.get(`${API_URL}destinofinal/material-detalle/`, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error fetching materiales:', error);
@@ -123,7 +123,7 @@ export const getMateriales = async () => {
 
 export const createMaterial = async (data: {certificado: number, material:string, cantidad_kg:number}) => {
     try {
-        const response = await axios.post(`${API_URL}material-detalle/`, data, { headers: getHeaders() });
+        const response = await axios.post(`${API_URL}destinofinal/material-detalle/`, data, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error creating material:', error);
@@ -133,7 +133,7 @@ export const createMaterial = async (data: {certificado: number, material:string
 
 export const deleteMaterial = async (id: number) => {
     try {
-        const response = await axios.delete(`${API_URL}material-detalle/${id}/`, { headers: getHeaders() });
+        const response = await axios.delete(`${API_URL}destinofinal/material-detalle/${id}/`, { headers: getHeaders() });
         return response.data;
     } catch (error) {
         console.error('Error deleting material:', error);
@@ -149,7 +149,7 @@ interface CertificadoRequest {
 
 export const descargarCertificadoDF = async (data: CertificadoRequest): Promise<void> => {
     try {
-        const response = await axios.post(`${API_URL}certificados/generate_zip/`, data, {
+        const response = await axios.post(`${API_URL}destinofinal/certificados/generate_zip/`, data, {
             headers: getHeaders(),
             responseType: 'blob', // Configurar para manejar binarios
         });
@@ -174,7 +174,7 @@ export const descargarCertificadoDF = async (data: CertificadoRequest): Promise<
 
 export const generate_pdf = async (id: number): Promise<void> => {
     try {
-        await axios.post(`${API_URL}certificados/${id}/generate_pdf/`, {}, {
+        await axios.post(`${API_URL}destinofinal/certificados/${id}/generate_pdf/`, {}, {
             headers: getHeaders(),
             responseType: 'blob', // Configurar para manejar binarios
         });

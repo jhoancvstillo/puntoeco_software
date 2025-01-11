@@ -1,10 +1,9 @@
 // clients.ts
 import axios from 'axios';
 import { Cliente } from '@/types/client'; // Ajusta la ruta al tipo que uses
+import { API_URL } from '.';
 
 // Ajusta esta URL según tu configuración
-const API_URL = 'http://localhost:8000/';
-
 
 axios.interceptors.request.use((config) => {
   console.log('Request Config:', config);

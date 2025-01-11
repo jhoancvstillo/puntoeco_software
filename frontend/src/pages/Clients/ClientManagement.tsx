@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ClientFormDialog } from './ClientFormDialog';
-import { ClienteTable } from './ClientTable';
-import { ClienteDetailsDialog } from './ClienteDetailsDialog';
+import { ClientFormDialog } from './components/ClientFormDialog';
+import { ClienteTable } from './components/ClientTable';
+import { ClienteDetailsDialog } from './components/ClienteDetailsDialog';
 import { Cliente } from '@/types/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -26,9 +26,7 @@ export default function ClientManagement() {
   const fetchClientes = async () => {
     setIsLoading(true);
     try {
-
       const data = await getClients(currentPage, itemsPerPage, filter);
-      console.log(data)
       setClientes(data.results);
       setTotalPages(Math.ceil(data.count / itemsPerPage));
     } catch (error) {
@@ -62,12 +60,6 @@ export default function ClientManagement() {
         // Update cliente
         await updateClient(clienteSeleccionado.id, data);
       } else {
-        // // Create new cliente
-        // await fetch('http://localhost:8000/clients/clients/', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(data),
-        // });
         await createClient(data);
       }
       fetchClientes();

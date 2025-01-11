@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_URL } from '.';
 
-const API_URL = 'http://localhost:8000/vertedero/vertedero/';
+// const API_URL = 'http://localhost/vertedero/vertedero/';
 
 // Crear una instancia de Axios con configuración base
 const api = axios.create({
@@ -17,7 +18,7 @@ const getHeaders = () => ({
 // Obtener todos los registros de vertedero
 export const getVertederoRecords = async () => {
   try {
-    const response = await api.get('', { headers: getHeaders() });
+    const response = await api.get('vertedero/vertedero/', { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error fetching vertedero records:', error);
@@ -28,8 +29,7 @@ export const getVertederoRecords = async () => {
 // Crear un nuevo registro en vertedero
 export const createVertederoRecord = async (data: { date: string; weight_kg: number; value: number }) => {
   try {
-    console.log('Creating vertedero record with data:', data);
-    const response = await api.post('', data, { headers: getHeaders() });
+    const response = await api.post('vertedero/vertedero', data, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error creating vertedero record:', error);
@@ -40,8 +40,7 @@ export const createVertederoRecord = async (data: { date: string; weight_kg: num
 // Eliminar un registro de vertedero
 export const deleteVertederoRecord = async (id: number) => {
   try {
-    const response = await api.delete(`${id}/`, { headers: getHeaders() });
-    console.log('Deleted vertedero record:', response.data);
+    const response = await api.delete(`vertedero/vertedero/${id}/`, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error deleting vertedero record:', error);
@@ -52,8 +51,7 @@ export const deleteVertederoRecord = async (id: number) => {
 // Actualizar un registro de vertedero
 export const updateVertederoRecord = async (id: number, data: { date: string; weight_kg: number; value: number }) => {
   try {
-    console.log('Updating vertedero record with data:', data);
-    const response = await api.put(`${id}/`, data, { headers: getHeaders() });
+    const response = await api.put(`vertedero/vertedero/${id}/`, data, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error updating vertedero record:', error);
@@ -64,7 +62,7 @@ export const updateVertederoRecord = async (id: number, data: { date: string; we
 // Obtener totales de peso y valor
 export const getVertederoTotals = async () => {
   try {
-    const response = await api.get('totals/', { headers: getHeaders() });
+    const response = await api.get('vertedero/vertedero/totals/', { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error fetching vertedero totals:', error);

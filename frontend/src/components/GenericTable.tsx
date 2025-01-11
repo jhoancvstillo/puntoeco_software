@@ -30,6 +30,10 @@ interface GenericTableProps<T extends Record<string, any>> {
   onDelete: (record: T) => void;
 }
 
+function formatNumber(number: number): string {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
 export default function GenericTable<T extends Record<string, any>>({
   initialRecords,
   columns,
@@ -48,13 +52,11 @@ export default function GenericTable<T extends Record<string, any>>({
 
   const itemsPerPage = 10;
 
-  // Función para manejar múltiples formatos de fecha
   const parseDate = (date: string | undefined | null): Date => {
     if (!date || typeof date !== 'string') {
-      // Devuelve una fecha mínima si el valor es inválido
       return new Date(0);
     }
-  
+
     const formats = ['yyyy-MM-dd', 'dd/MM/yyyy', 'MM/dd/yyyy', 'dd-MM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy'];
     for (const format of formats) {
       const parsedDate = parse(date, format, new Date());
@@ -62,13 +64,10 @@ export default function GenericTable<T extends Record<string, any>>({
         return parsedDate;
       }
     }
-  
-    // Si no se puede analizar, devuelve una fecha mínima
+
     return new Date(0);
   };
 
-  
-  
   const filteredAndSortedRecords = useMemo(() => {
     return records
       .filter((record) =>
@@ -127,8 +126,6 @@ export default function GenericTable<T extends Record<string, any>>({
     setRecords(sortedRecords);
   }, [initialRecords]);
 
-  
-
   const handleSort = (column: keyof T) => {
     if (column === sortBy) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -137,7 +134,6 @@ export default function GenericTable<T extends Record<string, any>>({
       setSortOrder('desc');
     }
   };
-
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
@@ -207,22 +203,24 @@ export default function GenericTable<T extends Record<string, any>>({
                 <TableRow key={index}>
                   {columns.map((column) => (
                     <TableCell key={String(column.key)}>
-                      {column.header === 'Descargar' ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const url = record[column.key] as string;
-                            const filename = url.split('/').pop() || 'download';
-                            downloadFile(url, filename);
-                          }}
-                        >
-                          <Download className="mr-2 h-4 w-4" />
-                          Descargar
-                        </Button>
-                      ) : column.render
-                        ? column.render(record[column.key], record)
-                        : String(record[column.key])}
+                      {['Total', 'Valor/L', 'Precio por Unidad', 'Precio', 'Peso', 'Valor'].includes(column.header)
+                        ? formatNumber(Number(record[column.key]))
+                        : column.header === 'Descargar' ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const url = record[column.key] as string;
+                              const filename = url.split('/').pop() || 'download';
+                              downloadFile(url, filename);
+                            }}
+                          >
+                            <Download className="mr-2 h-4 w-4" />
+                            Descargar
+                          </Button>
+                        ) : column.render
+                          ? column.render(record[column.key], record)
+                          : String(record[column.key])}
                     </TableCell>
                   ))}
                   <TableCell>

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Producto } from '@/pages/Inventory/types/inventory';
 import { ProductManagerFormProps } from '@/pages/Inventory/components/ProductManager';
-
-const API_URL = 'http://localhost:8000/';
+import { API_URL } from '.';
 
 // Crear una instancia de Axios con configuración base
 const api = axios.create({

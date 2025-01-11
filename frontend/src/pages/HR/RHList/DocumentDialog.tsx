@@ -8,7 +8,6 @@ import { createDocument, editDocument } from "@/api/trabajadores";
 interface Document {
   id?: number;
   name: string;
-  type: string;
   upload_date: string;
   file_url?: string;
 }
@@ -24,7 +23,6 @@ interface DocumentDialogProps {
 export function DocumentDialog({ isOpen, onClose, onSave, document, workerId }: DocumentDialogProps) {
   const [formData, setFormData] = useState<Document>({
     name: '',
-    type: '',
     upload_date: '',
   });
   const [file, setFile] = useState<File | null>(null);
@@ -35,7 +33,6 @@ export function DocumentDialog({ isOpen, onClose, onSave, document, workerId }: 
     } else {
       setFormData({
         name: '',
-        type: '',
         upload_date: '',
       });
       setFile(null);
@@ -57,7 +54,6 @@ export function DocumentDialog({ isOpen, onClose, onSave, document, workerId }: 
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
-      formDataToSend.append('type', formData.type);
       formDataToSend.append('upload_date', formData.upload_date);
 
       if (file) {
@@ -94,16 +90,7 @@ export function DocumentDialog({ isOpen, onClose, onSave, document, workerId }: 
               placeholder="Nombre del documento"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="type">Tipo de documento</Label>
-            <Input
-              id="type"
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              placeholder="Tipo de documento"
-            />
-          </div>
+         
           <div className="space-y-2">
             <Label htmlFor="upload_date">Fecha de subida</Label>
             <Input

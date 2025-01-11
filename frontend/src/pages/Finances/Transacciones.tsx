@@ -1,11 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TransactionForm } from "./components/TransactionForm";
-import { TransactionTable } from "./components/TransactionTable";
 import { ClassificationManager } from "./components/ClassificationMananger";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { Transaction, Classification, Subcategory } from "@/types/finance";
@@ -15,6 +12,8 @@ import {
   getClassifications,
   getSubcategories,
 } from "@/api/finanzas";
+import { AddTransactionDialog } from "./components/AddTransactionDialog";
+import GenericTable from "@/components/GenericTable";
 
 export default function FinanceManager() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -32,7 +31,17 @@ export default function FinanceManager() {
   const fetchTransactions = async () => {
     try {
       const data = await getTransactions();
-      setTransactions(data);
+  
+      setTransactions(
+        data.map((transaction : Transaction) => ({
+          id: transaction.id,
+          date: transaction.date_time.split('T')[0] + ' ' + transaction.date_time.split('T')[1].split('Z')[0],
+          classification: transaction.classification.name,
+          subcategory: transaction.subcategory.name,
+          description: transaction.comment,
+          amount: transaction.price,
+        }))
+      );
     } catch (error) {
       console.error("Error fetching transactions:", error);
       toast({
@@ -71,11 +80,13 @@ export default function FinanceManager() {
     }
   };
 
-  const handleDeleteTransaction = async (id: number) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta transacción?")) {
+  const handleDeleteTransaction = async (transaction: Transaction) => {
+    if (
+      window.confirm("¿Estás seguro de que quieres eliminar esta transacción?")
+    ) {
       try {
-        await deleteTransaction(id);
-        setTransactions(transactions.filter((t) => t.id !== id));
+        await deleteTransaction(Number(transaction.id));
+        setTransactions(transactions.filter((t) => t.id !== transaction.id));
         toast({
           title: "Success",
           description: "Transaction deleted successfully.",
@@ -92,7 +103,6 @@ export default function FinanceManager() {
   };
 
   const handleTransactionSubmit = () => {
-    // Cierra el diálogo y recarga transacciones
     setIsDialogOpen(false);
     fetchTransactions();
   };
@@ -109,9 +119,25 @@ export default function FinanceManager() {
         {/* Pestaña de Transacciones */}
         <TabsContent value="transactions">
           <div className="flex justify-end mb-4">
-            <Button onClick={() => setIsDialogOpen(true)}>Agregar Transacción</Button>
+            <Button onClick={() => setIsDialogOpen(true)}>
+              Agregar Transacción
+            </Button>
           </div>
-          <TransactionTable transactions={transactions} onDelete={handleDeleteTransaction} />
+         
+          <GenericTable
+            initialRecords={transactions}
+            columns={[
+              { key: "id", header: "ID" },
+              { key: "date", header: "Fecha" },
+              { key: "description", header: "Descripción" },
+              { key: "classification", header: "Clasificación" },
+              { key: "subcategory", header: "Subcategoría" },
+              { key: "amount", header: "Valor" },
+            ]}
+            title="Transacciones"
+            description="Descripción de las transacciones"
+            onDelete={handleDeleteTransaction}
+          />
         </TabsContent>
 
         {/* Pestaña de Clasificaciones */}
@@ -136,19 +162,13 @@ export default function FinanceManager() {
       </Tabs>
 
       {/* Diálogo para agregar Transacción */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Agregar Nueva Transacción</DialogTitle>
-          </DialogHeader>
-          <TransactionForm
-            onSubmit={handleTransactionSubmit}
-            classifications={classifications}
-            subcategories={subcategories}
-            onCancel={() => setIsDialogOpen(false)}
-          />
-        </DialogContent>
-      </Dialog>
+      <AddTransactionDialog
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        handleTransactionSubmit={handleTransactionSubmit}
+        classifications={classifications}
+        subcategories={subcategories}
+      />
     </div>
   );
 }

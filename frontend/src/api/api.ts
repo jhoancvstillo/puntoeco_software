@@ -1,14 +1,13 @@
 import { UserData, LoginResponse } from '@/types/user';
+import { API_URL } from '.';
 
-const url = 'http://54.87.57.69:8000/users/';
 
 
 export async function loginUser(loginData: UserData): Promise<LoginResponse> {
-  const response = await fetch(`${url}login/`, {
+  const response = await fetch(`${API_URL}users/login/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // 'Authorization': `Token ${localStorage.getItem('token')}`
     },
     body: JSON.stringify(loginData),
   });

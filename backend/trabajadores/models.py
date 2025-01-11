@@ -1,5 +1,6 @@
 from django.db import models
-
+from .utils import format_phone_number, format_rut  # Importa la función desde utils.py
+ 
 # Create your models here.
 class Trabajador(models.Model):
     photo = models.ImageField(upload_to='trabajadores/photos/', blank=True, null=True)
@@ -7,7 +8,7 @@ class Trabajador(models.Model):
     position = models.CharField(max_length=50)
     join_date = models.DateField()
     status = models.CharField(max_length=20, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active')
-    rut = models.CharField(max_length=20)
+    rut = models.CharField(max_length=20, unique=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     is_driver = models.BooleanField(default=False)
 
@@ -20,6 +21,16 @@ class Asistencia(models.Model):
     check_in = models.TimeField()
     check_out = models.TimeField()
     status = models.CharField(max_length=20, choices=[('present', 'Present'), ('late','late'), ('absent', 'Absent')], default='present')
+
+    def save(self, *args, **kwargs):
+        # Formatear el RUT antes de guardar
+        if self.rut:
+            self.rut = format_rut(self.rut)
+                # Formatea el número de teléfono antes de guardar
+        if self.phone:
+            self.phone = format_phone_number(self.phone)
+        
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Asistencia de {self.worker} - {self.date}'
@@ -49,7 +60,7 @@ class Nota(models.Model):
 class Documento(models.Model):
     worker = models.ForeignKey(Trabajador, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=50) # DNI, Pasaporte, Carnet de Extranjería, etc.
+    # type = models.CharField(max_length=50) # DNI, Pasaporte, Carnet de Extranjería, etc.
     upload_date = models.DateField()
     file_url = models.FileField(upload_to='trabajadores/documentos/')
 
