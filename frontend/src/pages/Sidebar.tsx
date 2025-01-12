@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,104 +17,101 @@ import {
 } from "@/components/ui/sidebar";
 
 import {
-  LayoutDashboard,
-  Package,
-  Truck,
-  Warehouse,
-  Users,
-  UserCheck,
-  DollarSign,
-  LogOut,
   Recycle,
   CreditCard,
   LineChart,
-  Settings2
-} from 'lucide-react';
-import { ActivePage } from '@/pages/WelcomePage';
-import LogoutConfirmDialog from '@/components/logout/LogoutConfirmDialog';
-import { useNavigate } from 'react-router-dom';
-import Settings from '@/pages/Settings/Settings'
-
-interface MenuItem {
-  icon: React.ElementType;
-  label: string;
-  action: ActivePage;
-  subItems?: { label: string; action: ActivePage }[];
-}
-
-const menuItems: MenuItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', action: 'dashboard' },
-  // { icon: Package, label: 'Gestión de Fardos', action: 'bales' }, also add this to the menuItems array GetionCombustible
-  { icon:Package, label: 'Gestion', action: 'bales', subItems: [
-    { label: 'Gestión de Combustible', action: 'gestionCombustible' },
-    { label: 'Gestión de Fardos', action: 'bales' },
-    { label: 'Gestión de Vertedero', action: 'vertedero' },
-  ]
-
-  },
-  { icon: Warehouse, label: 'Generar Certificados',action:'pesaje', subItems:[
-    { label: 'Generar Pesaje', action: 'pesaje' },
-    { label: 'Generar Cotizaciones', action: 'cotizacion' },
-    { label: 'Generar DF', action: 'disposicionfinal' },
-    
-  ] 
-},
-    
-  { icon: Truck, label: 'Control de Flotas', action: 'fleet' },
-  { icon: Warehouse, label: 'Inventario de Almacén', action: 'inventory' },
-  { 
-    icon: Users, 
-    label: 'Recursos Humanos', 
-    action: 'rh',
-    subItems: [
-      { label: 'Lista de Trabajadores', action: 'rh_list' },
-    ],
-  },
-  { icon: UserCheck, label: 'Gestión de Clientes', action: 'clients' },
-  { 
-    icon: DollarSign, 
-    label: 'Finanzas', 
-    action: 'finance',
-    subItems: [
-      { label: 'Transacciones', action: 'transactions' },
-      { label: 'Flujo de Caja', action: 'cashflow' }
-    ]
-  },
-  
-];
+} from "lucide-react";
+import { ActivePage } from "@/pages/WelcomePage";
+import LogoutConfirmDialog from "@/components/logout/LogoutConfirmDialog";
+import { useNavigate } from "react-router-dom";
+import Settings from "@/pages/Settings/Settings";
+import { getPermissions } from "@/api/users";
+import { footerItems, MenuItem, menuItems } from "./MenuItems";
 
 
 
-const footerItems: MenuItem[] = [
-  { icon: Settings2, label: 'Configuración', action: 'settings' },
-  { icon: LogOut, label: 'Cerrar sesión', action: 'logout' },
-]
 
 interface PuntoEcoSidebarProps {
   setActivePage: (page: ActivePage) => void;
 }
 
 const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
-  //const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [filtered, setFiltered] = useState<MenuItem[]>([]);
+  const [filteredFooterItems, setFilteredFooterItems] = useState<MenuItem[]>([]);
 
   const handleSettingsClick = () => {
-    setIsSettingsOpen(true)
-  }
+    setIsSettingsOpen(true);
+  };
 
   const handleLogoutClick = () => {
-    setIsLogoutOpen(true)
-  }
+    setIsLogoutOpen(true);
+  };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigate('/login')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  
+  // hacer la interseccion de los permisos con los items del menu considerando subitems
+
+  useEffect(() => {
+    const fetchPermissions = async () => {
+      try {
+        const response = await getPermissions();
+        const data = response.permissions;
+
+        const filteredMenuItems = menuItems
+          .map((item) => {
+            if (item.subItems) {
+              // Filtrar los subitems que coincidan con los permisos
+              const filteredSubItems = item.subItems.filter((subItem) =>
+                data.includes(subItem.action)
+              );
+
+              // Si el elemento tiene subitems filtrados, los incluimos
+              if (filteredSubItems.length > 0) {
+                return { ...item, subItems: filteredSubItems };
+              }
+            }
+
+            // Si el elemento principal está en los permisos, lo incluimos
+            if (data.includes(item.action)) {
+              return item;
+            }
+
+            // Si no cumple con los criterios, se excluye
+            return null;
+          })
+          .filter(Boolean); // Eliminar elementos nulos
+
+        const filteredFooterItems = footerItems.filter(
+          (item) => item.action === "logout" || filteredMenuItems.some((menuItem) => menuItem?.action === item.action)
+        );
+       
+        console.log('filteredFooterItems:', filteredFooterItems);
+          
+        
+          setFiltered(filteredMenuItems.filter((item): item is MenuItem => item !== null));
+          setFilteredFooterItems(filteredFooterItems);
+      } catch (error) {
+        console.error('Error fetching permissions:', error);
+      }
+    };
+    fetchPermissions();
+  }, []);
+
+
+  useEffect(() => {
+    // cargar los filtered menu items
+  }, [filtered]);
+
 
   return (
     <SidebarProvider>
@@ -128,7 +125,9 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Punto Eco</span>
-                  <span className="text-xs text-muted-foreground">Gestión de Reciclaje</span>
+                  <span className="text-xs text-muted-foreground">
+                    Gestión de Reciclaje
+                  </span>
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -136,11 +135,11 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
-            {menuItems.map((item, index) => (
+            {filtered.map((item, index) => (
               <SidebarMenuItem key={index}>
                 {item.subItems ? (
                   <div>
-                    <SidebarMenuButton 
+                    <SidebarMenuButton
                       className="w-full justify-start pl-4"
                       onClick={() => {
                         if (openSubmenu === item.label) {
@@ -163,7 +162,7 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                                 setOpenSubmenu(null);
                               }}
                             >
-                              {subItem.label === 'Transacciones' ? (
+                              {subItem.label === "Transacciones" ? (
                                 <CreditCard className="mr-2 h-4 w-4" />
                               ) : (
                                 <LineChart className="mr-2 h-4 w-4" />
@@ -176,7 +175,7 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                     )}
                   </div>
                 ) : (
-                  <SidebarMenuButton 
+                  <SidebarMenuButton
                     className="w-full justify-start pl-4"
                     onClick={() => setActivePage(item.action)}
                   >
@@ -190,11 +189,17 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
-            {footerItems.map((item, index) => (
+            {filteredFooterItems.map((item, index) => (
               <SidebarMenuItem key={index}>
-                <SidebarMenuButton 
+                <SidebarMenuButton
                   className="w-full justify-start"
-                  onClick={item.action === 'settings' ? handleSettingsClick : item.action === 'logout' ? handleLogoutClick : () => setActivePage(item.action)}
+                  onClick={
+                    item.action === "configuracion"
+                      ? handleSettingsClick
+                      : item.action === "logout"
+                      ? handleLogoutClick
+                      : () => setActivePage(item.action)
+                  }
                 >
                   <item.icon className="mr-2 h-4 w-4" />
                   <span>{item.label}</span>
@@ -205,17 +210,17 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-      <LogoutConfirmDialog 
-        open={isLogoutOpen} 
-        onOpenChange={setIsLogoutOpen} 
+      <LogoutConfirmDialog
+        open={isLogoutOpen}
+        onOpenChange={setIsLogoutOpen}
         onConfirm={() => {
-          handleLogout()
-          setIsLogoutOpen(false)
-        }} 
-      />   
+          handleLogout();
+          setIsLogoutOpen(false);
+        }}
+      />
       <Settings open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
     </SidebarProvider>
-  )
-}
+  );
+};
 
-export default PuntoEcoSidebar
+export default PuntoEcoSidebar;

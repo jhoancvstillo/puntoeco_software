@@ -1,4 +1,3 @@
-import { DashTableForm } from "@/components/DashTableForm";
 import {
   Dialog,
   DialogContent,
@@ -25,11 +24,8 @@ export default function Settings({ open, onOpenChange }: SettingsProps) {
               Ajusta tus preferencias aquí. Haz clic en guardar cuando hayas terminado.
             </DialogDescription>
           </DialogHeader>
-          <DashTableForm
-            dashboardContent={<Users />}
-            tableContent={<div>Tabla</div>}
-            formContent={<div>Formulario</div>}
-          />
+          <Users />
+   
         </DialogContent>
       </Dialog>
     );

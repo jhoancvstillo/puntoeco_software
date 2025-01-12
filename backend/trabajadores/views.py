@@ -10,15 +10,17 @@ from .serializers import (
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-
+from .permissions import HasTrabajadoresAccess
 
 # Trabajador ViewSet
 class TrabajadorViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Trabajador.objects.all()
     serializer_class = TrabajadorSerializer
 
 # Asistencia ViewSet
 class AsistenciaViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
 
@@ -34,6 +36,7 @@ class AsistenciaViewSet(ModelViewSet):
 
 # PagoBeneficio ViewSet
 class PagoBeneficioViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = PagoBeneficio.objects.all()
     serializer_class = PagoBeneficioSerializer
 
@@ -75,6 +78,7 @@ class PagoBeneficioViewSet(ModelViewSet):
 
 # Nota ViewSet
 class NotaViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Nota.objects.all()
     serializer_class = NotaSerializer
 
@@ -116,6 +120,7 @@ class NotaViewSet(ModelViewSet):
 
 # Documento ViewSet
 class DocumentoViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Documento.objects.all()
     serializer_class = DocumentoSerializer
 
@@ -157,6 +162,7 @@ class DocumentoViewSet(ModelViewSet):
 
 # VacacionPermiso ViewSet
 class VacacionPermisoViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = VacacionPermiso.objects.all()
     serializer_class = VacacionPermisoSerializer
 
@@ -198,6 +204,7 @@ class VacacionPermisoViewSet(ModelViewSet):
 
 # Capacitacion ViewSet
 class CapacitacionViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Capacitacion.objects.all()
     serializer_class = CapacitacionSerializer
 
@@ -239,6 +246,7 @@ class CapacitacionViewSet(ModelViewSet):
 
 # Incidente ViewSet
 class IncidenteViewSet(ModelViewSet):
+    permission_classes = [HasTrabajadoresAccess]
     queryset = Incidente.objects.all()
     serializer_class = IncidenteSerializer
 

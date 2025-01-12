@@ -34,7 +34,9 @@ export function useUsers() {
   const addUser = async (user: Omit<User, "id">): Promise<void> => {
     try {
       const newUser = await createUser(user);
+      console.log(newUser);
       setUsers((prevUsers) => [...prevUsers, newUser]);
+      console.log("el usuario de nombre: ", newUser.username, " ha sido creado");
     } catch (err) {
       setError("Failed to add user");
     }

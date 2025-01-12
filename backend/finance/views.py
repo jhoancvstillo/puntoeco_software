@@ -4,10 +4,15 @@ from .models import Transaction
 from .models import Classification, Subcategory
 from .serializers import ClassificationSerializer, SubcategorySerializer
 from rest_framework.decorators import action
+from .permissions import HasFinanceAccess
+from rest_framework.response import Response
+
 
 
 
 class ClassificationViewSet(ModelViewSet):
+    permission_classes = [HasFinanceAccess]
+
     queryset = Classification.objects.all()
     serializer_class = ClassificationSerializer
 
@@ -19,10 +24,14 @@ class ClassificationViewSet(ModelViewSet):
         return Response(serializer.data)
 
 class SubcategoryViewSet(ModelViewSet):
+    permission_classes = [HasFinanceAccess]
+
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
 
 class TransactionViewSet(ModelViewSet):
+    permission_classes = [HasFinanceAccess]
+
     """
     ViewSet for managing transactions.
     Supports all CRUD operations (Create, Read, Update, Delete).

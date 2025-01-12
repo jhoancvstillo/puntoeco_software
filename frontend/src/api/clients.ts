@@ -3,14 +3,6 @@ import axios from 'axios';
 import { Cliente } from '@/types/client'; // Ajusta la ruta al tipo que uses
 import { API_URL } from '.';
 
-// Ajusta esta URL según tu configuración
-
-axios.interceptors.request.use((config) => {
-  console.log('Request Config:', config);
-  return config;
-});
-
-
 // Función para obtener encabezados reutilizables
 const getHeaders = () => ({
   'Authorization': `Token ${localStorage.getItem('token')}`,

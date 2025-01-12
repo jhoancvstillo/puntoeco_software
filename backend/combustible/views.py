@@ -4,11 +4,11 @@ from .serializers import CombustibleSerializer
 
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
-
+from .permissions import HasCombustibleAccess
 
 
 class CombustibleViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasCombustibleAccess]
     queryset = Combustible.objects.all()
     serializer_class = CombustibleSerializer
 

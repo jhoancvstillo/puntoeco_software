@@ -6,6 +6,9 @@ from .serializers import ClientsSerializer, ConductorSerializer
 from .models import Clients, Conductor
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
+from .permissions import HasClientsAccess
+from rest_framework.permissions import IsAuthenticated
+
 
 # Configuración de paginación personalizada (opcional)
 class CustomPagination(PageNumberPagination):
@@ -13,6 +16,7 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
 class ClientsViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated, HasClientsAccess]
     queryset = Clients.objects.all()
     serializer_class = ClientsSerializer
     pagination_class = CustomPagination
@@ -28,6 +32,7 @@ class ClientsViewSet(ModelViewSet):
     # Acción personalizada para obtener los conductores asociados a un cliente
     @action(detail=True, methods=['get'], url_path='conductor')
     def get_conductors(self, request, pk=None):
+        
         """
         Devuelve los conductores asociados al cliente con el id proporcionado.
         """
@@ -42,10 +47,12 @@ class ClientsViewSet(ModelViewSet):
             return Response({"detail": "Client not found."}, status=status.HTTP_404_NOT_FOUND)
 
 class ClientsNormal(ModelViewSet):
+    permission_classes = [HasClientsAccess]
     queryset = Clients.objects.all()
     serializer_class = ClientsSerializer
 
 class ConductorViewSet(ModelViewSet):
+    permission_classes = [HasClientsAccess]
     queryset = Conductor.objects.all()
     serializer_class = ConductorSerializer
 

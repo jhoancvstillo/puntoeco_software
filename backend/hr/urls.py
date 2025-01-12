@@ -4,6 +4,13 @@ from .views import (
     IncidentViewSet, EvaluationViewSet, PaymentViewSet, 
     TrainingViewSet, VacationOrPermissionViewSet
 )
+from django.urls import path, include
+from django.http import JsonResponse
+
+def hr_root_view(request):
+    return JsonResponse({
+        "message": "Welcome to the HR API. Use specific endpoints to access data."
+    })
 
 router = DefaultRouter()
 router.register(r'workers', WorkerViewSet, basename='worker')
@@ -15,4 +22,7 @@ router.register(r'payments', PaymentViewSet, basename='payment')
 router.register(r'trainings', TrainingViewSet, basename='training')
 router.register(r'vacations-permissions', VacationOrPermissionViewSet, basename='vacation_or_permission')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', hr_root_view, name='hr-root'),
+    path('', include(router.urls)),
+]

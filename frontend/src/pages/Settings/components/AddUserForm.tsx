@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
-const formSchema = z.object({
+export const formSchemaUser = z.object({
   role: z.enum(["user", "admin"]),
   username: z.string().min(3, {
     message: "El nombre de usuario debe tener al menos 3 caracteres.",
@@ -24,20 +25,52 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Por favor, introduce una dirección de correo electrónico válida.",
   }),
+  permisos: z.object({
+    dashboard: z.boolean().default(false),
+    combustible: z.boolean().default(false),
+    fardos: z.boolean().default(false),
+    vertedero: z.boolean().default(false),
+  // Certificados
+    pesaje: z.boolean().default(false),
+    cotizacion: z.boolean().default(false),
+    disposicionfinal: z.boolean().default(false),
+
+    // inventario
+    products: z.boolean().default(false),
+    trabajadores: z.boolean().default(false),
+    clientes: z.boolean().default(false),
+    finanzas: z.boolean().default(false),
+
+    configuracion: z.boolean().default(false),
+  }),
 });
 
 type AddUserFormProps = {
-  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  onSubmit: (values: z.infer<typeof formSchemaUser>) => void;
 };
 
 export function AddUserForm({ onSubmit }: AddUserFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof formSchemaUser>>({
+    resolver: zodResolver(formSchemaUser),
     defaultValues: {
       role: "user",
       username: "",
       password: "",
       email: "",
+      permisos: {
+        dashboard: false,
+        combustible: false,
+        fardos: false,
+        vertedero: false,
+        pesaje: false,
+        cotizacion: false,
+        disposicionfinal: false,
+        products: false,
+        trabajadores: false,
+        clientes: false,
+        finanzas: false,
+        configuracion: false,
+      },
     },
   });
 
@@ -87,7 +120,6 @@ export function AddUserForm({ onSubmit }: AddUserFormProps) {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="role"
@@ -109,8 +141,37 @@ export function AddUserForm({ onSubmit }: AddUserFormProps) {
             </FormItem>
           )}
         />
+        <FormItem>
+          <FormLabel>Permisos</FormLabel>
+          <div className="grid grid-cols-3 gap-4">
+            {['dashboard', 'combustible', 'fardos', 'vertedero', 'pesaje', 'cotizacion', 'disposicionfinal', 'products',
+              'trabajadores', 'clientes', 'finanzas', 'configuracion'].map((permiso) => (
+              <FormField
+                key={permiso}
+                control={form.control}
+                name={`permisos.${permiso}` as any}
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {/* {permiso.charAt(0).toUpperCase() + permiso.slice(1)} */}
+                      {/* si es certificadofinal entonces certificado final */}
+                      {permiso === 'disposicionfinal' ? 'Disposición Final' : permiso.charAt(0).toUpperCase() + permiso.slice(1)}
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+            ))}
+          </div>
+        </FormItem>
         <Button type="submit">Agregar Usuario</Button>
       </form>
     </Form>
   );
 }
+

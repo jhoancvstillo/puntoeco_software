@@ -12,8 +12,11 @@ from django.http import HttpResponse
 import io
 import zipfile
 
+from .permissions import HasDestinoFinalAccess
+
 
 class CertificadoViewSet(ModelViewSet):
+    permission_classes = [HasDestinoFinalAccess]
     queryset = Certificado.objects.all()
     serializer_class = CertificadoSerializer
 
@@ -99,15 +102,18 @@ class CertificadoViewSet(ModelViewSet):
 
 
 class PlasticoDetalleViewSet(ModelViewSet):
+    permission_classes = [HasDestinoFinalAccess]
     queryset = PlasticoDetalle.objects.all()
     serializer_class = PlasticoDetalleSerializer
 
 
 class FitosanitarioDetalleViewSet(ModelViewSet):
+    permission_classes = [HasDestinoFinalAccess]
     queryset = FitosanitarioDetalle.objects.all()
     serializer_class = FitosanitarioDetalleSerializer
 
 
 class MaterialDetalleViewSet(ModelViewSet):
+    permission_classes = [HasDestinoFinalAccess]    
     queryset = MaterialDetalle.objects.all()
     serializer_class = MaterialDetalleSerializer

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'destinofinal',
     'combustible',
     'fardos',
-    'vertedero'
+    'vertedero',
+    'users'
 
 ]
 
@@ -116,6 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
 
 
 # Internationalization

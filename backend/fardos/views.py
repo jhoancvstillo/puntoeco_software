@@ -4,12 +4,15 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Production, Dispatch, Debt
 from .serializers import ProductionSerializer, DispatchSerializer, DebtSerializer
+from .permissions import HasFardosAccess
 
 class ProductionViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasFardosAccess]
     queryset = Production.objects.all()
     serializer_class = ProductionSerializer
 
 class DispatchViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasFardosAccess]
     queryset = Dispatch.objects.all()
     serializer_class = DispatchSerializer
 
@@ -21,6 +24,7 @@ class DispatchViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class DebtViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasFardosAccess]
     queryset = Debt.objects.all()
     serializer_class = DebtSerializer
 

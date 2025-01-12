@@ -36,6 +36,8 @@ export default function Users() {
   const handleOnAddUser = async (user: Omit<User, "id">) => {
     await addUser(user);
     setIsAddUserOpen(false);
+    console.log("User added");
+    console.log(user);
   };
 
   const handleOnUpdateUser = async (updatedUser: Partial<User>) => {

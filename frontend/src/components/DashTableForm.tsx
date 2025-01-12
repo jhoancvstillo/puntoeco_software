@@ -44,5 +44,3 @@ export function DashTableForm({ dashboardContent, tableContent, formContent }: D
     </Tabs>
   )
 }
-
-

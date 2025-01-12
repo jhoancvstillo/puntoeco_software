@@ -63,7 +63,7 @@ export async function get_current_user(): Promise<User> {
 
 export async function createUser(user:Omit<User, "id">): Promise<User>{
     const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
-
+    console.log
     const response = await fetch(`${API_URL}users/register/`, {
         method: 'POST',
         headers: {
@@ -74,7 +74,9 @@ export async function createUser(user:Omit<User, "id">): Promise<User>{
     });
 
     if (!response.ok) throw new Error('Error al crear el usuario');
-    return response.json();
+    const data = await response.json(); // Extraer el JSON completo
+    return data.user; // Devolver solo el campo "user"
+  
 }
 
 export async function updateUser(user:User): Promise<User>{
@@ -91,4 +93,20 @@ export async function updateUser(user:User): Promise<User>{
 
     if (!response.ok) throw new Error('Error al actualizar el usuario');
     return response.json();
+}
+
+// http://localhost:8000/users/permissions/
+
+export async function getPermissions(): Promise<any> {
+    const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
+
+    const response = await fetch(`${API_URL}users/permissions/`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`, // Incluye el token en el encabezado
+    },
+  });
+  if (!response.ok) throw new Error('Error en el inicio de sesión');
+  return response.json();
 }

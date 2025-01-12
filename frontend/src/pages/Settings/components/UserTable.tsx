@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 
 import { User } from "@/types/user";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function UserTable({
   users,
@@ -29,6 +30,7 @@ export function UserTable({
 }) {
   return (
     <Table>
+      <ScrollArea className="h-[250px]">
       <TableHeader>
         <TableRow>
           <TableHead>Usuario</TableHead>
@@ -36,6 +38,7 @@ export function UserTable({
           <TableHead>Acciones</TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id}>
@@ -67,6 +70,7 @@ export function UserTable({
           </TableRow>
         ))}
       </TableBody>
+      </ScrollArea>
     </Table>
   );
 }

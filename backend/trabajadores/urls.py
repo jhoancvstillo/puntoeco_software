@@ -5,6 +5,14 @@ from .views import (
     DocumentoViewSet, VacacionPermisoViewSet, CapacitacionViewSet, IncidenteViewSet
 )
 
+from django.urls import path, include
+from django.http import JsonResponse
+
+def trabajadores_root_view(request):
+    return JsonResponse({
+        "message": "Welcome to the Trabajadores API. Use specific endpoints to access data."
+    })
+
 router = DefaultRouter()
 router.register(r'trabajadores', TrabajadorViewSet, basename='trabajador')
 router.register(r'asistencias', AsistenciaViewSet, basename='asistencia')
@@ -15,4 +23,7 @@ router.register(r'vacaciones-permisos', VacacionPermisoViewSet, basename='vacaci
 router.register(r'capacitaciones', CapacitacionViewSet, basename='capacitacion')
 router.register(r'incidentes', IncidenteViewSet, basename='incidente')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', trabajadores_root_view, name='trabajadores-root'),
+    path('', include(router.urls)),
+]

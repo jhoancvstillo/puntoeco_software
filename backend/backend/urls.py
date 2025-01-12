@@ -4,11 +4,10 @@ from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import UserViewSet
 
 # Registrar el ViewSet en el router
 router = DefaultRouter()
-router.register(r'users', UserViewSet, basename='user')
+# router.register(r'users', UserViewSet, basename='user')
 
 if settings.DEBUG:
     print("STATICFILES_DIRS[0]:", settings.STATICFILES_DIRS[0])  # Verifica la ruta
@@ -28,6 +27,7 @@ urlpatterns = [
     path('combustible/', include('combustible.urls')),  # Incluye las URLs de la aplicación 'combustible'
     path('fardos/', include('fardos.urls')),  # Incluye las URLs de la aplicación 'fardos'
     path('vertedero/', include('vertedero.urls')),  # Incluye las URLs de la aplicación 'vertedero'
+    path('users/', include('users.urls')),  # Incluye las URLs de la aplicación 'users'
 ]
 
 # Añadir las rutas generadas por el router

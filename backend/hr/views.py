@@ -10,7 +10,10 @@ from .serializers import (
     TrainingSerializer, VacationOrPermissionSerializer
 )
 
+from .permissions import HasHRAccess
+
 class WorkerViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
     queryset = Worker.objects.all()
     serializer_class = WorkerSerializer
 
@@ -93,30 +96,39 @@ class WorkerViewSet(viewsets.ModelViewSet):
 
 
 class AttendanceRecordViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
     queryset = AttendanceRecord.objects.all()
     serializer_class = AttendanceRecordSerializer
 
 class DocumentViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
+    
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
 class IncidentViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
 class EvaluationViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
+    
     queryset = Evaluation.objects.all()
     serializer_class = EvaluationSerializer
 
 class PaymentViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
 class TrainingViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
 
 class VacationOrPermissionViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasHRAccess]  
     queryset = VacationOrPermission.objects.all()
     serializer_class = VacationOrPermissionSerializer
 

@@ -3,8 +3,10 @@ from django.core.files.base import ContentFile
 from .models import Cotizacion
 from .serializers import CotizacionSerializer
 from .utils import generate_pdf_cotizacion  # Importa la función que creaste
+from .permissions import HasCotizacionAccess
 
 class CotizacionViewSet(ModelViewSet):
+    permission_classes = [HasCotizacionAccess]
     queryset = Cotizacion.objects.prefetch_related('detalles').all()
     serializer_class = CotizacionSerializer
 

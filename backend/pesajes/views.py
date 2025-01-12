@@ -3,14 +3,16 @@ from .models import Conductor, Certificado
 from .serializers import ConductorSerializer, CertificadoPesajeSerializer
 from .utils import generate_pdf_ticket
 from django.core.files.base import ContentFile
-
+from .permissions import HasPesajesAccess
 
 # ViewSet para Conductores
 class ConductorViewSet(ModelViewSet):
+    permission_classes = [HasPesajesAccess]
     queryset = Conductor.objects.all()
     serializer_class = ConductorSerializer
 
 class CertificadoPesajeViewSet(ModelViewSet):
+    permission_classes = [HasPesajesAccess]
     queryset = Certificado.objects.all()
     serializer_class = CertificadoPesajeSerializer
 

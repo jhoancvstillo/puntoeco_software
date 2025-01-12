@@ -18,6 +18,20 @@ export interface User {
   role_input?: string
   role?: string
   password?: string
+  permisos?: {
+    dashboard?: boolean
+    combustible?: boolean
+    fardos?: boolean
+    vertedero?: boolean
+    pesaje?: boolean
+    cotizacion?: boolean
+    disposicionfinal?: boolean
+    products?: boolean
+    trabajadores?: boolean
+    clientes?: boolean
+    finanzas?: boolean
+    configuracion?: boolean
+  }
   
 }
 

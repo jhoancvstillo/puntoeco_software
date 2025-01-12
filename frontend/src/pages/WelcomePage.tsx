@@ -3,11 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Dashboard from '@/pages/Dashboard';
 import Gestion from './Gestion';
 import PuntoSidebar from './Sidebar';
-import Finances from './Finances';
 import Transacciones from './Finances/Transacciones';
-import FlujoCaja from './Finances/FlujoCaja';
 import Inventory from '@/pages/Inventory/Inventory';
-import { GPSTracker } from '@/components/maps/GPSTracker';
 import { RHList } from './HR/RHList/RHList';
 import { Separator } from '@/components/ui/separator';
 import ClientManagement from './Clients/ClientManagement';
@@ -20,6 +17,7 @@ import { Moon, Sun } from 'lucide-react'
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface User {
   id: number;
@@ -29,23 +27,16 @@ interface User {
 
 export type ActivePage =
   | 'dashboard'
-  | 'bales'
-  | 'fleet'
-  | 'inventory'
-  | 'rh'
-  | 'rh_list'
-  | 'clients'
-  | 'finance'
-  | 'transactions'
-  | 'cashflow'
-  | 'settings'
+  | 'fardos'
+  | 'trabajadores'
+  | 'clientes'
+  | 'finanzas'
+  | 'configuracion'
   | 'logout'
-  | 'materials'
-  | 'gestionCombustible'
+  | 'combustible'
   | 'vertedero'
   | 'pesaje'
   | 'cotizacion'
-  | 'vertedero'
   | 'disposicionfinal'
   | 'products';
 
@@ -73,21 +64,15 @@ export default function WelcomePage() {
   useEffect(() => {
     const pageTitles: Record<ActivePage, string> = {
       dashboard: 'Dashboard',
-      bales: 'Gestión de Fardos',
+      fardos: 'Gestión de Fardos',
       vertedero: 'Gestión de Vertedero',
-      fleet: 'Control de Flotas',
-      inventory: 'Inventario de Almacén',
-      rh: 'Recursos Humanos',
-      rh_list: 'Lista de Trabajadores',
-      clients: 'Gestión de Clientes',
-      finance: 'Finanzas',
-      transactions: 'Transacciones',
-      cashflow: 'Flujo de Caja',
-      settings: 'Configuración',
+      products: 'Inventario de Almacén',
+      trabajadores: 'Lista de Trabajadores',
+      clientes: 'Gestión de Clientes',
+      finanzas: 'Finanzas',
+      configuracion: 'Configuración',
       logout: 'Cerrar Sesión',
-      materials: 'Materiales',
-      products: 'Productos',
-      gestionCombustible: 'Gestión de Combustible',
+      combustible: 'Gestión de Combustible',
       pesaje: 'Certificados de Pesaje',
       cotizacion: 'Generar Cotización',
       disposicionfinal: 'Generar Certificado de Disposición Final',
@@ -99,25 +84,27 @@ export default function WelcomePage() {
     return null;
   }
 
+  // fetch the items 
+
   const renderActivePage = () => {
     switch (activePage) {
       case 'dashboard':
         return <Dashboard key="dashboard" />;
-      case 'bales':
+      case 'fardos':
         return <Gestion key="bales" />;
-      case 'clients':
+      case 'clientes':
         return <ClientManagement key="clients" />;
-      case 'finance':
-        return <Finances key="finance" />;
-      case 'transactions':
+      case 'finanzas':
         return <Transacciones key="transactions" />;
-      case 'cashflow':
-        return <FlujoCaja key="cashflow" />;
-      case 'inventory':
+      // case 'transactions':
+      //   return <Transacciones key="transactions" />;
+      // case 'cashflow':
+      //   return <FlujoCaja key="cashflow" />;
+      case 'products':
         return <Inventory key="inventory" />;
-      case 'fleet':
-        return <GPSTracker key="fleet" />;
-      case 'rh_list':
+      // case 'fleet':
+      //   return <GPSTracker key="fleet" />;
+      case 'trabajadores':
         return <RHList key="rh_list" />;
       case 'pesaje':
         return <Pesaje key="pesaje" />;
@@ -125,7 +112,7 @@ export default function WelcomePage() {
         return <Cotizacion key="cotizacion" />;
       case 'vertedero':
         return <Vertedero key="vertedero" />;
-      case 'gestionCombustible':
+      case 'combustible':
         return <GestionCombustible key="gestionCombustible" />;
       case 'disposicionfinal':
         return <CertificadoDisposicionFinal key="disposicionfinal" />;
@@ -139,17 +126,15 @@ export default function WelcomePage() {
       <div>
         <PuntoSidebar setActivePage={setActivePage} />
       </div>
-      <div className="flex-1 overflow-auto">
-        {activePage !== 'fleet' && (
+      <div className="flex-1 overflow-hidden">
+        {activePage && (
           <Card className={`m-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
             <div className='flex items-center justify-between p-4'>
               <div className="space-y-1.5">
                 <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                   {title}
                 </h2>
-                {/* <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Bienvenido al panel de {title.toLowerCase()}
-                </p> */}
+               
               </div>
               <Button
                 onClick={toggleDarkMode}
@@ -165,7 +150,9 @@ export default function WelcomePage() {
           </Card>
         )}
         <div className="p-4">
+        <ScrollArea className="h-[calc(100vh-8rem)] overflow-hidden">
           {renderActivePage()}
+          </ScrollArea>
         </div>
       </div>
     </div>

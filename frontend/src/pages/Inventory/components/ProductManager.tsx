@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { createProducto, deleteProducto } from "@/api/productos"; // Ajusta si los métodos están en un archivo agrupado
+import { createProducto, deleteProducto } from "@/api/productos";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ProductManagerFormProps, ProductManagerProps } from "./types";
+import { ProductManagerProps } from "./types";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -18,7 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import GenericTable from "@/components/GenericTable";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { productSchema, ProductSchemaType } from "./productSchema";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
 export function ProductManager({
   productos,
@@ -26,38 +29,27 @@ export function ProductManager({
   marcas,
   setProductos,
 }: ProductManagerProps) {
-  const [newProducto, setNewProducto] = useState<ProductManagerFormProps>({
-    nombre: "",
-    categoria: 0,
-    marca: 0,
-    precio_por_unidad: "",
-    stocks: [{ id: 0, ubicacion: "", cantidad: 0, stock_minimo: 0 }],
+  const form = useForm<ProductSchemaType>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      nombre: "",
+      categoria: 0,
+      marca: 0,
+      precio_por_unidad: "",
+      stocks: [{ id: 0, ubicacion: "", cantidad: 0, stock_minimo: 0 }],
+    },
   });
 
-  // ─────────────────────────────────────────────────────────────────────────────
-  //                            CREAR PRODUCTO
-  // ─────────────────────────────────────────────────────────────────────────────
-  const handleCreateProducto = async () => {
+  const handleCreateProducto = async (data: ProductSchemaType) => {
     try {
-      const createdProducto = await createProducto(newProducto);
+      const createdProducto = await createProducto(data);
       setProductos((prev) => [...prev, createdProducto]);
-
-      // Reset form
-      setNewProducto({
-        nombre: "",
-        categoria: 0,
-        marca: 0,
-        precio_por_unidad: "",
-        stocks: [{ id: 0, ubicacion: "", cantidad: 0, stock_minimo: 0 }],
-      });
+      form.reset();
     } catch (error) {
       console.error("Error creating producto:", error);
     }
   };
 
-  // ─────────────────────────────────────────────────────────────────────────────
-  //                           ELIMINAR PRODUCTO
-  // ─────────────────────────────────────────────────────────────────────────────
   const handleDeleteProducto = async (record: { id: number }) => {
     try {
       await deleteProducto(record.id);
@@ -69,179 +61,142 @@ export function ProductManager({
 
   return (
     <div className="space-y-4">
-      {/** ─────────────────────────────────────────────────────────────────────
-           DIALOGO PARA CREAR PRODUCTO
-          ───────────────────────────────────────────────────────────────────── */}
       <Dialog>
         <DialogTrigger asChild>
           <Button>Agregar Producto</Button>
         </DialogTrigger>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-xl ">
           <DialogHeader>
             <DialogTitle>Agregar Nuevo Producto</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            {/* NOMBRE */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="nombre" className="text-right">
-                Nombre
-              </Label>
-              <Input
-                id="nombre"
-                value={newProducto.nombre}
-                onChange={(e) =>
-                  setNewProducto({ ...newProducto, nombre: e.target.value })
-                }
-                className="col-span-3"
+          <ScrollArea className="h-[60vh] w-full rounded-md border p-2">
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleCreateProducto)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="nombre"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            {/* CATEGORÍA */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="categoria" className="text-right">
-                Categoría
-              </Label>
-              <Select
-                onValueChange={(value) =>
-                  setNewProducto({
-                    ...newProducto,
-                    categoria:
-                      categorias.find((c) => c.id.toString() === value)?.id ||
-                      0,
-                  })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Seleccionar categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categorias.map((categoria) => (
-                    <SelectItem
-                      key={categoria.id}
-                      value={categoria.id.toString()}
-                    >
-                      {categoria.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* MARCA */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="marca" className="text-right">
-                Marca
-              </Label>
-              <Select
-                onValueChange={(value) =>
-                  setNewProducto({
-                    ...newProducto,
-                    marca:
-                      marcas.find((m) => m.id.toString() === value)?.id || 0,
-                  })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Seleccionar marca" />
-                </SelectTrigger>
-                <SelectContent>
-                  {marcas.map((marca) => (
-                    <SelectItem key={marca.id} value={marca.id.toString()}>
-                      {marca.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* PRECIO */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="precio" className="text-right">
-                Precio por unidad
-              </Label>
-              <Input
-                id="precio"
-                type="number"
-                value={newProducto.precio_por_unidad}
-                onChange={(e) =>
-                  setNewProducto({
-                    ...newProducto,
-                    precio_por_unidad: e.target.value,
-                  })
-                }
-                className="col-span-3"
+              <FormField
+                control={form.control}
+                name="categoria"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoría</FormLabel>
+                    <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value.toString()}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar categoría" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categorias.map((categoria) => (
+                          <SelectItem key={categoria.id} value={categoria.id.toString()}>
+                            {categoria.nombre}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            {/* UBICACIÓN */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="ubicacion" className="text-right">
-                Ubicación
-              </Label>
-              <Input
-                id="ubicacion"
-                value={newProducto.stocks[0].ubicacion || ""}
-                onChange={(e) =>
-                  setNewProducto({
-                    ...newProducto,
-                    stocks: [
-                      { ...newProducto.stocks[0], ubicacion: e.target.value },
-                    ],
-                  })
-                }
-                className="col-span-3"
+              <FormField
+                control={form.control}
+                name="marca"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Marca</FormLabel>
+                    <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value.toString()}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar marca" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {marcas.map((marca) => (
+                          <SelectItem key={marca.id} value={marca.id.toString()}>
+                            {marca.nombre}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            {/* CANTIDAD */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="cantidad" className="text-right">
-                Cantidad
-              </Label>
-              <Input
-                id="cantidad"
-                type="number"
-                value={newProducto.stocks[0].cantidad}
-                onChange={(e) =>
-                  setNewProducto({
-                    ...newProducto,
-                    stocks: [
-                      {
-                        ...newProducto.stocks[0],
-                        cantidad: parseInt(e.target.value) || 0,
-                      },
-                    ],
-                  })
-                }
-                className="col-span-3"
+              <FormField
+                control={form.control}
+                name="precio_por_unidad"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Precio por unidad</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            {/* STOCK MÍNIMO */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="stock_minimo" className="text-right">
-                Stock Mínimo
-              </Label>
-              <Input
-                id="stock_minimo"
-                type="number"
-                value={newProducto.stocks[0].stock_minimo}
-                onChange={(e) =>
-                  setNewProducto({
-                    ...newProducto,
-                    stocks: [
-                      {
-                        ...newProducto.stocks[0],
-                        stock_minimo: parseInt(e.target.value) || 0,
-                      },
-                    ],
-                  })
-                }
-                className="col-span-3"
+              <FormField
+                control={form.control}
+                name="stocks.0.ubicacion"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ubicación</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-          </div>
-          <Button onClick={handleCreateProducto}>Guardar Producto</Button>
+
+              <FormField
+                control={form.control}
+                name="stocks.0.cantidad"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cantidad</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="stocks.0.stock_minimo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stock Mínimo</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit">Guardar Producto</Button>
+            </form>
+          </Form>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
 
@@ -268,3 +223,4 @@ export function ProductManager({
     </div>
   );
 }
+

@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from django.db.models import Sum
 from .models import Vertedero
 from .serializers import VertederoSerializer
+from .permissions import HasVertederoAccess
 
 class VertederoViewSet(viewsets.ModelViewSet):
+    permission_classes = [HasVertederoAccess]
     """
     API ViewSet for Vertedero model.
     """
