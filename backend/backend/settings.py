@@ -14,9 +14,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b@kpmm3y3-2-=i3#$@(r8w=z)04uomoe-x8&-@i#3nai&9fj)6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -159,11 +159,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'puntoecowebapp.s3-website-us-east-1.amazonaws.com', '54.87.57.69']
       
       
-CORS_ALLOW_ALL_ORIGINS = True         
-# CORS_ALLOWED_ORIGINS = [
-#     "http://puntoecowebapp.s3-website-us-east-1.amazonaws.com",
-#     "http://54.87.57.69",
-# ]
+# CORS_ALLOW_ALL_ORIGINS = True         
+CORS_ALLOWED_ORIGINS = [
+    "http://puntoecowebapp.s3-website-us-east-1.amazonaws.com",
+    "http://54.87.57.69",
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
