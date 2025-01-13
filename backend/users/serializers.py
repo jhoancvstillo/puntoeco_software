@@ -120,3 +120,4 @@ class UserSerializer(serializers.ModelSerializer):
                         user.user_permissions.add(permission)
                     except Permission.DoesNotExist:
                         raise ValueError(f"Permission '{codename}' does not exist.")
+

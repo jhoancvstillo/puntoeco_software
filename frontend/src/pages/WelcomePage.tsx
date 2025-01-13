@@ -76,24 +76,18 @@ export default function WelcomePage() {
   // }, [navigate]);
   useEffect(() => {
     const checkAuth = async () => {
-      const storedUser = localStorage.getItem("user");
-  
       try {
-        // Verificar con el backend si la cookie y el usuario son válidos
         const response = await fetch("/api/validate-session", {
           method: "GET",
-          credentials: "include", // Incluye cookies en la solicitud
+          credentials: "include", // Necesario para cookies
         });
   
         if (response.ok) {
           const user = await response.json();
-          setUser(user); // Actualiza el usuario en caso de éxito
-          if (!storedUser) {
-            localStorage.setItem("user", JSON.stringify(user));
-          }
+          setUser(user);
+          localStorage.setItem("user", JSON.stringify(user));
         } else {
-          // Si la sesión no es válida, limpia todo
-          handleLogout();
+          handleLogout(); // Redirigir si la sesión es inválida
         }
       } catch (error) {
         console.error("Error verifying session:", error);
@@ -103,18 +97,22 @@ export default function WelcomePage() {
   
     checkAuth();
   }, [navigate]);
-  
-  const handleLogout = () => {
-    // Elimina la cookie del backend y limpia el estado local
-    fetch("/api/logout", { method: "POST", credentials: "include" })
-      .then(() => {
-        localStorage.removeItem("user");
-        setUser(null);
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Error during logout:", error);
+
+
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include", // Incluye cookies en la solicitud
       });
+  
+      localStorage.removeItem("user");
+      setUser(null);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
   
   if (!user) {
