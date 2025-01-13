@@ -23,8 +23,30 @@ PERMISSIONS = [
     "can_access_configuracion",
 ]
 
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authtoken.models import Token
+
+PERMISSIONS = [
+    "can_access_dashboard",
+    "can_access_combustible",
+    "can_access_fardos",
+    "can_access_vertedero",
+    "can_access_pesaje",
+    "can_access_cotizacion",
+    "can_access_disposicionfinal",
+    "can_access_products",
+    "can_access_trabajadores",
+    "can_access_clientes",
+    "can_access_finanzas",
+    "can_access_configuracion",
+]
+
 class UserViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated, HasUsersAccess]  
+    permission_classes = [IsAuthenticated]
+
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
         """Authenticate user and return token."""
@@ -36,55 +58,26 @@ class UserViewSet(viewsets.ViewSet):
         user = CustomUser.objects.filter(username=username).first()
         if user and user.check_password(password):
             token, _ = Token.objects.get_or_create(user=user)
+
             permissions = [
                 perm.split('_')[-1]
                 for perm in user.get_all_permissions()
                 if perm.split('.')[-1] in PERMISSIONS
             ]
 
-            # Configura la cookie del token si se usa para autenticación
-            response = Response({
+            return Response({
                 "message": "Login successful.",
+                "token": token.key,  # Incluye el token aquí
                 "user": {
                     "id": user.id,
                     "username": user.username,
                     "email": user.email,
                     "role": user.role,
-                    "permissions": permissions
+                    "permissions": permissions,
                 },
             }, status=status.HTTP_200_OK)
 
-            response.set_cookie(
-                key="auth_token",
-                value=token.key,
-                httponly=True,
-                secure=False,  # Cambiar a True en producción con HTTPS
-                samesite="Lax"
-            )
-            return response
-
         return Response({"message": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
-
-    @action(detail=False, methods=['get'], url_path='validate-session')
-    def validate_session(self, request):
-        """Validar si el token del usuario es válido."""
-        user = request.user
-        if not user.is_authenticated:
-            return Response({"message": "Invalid session."}, status=status.HTTP_401_UNAUTHORIZED)
-
-        permissions = [
-            perm.split('_')[-1]
-            for perm in user.get_all_permissions()
-            if perm.split('.')[-1] in PERMISSIONS
-        ]
-
-        return Response({
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-            "permissions": permissions,
-        }, status=status.HTTP_200_OK)
 
     def list(self, request):
         """List all users (admins only)."""
@@ -166,12 +159,8 @@ class UserViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def logout(self, request):
         """Logout user by deleting their token."""
-        if hasattr(request.user, 'auth_token'):
-            request.user.auth_token.delete()
-
-        response = Response({"message": "Logout successful!"}, status=status.HTTP_200_OK)
-        response.delete_cookie("auth_token")
-        return response
+        request.user.auth_token.delete()
+        return Response({"message": "Logout successful!"}, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'], url_path='get_current_user')
     def get_current_user(self, request):

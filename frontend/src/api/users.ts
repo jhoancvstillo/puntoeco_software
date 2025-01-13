@@ -99,7 +99,7 @@ export async function updateUser(user:User): Promise<User>{
 
 export async function getPermissions(): Promise<any> {
     const token = localStorage.getItem('token'); // Suponiendo que guardaste el token en localStorage
-
+    console.log("Token: ", token)
     const response = await fetch(`${API_URL}users/permissions/`, {
     method: 'GET',
     headers: {

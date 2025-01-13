@@ -12,5 +12,7 @@ export async function loginUser(loginData: UserData): Promise<LoginResponse> {
     body: JSON.stringify(loginData),
   });
   if (!response.ok) throw new Error('Error en el inicio de sesión');
+
+  console.log("respuesta de login", response);
   return response.json();
 }

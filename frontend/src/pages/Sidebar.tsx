@@ -21,7 +21,7 @@ import { ActivePage } from "@/pages/WelcomePage";
 import LogoutConfirmDialog from "@/components/logout/LogoutConfirmDialog";
 import { useNavigate } from "react-router-dom";
 import Settings from "@/pages/Settings/Settings";
-import { getPermissions } from "@/api/users";
+import { getPermissions, logout } from "@/api/users";
 import { footerItems, MenuItem, menuItems } from "./MenuItems";
 
 interface PuntoEcoSidebarProps {
@@ -47,19 +47,20 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
+    await logout();
   };
 
-  // hacer la interseccion de los permisos con los items del menu considerando subitems
 
   useEffect(() => {
     const fetchPermissions = async () => {
       try {
         const response = await getPermissions();
         const data = response.permissions;
+        console.log("data", data);
 
         // Filtrar los menuItems según los permisos
         const filteredMenuItems = menuItems
@@ -191,8 +192,6 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                   onClick={
                     item.action === "configuracion"
                       ? handleSettingsClick
-                      : item.action === "logout"
-                      ? handleLogoutClick
                       : () => setActivePage(item.action)
                   }
                 >
@@ -201,6 +200,17 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+
+            {/* Botón fijo para cerrar sesión */}
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                className="w-full justify-start"
+                onClick={handleLogoutClick}
+              >
+                <Recycle className="mr-2 h-4 w-4" />
+                <span>Cerrar Sesión</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
         <SidebarRail />

@@ -32,8 +32,6 @@ import InventoryForm from "./Inventory/components/InventoryForm";
 import { ButtonTitle } from "./ButtonTitle";
 import { TransactionForm } from "./Finances/components/TransactionForm";
 
-import { API_URL } from "@/api";
-
 interface User {
   id: number;
   username: string;
@@ -63,66 +61,20 @@ export default function WelcomePage() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [open, setOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser) {
-  //     try {
-  //       setUser(JSON.parse(storedUser));
-  //     } catch {
-  //       localStorage.removeItem("user");
-  //       navigate("/login");
-  //     }
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
   useEffect(() => {
-    const checkAuth = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
       try {
-        // const response = await fetch("/users/validate-session", {
-        const response = await fetch(`${API_URL}users/validate-session`, {
-          method: "GET",
-          credentials: "include", // Necesario para cookies
-        });
-  
-        if (response.ok) {
-          const user = await response.json();
-          setUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-          handleLogout(); // Redirigir si la sesión es inválida
-        }
-      } catch (error) {
-        console.error("Error verifying session:", error);
-        handleLogout();
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("user");
+        navigate("/login");
       }
-    };
-  
-    checkAuth();
+    } else {
+      navigate("/login");
+    }
   }, [navigate]);
 
-
-
-  const handleLogout = async () => {
-    try {
-      // await fetch("/users/logout", {
-      await fetch(`${API_URL}users/logout`, {
-        method: "POST",
-        credentials: "include", // Incluye cookies en la solicitud
-      });
-  
-      localStorage.removeItem("user");
-      setUser(null);
-      navigate("/login");
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-  
-  if (!user) {
-    return null;
-  }
-  
   useEffect(() => {
     const pageTitles: Record<ActivePage, string> = {
       dashboard: "Dashboard",
