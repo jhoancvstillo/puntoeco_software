@@ -32,6 +32,8 @@ import InventoryForm from "./Inventory/components/InventoryForm";
 import { ButtonTitle } from "./ButtonTitle";
 import { TransactionForm } from "./Finances/components/TransactionForm";
 
+import { API_URL } from "@/api";
+
 interface User {
   id: number;
   username: string;
@@ -77,7 +79,8 @@ export default function WelcomePage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/validate-session", {
+        // const response = await fetch("/users/validate-session", {
+        const response = await fetch(`${API_URL}users/validate-session`, {
           method: "GET",
           credentials: "include", // Necesario para cookies
         });
@@ -102,7 +105,8 @@ export default function WelcomePage() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/logout", {
+      // await fetch("/users/logout", {
+      await fetch(`${API_URL}users/logout`, {
         method: "POST",
         credentials: "include", // Incluye cookies en la solicitud
       });
