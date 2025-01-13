@@ -61,20 +61,66 @@ export default function WelcomePage() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [open, setOpen] = useState(false);
 
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     try {
+  //       setUser(JSON.parse(storedUser));
+  //     } catch {
+  //       localStorage.removeItem("user");
+  //       navigate("/login");
+  //     }
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const checkAuth = async () => {
+      const storedUser = localStorage.getItem("user");
+  
       try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("user");
-        navigate("/login");
+        // Verificar con el backend si la cookie y el usuario son válidos
+        const response = await fetch("/api/validate-session", {
+          method: "GET",
+          credentials: "include", // Incluye cookies en la solicitud
+        });
+  
+        if (response.ok) {
+          const user = await response.json();
+          setUser(user); // Actualiza el usuario en caso de éxito
+          if (!storedUser) {
+            localStorage.setItem("user", JSON.stringify(user));
+          }
+        } else {
+          // Si la sesión no es válida, limpia todo
+          handleLogout();
+        }
+      } catch (error) {
+        console.error("Error verifying session:", error);
+        handleLogout();
       }
-    } else {
-      navigate("/login");
-    }
+    };
+  
+    checkAuth();
   }, [navigate]);
-
+  
+  const handleLogout = () => {
+    // Elimina la cookie del backend y limpia el estado local
+    fetch("/api/logout", { method: "POST", credentials: "include" })
+      .then(() => {
+        localStorage.removeItem("user");
+        setUser(null);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
+  
+  if (!user) {
+    return null;
+  }
+  
   useEffect(() => {
     const pageTitles: Record<ActivePage, string> = {
       dashboard: "Dashboard",
