@@ -156,13 +156,13 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'puntoecowebapp.s3-website-us-east-1.amazonaws.com', '54.87.57.69']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'puntoecowebapp.s3-website-us-east-1.amazonaws.com', '52.23.155.130']
       
       
 # CORS_ALLOW_ALL_ORIGINS = True         
 CORS_ALLOWED_ORIGINS = [
     "http://puntoecowebapp.s3-website-us-east-1.amazonaws.com",
-    "http://54.87.57.69",
+    "http://52.23.155.130",
 ]
 
 MEDIA_URL = '/media/'
