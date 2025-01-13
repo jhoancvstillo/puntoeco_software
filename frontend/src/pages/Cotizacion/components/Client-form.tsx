@@ -18,14 +18,17 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon, Clock, Plus, Trash2 } from 'lucide-react';
 import { Cliente } from "@/types/client";
 import { SearchableInput } from "@/components/forms/SearchabeInput";
-import { createCotizacion } from "@/api/cotizacion";
 import { Trabajador } from "@/types/worker";
 import { cotizacionSchema, cotizacionFormProps } from "./schema";
 import { getClientsNormal } from "@/api/clients";
 import { getTrabajadores } from "@/api/trabajadores";
 import DialogConfirmation from "@/components/DialogConfirmation";
 
-export function ClientForm() {
+export interface CotizacionProps{
+  onSubmit: (data: cotizacionFormProps) => void;
+}
+
+export function ClientForm({onSubmit}: CotizacionProps) {
   const [client, setClient] = useState<Cliente[]>([]);
   const [selectedClient, setSelectedClient] = useState<Cliente | null>(null);
   const [workers, setWorkers] = useState<Trabajador[]>([]);
@@ -82,9 +85,6 @@ export function ClientForm() {
     setIsDialogOpen(false);
   };
 
-  const onSubmit = (data: cotizacionFormProps) => {
-    createCotizacion(data);
-  };
 
   const handleFormSubmit = handleSubmit((data) => {
     setFormData(data);

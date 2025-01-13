@@ -35,9 +35,7 @@ export function ExportarDocumentosForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        console.log('Values:', values);
-      const response = await descargarCertificadoDF(values);
-      console.log('Response:', response);
+      await descargarCertificadoDF(values);
       // Aquí puedes manejar la respuesta, por ejemplo, crear un enlace de descarga
     } catch (error) {
       console.error('Error al descargar:', error);

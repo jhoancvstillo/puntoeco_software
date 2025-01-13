@@ -29,7 +29,7 @@ export const getVertederoRecords = async () => {
 // Crear un nuevo registro en vertedero
 export const createVertederoRecord = async (data: { date: string; weight_kg: number; value: number }) => {
   try {
-    const response = await api.post('vertedero/vertedero', data, { headers: getHeaders() });
+    const response = await api.post('vertedero/vertedero/', data, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     console.error('Error creating vertedero record:', error);

@@ -42,6 +42,9 @@ export function ClientSection({ form, clients, onSelectClient }: ClientSectionPr
           disabled
         />
       </div>
+      <div>
+        {/* agregar nuevo conductor */}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Combustible } from '@/types/combustible';
 import { formatCLP, formatNumber } from '@/utils/CurrencyFormatter';
 
@@ -23,10 +23,8 @@ export default function GeneralSummary({ records }: GeneralSummaryProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Resumen General</CardTitle>
-      </CardHeader>
-      <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    
+      <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         <div className="text-center">
           <h3 className="text-lg font-semibold">Total Litros Consumidos</h3>
           <p className="text-3xl font-bold">{summary.totalLiters} L</p>

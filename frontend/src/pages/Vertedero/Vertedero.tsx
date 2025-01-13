@@ -32,8 +32,13 @@ export default function VertederoDashboard() {
 
   const handleNewRecord = async (newRecord: VertederoDataForm) => {
     try {
-      const createdRecord = await createVertederoRecord(newRecord);
-      setData((prevData) => [...prevData, createdRecord]);
+      await createVertederoRecord(newRecord);
+
+      // hacer nuevamnte fetch
+      const records = await getVertederoRecords();
+      setData(records || []); // Asegurar un arreglo vacío si la API devuelve undefined o null
+      
+
     } catch (error) {
       console.error("Error creating new record:", error);
     }

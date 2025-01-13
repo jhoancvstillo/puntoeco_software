@@ -16,20 +16,13 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 
-import {
-  Recycle,
-  CreditCard,
-  LineChart,
-} from "lucide-react";
+import { Recycle, CreditCard, LineChart } from "lucide-react";
 import { ActivePage } from "@/pages/WelcomePage";
 import LogoutConfirmDialog from "@/components/logout/LogoutConfirmDialog";
 import { useNavigate } from "react-router-dom";
 import Settings from "@/pages/Settings/Settings";
 import { getPermissions } from "@/api/users";
 import { footerItems, MenuItem, menuItems } from "./MenuItems";
-
-
-
 
 interface PuntoEcoSidebarProps {
   setActivePage: (page: ActivePage) => void;
@@ -40,7 +33,9 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [filtered, setFiltered] = useState<MenuItem[]>([]);
-  const [filteredFooterItems, setFilteredFooterItems] = useState<MenuItem[]>([]);
+  const [filteredFooterItems, setFilteredFooterItems] = useState<MenuItem[]>(
+    []
+  );
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(true);
@@ -58,7 +53,6 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
     navigate("/login");
   };
 
-  
   // hacer la interseccion de los permisos con los items del menu considerando subitems
 
   useEffect(() => {
@@ -67,51 +61,52 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
         const response = await getPermissions();
         const data = response.permissions;
 
+        // Filtrar los menuItems según los permisos
         const filteredMenuItems = menuItems
           .map((item) => {
             if (item.subItems) {
-              // Filtrar los subitems que coincidan con los permisos
+              // Filtrar subitems que coincidan con los permisos
               const filteredSubItems = item.subItems.filter((subItem) =>
                 data.includes(subItem.action)
               );
 
-              // Si el elemento tiene subitems filtrados, los incluimos
+              // Si tiene subitems válidos, devolver el ítem con los subitems filtrados
               if (filteredSubItems.length > 0) {
                 return { ...item, subItems: filteredSubItems };
               }
             }
 
-            // Si el elemento principal está en los permisos, lo incluimos
+            // Si el item principal está en los permisos, incluirlo
             if (data.includes(item.action)) {
               return item;
             }
 
-            // Si no cumple con los criterios, se excluye
+            // Si no cumple, excluirlo
             return null;
           })
           .filter(Boolean); // Eliminar elementos nulos
 
+        // Filtrar footerItems: incluir siempre "logout" y las intersecciones con los permisos
         const filteredFooterItems = footerItems.filter(
-          (item) => item.action === "logout" || filteredMenuItems.some((menuItem) => menuItem?.action === item.action)
+          (item) =>
+            item.action === "logout" || // Incluir siempre "logout"
+            data.includes(item.action) // Incluir intersecciones con permisos
         );
-       
-        console.log('filteredFooterItems:', filteredFooterItems);
-          
-        
-          setFiltered(filteredMenuItems.filter((item): item is MenuItem => item !== null));
-          setFilteredFooterItems(filteredFooterItems);
+
+        // Actualizar estados
+        setFiltered(
+          filteredMenuItems.filter((item): item is MenuItem => item !== null)
+        );
+        setFilteredFooterItems(filteredFooterItems);
       } catch (error) {
-        console.error('Error fetching permissions:', error);
+        console.error("Error fetching permissions:", error);
       }
     };
+
     fetchPermissions();
   }, []);
 
-
-  useEffect(() => {
-    // cargar los filtered menu items
-  }, [filtered]);
-
+  useEffect(() => {}, [filtered]);
 
   return (
     <SidebarProvider>

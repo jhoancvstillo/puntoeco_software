@@ -1,17 +1,33 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Classification, Subcategory, Transaction } from "@/types/finance";
-import { createTransaction } from "@/api/finanzas";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Classification, Subcategory } from "@/types/finance";
+import { createTransaction, getClassifications, getSubcategories } from "@/api/finanzas";
 import { toast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
+
 
 const transactionSchema = z.object({
   date_time: z.string(),
+  // transacion must be required
   transaction_type: z.enum(["Expense", "Income"]),
   classification_id: z.number(),
   subcategory_id: z.number(),
@@ -21,23 +37,13 @@ const transactionSchema = z.object({
 
 type TransactionFormData = z.infer<typeof transactionSchema>;
 
+
 interface TransactionFormProps {
-  onSubmit?: (data?: TransactionFormData) => void;
-  classifications: Classification[];
-  subcategories: Subcategory[];
-  onCancel: () => void;
-  initialData?: Transaction;
+  onChange: (value: boolean) => void;
+
 }
 
-
-
-
-export const TransactionForm: React.FC<TransactionFormProps> = ({
-  onSubmit,
-  classifications,
-  subcategories,
-  onCancel
-}) => {
+export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange }) => {
   const form = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -50,6 +56,42 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
     },
   });
 
+  const [classifications, setClassifications] = useState<Classification[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+
+  useEffect(() => {
+    fetchClassifications();
+    fetchSubcategories();
+  }, []);
+
+  const fetchClassifications = async () => {
+    try {
+      const data = await getClassifications();
+      setClassifications(data);
+    } catch (error) {
+      console.error("Error fetching classifications:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load classifications.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchSubcategories = async () => {
+    try {
+      const data = await getSubcategories();
+      setSubcategories(data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load subcategories.",
+        variant: "destructive",
+      });
+    }
+  };
+
   // 1. "Miramos" el valor seleccionado de la clasificación:
   const watchClassificationId = form.watch("classification_id");
 
@@ -59,6 +101,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
   );
 
   const handleSubmit = async (data: TransactionFormData) => {
+
     try {
       const formattedData = {
         date_time: new Date(data.date_time).toISOString(),
@@ -68,22 +111,30 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
         comment: data.comment || "",
         price: data.price,
       };
-  
+
       await createTransaction(formattedData);
-      toast({ title: "Success", description: "Transaction created successfully." });
-      if (onSubmit) {
-        onSubmit(data); // Pasar datos si onSubmit está definido
-      }
+      toast({
+        title: "Success",
+        description: "Transaction created successfully.",
+      });
+
+     
+      
     } catch (error) {
       console.error("Error creating transaction:", error);
-      toast({ title: "Error", description: "Failed to create transaction.", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to create transaction.",
+        variant: "destructive",
+      });
     }
+    form.reset();
+    onChange(false);
   };
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        
         {/* Fecha y Hora */}
         <FormField
           control={form.control}
@@ -217,7 +268,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
         />
 
         <div className="flex justify-end space-x-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline">
             Cancelar
           </Button>
           <Button type="submit">Guardar</Button>

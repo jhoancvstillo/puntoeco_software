@@ -35,7 +35,8 @@ export default function RecordForm({ onSubmit, initialData }: RecordFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      date: "",
+      // default date today
+      date: new Date().toISOString().split("T")[0],
       weight_kg: 0,
       value: 0,
     },

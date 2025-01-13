@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { ClassificationManager } from "./components/ClassificationMananger";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { Transaction, Classification, Subcategory } from "@/types/finance";
@@ -12,14 +11,12 @@ import {
   getClassifications,
   getSubcategories,
 } from "@/api/finanzas";
-import { AddTransactionDialog } from "./components/AddTransactionDialog";
 import GenericTable from "@/components/GenericTable";
 
 export default function FinanceManager() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [classifications, setClassifications] = useState<Classification[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("transactions");
 
   useEffect(() => {
@@ -102,10 +99,7 @@ export default function FinanceManager() {
     }
   };
 
-  const handleTransactionSubmit = () => {
-    setIsDialogOpen(false);
-    fetchTransactions();
-  };
+ 
 
   return (
     <div className="container mx-auto p-4">
@@ -118,11 +112,7 @@ export default function FinanceManager() {
 
         {/* Pestaña de Transacciones */}
         <TabsContent value="transactions">
-          <div className="flex justify-end mb-4">
-            <Button onClick={() => setIsDialogOpen(true)}>
-              Agregar Transacción
-            </Button>
-          </div>
+        
          
           <GenericTable
             initialRecords={transactions}
@@ -161,14 +151,6 @@ export default function FinanceManager() {
         </TabsContent>
       </Tabs>
 
-      {/* Diálogo para agregar Transacción */}
-      <AddTransactionDialog
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
-        handleTransactionSubmit={handleTransactionSubmit}
-        classifications={classifications}
-        subcategories={subcategories}
-      />
     </div>
   );
 }

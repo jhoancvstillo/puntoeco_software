@@ -73,6 +73,9 @@ export function VehicleSection({
         />
       </div>
 
+        
+
+
       <div className="space-y-2">
         <Label htmlFor="rut-conductor">RUT Conductor</Label>
         <Input

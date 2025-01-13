@@ -45,7 +45,8 @@ export function AddWorkerForm({ onSubmit }: AddWorkerFormProps) {
   const form = useForm<WorkerFormData>({
     resolver: zodResolver(workerSchema),
     defaultValues: {
-      photo: undefined,
+      // photo can be null because it's optional
+      photo: null,
       name: "",
       position: "",
       join_date: "",

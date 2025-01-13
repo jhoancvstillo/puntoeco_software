@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { Producto } from '@/pages/Inventory/types/inventory';
-import { ProductManagerFormProps } from '@/pages/Inventory/components/ProductManager';
+// import { ProductManagerFormProps } from '@/pages/Inventory/components/ProductManager';
 import { API_URL } from '.';
+// import { ProductManagerFormProps } from '@/pages/Inventory/components/ProductManager';
 
+import { ProductManagerFormProps } from '@/pages/Inventory/components/types';
 // Crear una instancia de Axios con configuración base
 const api = axios.create({
   baseURL: API_URL,
@@ -240,6 +242,29 @@ export const updateEntity = async (id: number, data: any) => {
     }
   } catch (error) {
     console.error('Error updating entity:', error);
+    throw error;
+  }
+};
+
+
+// Movimiento de stock
+
+export const moveStock = async (data: any) => {
+  try {
+    const response = await api.post('bodega/movimientos/', data, { headers: getHeaders() });
+    return response.data;
+  } catch (error) {
+    console.error('Error moving stock:', error);
+    throw error;
+  }
+};
+
+export const getMovimientos = async () => {
+  try {
+    const response = await api.get('bodega/movimientos/', { headers: getHeaders() });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching movements:', error);
     throw error;
   }
 };

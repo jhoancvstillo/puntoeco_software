@@ -59,7 +59,6 @@ export const updateCotizacion = async (id: number, data: Cotizacion) => {
 export const deleteCotizacion = async (id: number) => {
   try {
     const response = await axios.delete(`${API_URL}cotizaciones/cotizaciones/${id}/`, { headers: getHeaders() });
-    console.log('Deleted cotizacion:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error deleting cotizacion:', error);

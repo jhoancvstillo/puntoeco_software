@@ -20,7 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { config } from "process";
 
 const formSchema = z.object({
   username: z.string().min(3, {

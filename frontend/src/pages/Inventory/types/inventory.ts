@@ -18,6 +18,17 @@ export interface Producto {
     cantidad: number;         // Cantidad de productos en stock
     stock_minimo: number;     // Stock mínimo requerido
   }[]; // Lista de stocks relacionados con el producto
+  tipo?: string; // Add this line
+  fecha?: string; // Add this line
+  user?: string; // Add this line
+  cantidad?: number; // Add this line
+  productoId?: number; // Add this line
+  stockId?: number; // Add this line
+  stock?: number; // Add this line
+  stock_minimo?: number; // Add this line
+  ubicacion?: string; // Add this line
+  observacion?: string; // Add this line
+  producto?: string; // Add this line
 }
 
 

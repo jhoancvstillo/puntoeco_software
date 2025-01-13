@@ -11,12 +11,11 @@ interface EditTransactionDialogProps {
   subcategories: Subcategory[];
 }
 
+
+
 export const EditTransactionDialog: React.FC<EditTransactionDialogProps> = ({
   transaction,
   onClose,
-  onUpdate,
-  classifications,
-  subcategories,
 }) => {
   if (!transaction) return null;
 
@@ -27,16 +26,8 @@ export const EditTransactionDialog: React.FC<EditTransactionDialogProps> = ({
           <DialogTitle>Editar Transacción</DialogTitle>
         </DialogHeader>
         <TransactionForm
-          initialData={transaction}
-          onSubmit={(data) => {
-            if (data) {
-              onUpdate({ ...transaction, ...data });
-            }
-            onClose();
-          }}
-          classifications={classifications}
-          subcategories={subcategories}
-          onCancel={onClose}
+        onChange={onClose}
+
         />
       </DialogContent>
     </Dialog>

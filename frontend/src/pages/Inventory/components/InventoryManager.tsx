@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getProductos, getCategorias, getMarcas } from "@/api/productos";
+import { getProductos, getCategorias, getMarcas, getMovimientos } from "@/api/productos";
 import { Producto, Categoria, Marca } from "../types/inventory";
 import { ProductManager } from './ProductManager';
 import { CategoryManager } from './CategoryManager';
@@ -33,20 +33,26 @@ export function InventoryManager() {
   const [marcas, setMarcas] = useState<Marca[]>([
     { id: 0, nombre: "", descripcion: "" },
   ]);
+
+  const [movimientos, setMovimientos] = useState<any[]>([]);
   
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productosData, categoriasData, marcasData] = await Promise.all([
+        const [productosData, categoriasData, marcasData, movimientosData] = await Promise.all([
           getProductos(),
           getCategorias(),
           getMarcas(),
+          getMovimientos()
         ]);
         setProductos(productosData);
         setCategorias(categoriasData);
         setMarcas(marcasData);
+        setMovimientos(movimientosData);
+
+        console.log("Movimientos", movimientosData);
       } catch (error) {
         console.error("Error al obtener datos", error);
       }
@@ -81,30 +87,35 @@ export function InventoryManager() {
         <TabsContent value="tabla">
           <div className="space-y-4">
       
-            <GenericTable  
+          <GenericTable  
             initialRecords={
-              productos.map((p) => ({
-                ...p,
-                marca: p.marca.nombre,
-                categoria: p.categoria.nombre,
-                stocks: p.stocks.reduce((acc, stock) => acc + stock.cantidad, 0),
-                ubicacion: p.stocks.map((stock) => stock.ubicacion).join(", "),
+              movimientos.map((movimiento) => ({
+                id: movimiento.id,
+                fecha: movimiento.created_at.split("T")[0] ,
+                user: movimiento.user,
+                tipo: movimiento.movement_type === "add" ? "Ingreso" : "Retiro",
+                cantidad: movimiento.quantity,
+                producto: movimiento.producto.nombre,
+                marca: movimiento.producto.marca.nombre,
+                observacion: movimiento.observation,
               }))
             }
             columns={[
-              { key: "nombre", header: "Nombre" },
-              { key: "categoria", header: "Categoría" },
+              { key: "id", header: "ID" },
+              { key: "fecha", header: "Fecha" },
+              { key: "user", header: "Usuario" },
+              { key: "tipo", header: "Tipo" },
+              { key: "cantidad", header: "Cantidad" },
+              { key: "producto", header: "Producto" },
               { key: "marca", header: "Marca" },
-              { key: "precio_por_unidad", header: "Precio por Unidad" },
-              { key: "stocks", header: "Stocks" },
-              { key: "ubicacion", header: "Ubicación" },
-              
+              { key: "observacion", header: "Observación" },
             ]}
-            title="Tabla General"
+            title="Historial de Movimientos"
             description="Descripción de la tabla general"
             onDelete={() => {}
             }
             />
+
           </div>
         </TabsContent>
       </Tabs>

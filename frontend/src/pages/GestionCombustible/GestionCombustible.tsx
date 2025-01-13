@@ -1,12 +1,12 @@
 import { DashTableForm } from '@/components/DashTableForm';
 import GenericTable from '@/components/GenericTable';
 import { useCallback, useEffect, useState } from 'react';
-import { conductoresAPI } from '@/api/pesaje';
 import { Combustible } from '@/types/combustible';
 import { deleteCombustible, getCombustibles } from '@/api/combustible';
 import { FuelForm } from './fuelForm';
 import FuelDashboard from './FuelDashboard';
 import { Conductor } from '@/types/conductor';
+import { getTrabajadores } from '@/api/trabajadores';
 
 
 const COLUMNS_TABLE_CERTIFICATES: Array<{key: keyof Combustible; header: string}> = [
@@ -31,12 +31,13 @@ export default function Pesaje() {
     const fetchData = async () => {
       try {
         const [conductoresData, transaccionesData] = await Promise.all([
-          conductoresAPI.getAll(),
+          getTrabajadores(),
           getCombustibles(),
+  
         ]);
-
-        setConductores(conductoresData);
+        setConductores(conductoresData.filter((c: Conductor) => c.is_driver).map((c: Conductor) => ({id: c.id, nombre: c.name})));
         setTransacciones(transaccionesData);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -46,8 +47,6 @@ export default function Pesaje() {
 
 
   const handleFormSubmit = useCallback(async (data: Combustible) => {
-    console.log('Submit data:', data);
-    // Actualizar la lista de transacciones
     setTransacciones(prevTransacciones => [...prevTransacciones, data]);
   }, []);
 

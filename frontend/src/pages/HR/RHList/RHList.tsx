@@ -55,7 +55,6 @@ export function RHList() {
 
 
   const handleOnSubmit = async (newWorker: WorkerFormData) => {
-    console.log("Se va a enviar: ", newWorker);
   
     // (1) Crear FormData
     const formData = new FormData();

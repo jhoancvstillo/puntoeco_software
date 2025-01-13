@@ -159,7 +159,6 @@ class UserViewSet(viewsets.ViewSet):
             for perm in request.user.get_all_permissions()
             if perm.split('.')[-1] in PERMISSIONS
         ]
-
         return Response({
             "permissions": list(permissions)
         }, status=status.HTTP_200_OK)

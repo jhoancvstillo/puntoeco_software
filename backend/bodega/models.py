@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.conf import settings
+
 # Categoría
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -18,22 +20,12 @@ class Marca(models.Model):
         return self.nombre
 
 
-# # Modelo
-# class Modelo(models.Model):
-#     nombre = models.CharField(max_length=100)
-#     descripcion = models.TextField(null=True, blank=True)
-#     marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="modelos")
-
-#     def __str__(self):
-#         return f"{self.nombre} - {self.marca.nombre}"
-
 
 # Productos
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="productos")
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="productos")
-    # modelo = models.ForeignKey(Modelo, on_delete=models.CASCADE, related_name="productos", null=True, blank=True)
     precio_por_unidad = models.DecimalField(max_digits=10, decimal_places=2)
 
 
@@ -50,3 +42,28 @@ class Stock(models.Model):
 
     def __str__(self):
         return f"Stock de {self.producto.nombre} en {self.ubicacion}: {self.cantidad}"
+
+class StockMovement(models.Model):
+    class MovementType(models.TextChoices):
+        ADD = 'add', 'Agregar'
+        REMOVE = 'remove', 'Retirar'
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="movimientos")
+    stock_afectado = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="movimientos")
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='movimientos')
+    
+    movement_type = models.CharField(max_length=6, choices=MovementType.choices)
+    quantity = models.PositiveIntegerField()
+    observation = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+
+    def __str__(self):
+        return f"{self.movement_type.upper()} {self.quantity} de {self.producto.nombre} por {self.user} el {self.created_at}"
