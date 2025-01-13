@@ -3,7 +3,6 @@ import { PesajeProps } from '@/pages/Pesaje/components/form/schema';
 import axios from 'axios';
 import { API_URL } from '.';
 
-// const BASE_URL = 'http://localhost:8000/pesajes';
 
 // Crear una instancia de Axios con configuración base
 const api = axios.create({

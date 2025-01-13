@@ -16,7 +16,7 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 
-import { Recycle, CreditCard, LineChart } from "lucide-react";
+import { Recycle, CreditCard, LineChart, Settings2 } from "lucide-react";
 import { ActivePage } from "@/pages/WelcomePage";
 import LogoutConfirmDialog from "@/components/logout/LogoutConfirmDialog";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,6 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
       try {
         const response = await getPermissions();
         const data = response.permissions;
-        console.log("data", data);
 
         // Filtrar los menuItems según los permisos
         const filteredMenuItems = menuItems
@@ -207,7 +206,7 @@ const PuntoEcoSidebar: React.FC<PuntoEcoSidebarProps> = ({ setActivePage }) => {
                 className="w-full justify-start"
                 onClick={handleLogoutClick}
               >
-                <Recycle className="mr-2 h-4 w-4" />
+                <Settings2 className="mr-2 h-4 w-4" />
                 <span>Cerrar Sesión</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

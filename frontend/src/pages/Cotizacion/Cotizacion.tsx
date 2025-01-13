@@ -46,7 +46,6 @@ export default function Page() {
     const fetchData = async () => {
       try {
         const [certificatesData] = await Promise.all([getCotizaciones()]);
-        console.log(certificatesData);
         setCertificados(
           certificatesData.map((certificate: any) => ({
             id: certificate.id,
