@@ -128,8 +128,10 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange, onCl
         variant: "destructive",
       });
     }
+
     form.reset();
     onChange(false);
+    onClick();
   };
 
   return (
@@ -271,9 +273,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange, onCl
           <Button type="button" variant="outline" >
             Cancelar
           </Button>
-          <Button type="submit" onClick={
-            onClick
-          }>Guardar</Button>
+          <Button type="submit">Guardar</Button>
         </div>
       </form>
     </Form>

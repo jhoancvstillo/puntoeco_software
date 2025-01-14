@@ -38,7 +38,7 @@ export function InventoryManager() {
   const [movimientos, setMovimientos] = useState<any[]>([]);
   
   const refresh = useTableStore((state) => state.refreshTable2);
-
+  console.log("refresh desde InventoryManager", refresh);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,7 +73,7 @@ export function InventoryManager() {
     }
     fetchMovimientos();
   }
-  , [refresh  ]);
+  , [refresh ]);
 
 
   return (

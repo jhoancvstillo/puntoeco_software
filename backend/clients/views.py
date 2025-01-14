@@ -6,7 +6,7 @@ from .serializers import ClientsSerializer, ConductorSerializer
 from .models import Clients, Conductor
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
-from .permissions import HasClientsAccess
+from .permissions import HasClientsAccess, HasClientOrPesajeAccess
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -16,7 +16,7 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
 class ClientsViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated, HasClientsAccess]
+    permission_classes = [IsAuthenticated, HasClientOrPesajeAccess]
     queryset = Clients.objects.all()
     serializer_class = ClientsSerializer
     pagination_class = CustomPagination
@@ -47,12 +47,12 @@ class ClientsViewSet(ModelViewSet):
             return Response({"detail": "Client not found."}, status=status.HTTP_404_NOT_FOUND)
 
 class ClientsNormal(ModelViewSet):
-    permission_classes = [HasClientsAccess]
+    permission_classes = [HasClientOrPesajeAccess]
     queryset = Clients.objects.all()
     serializer_class = ClientsSerializer
 
 class ConductorViewSet(ModelViewSet):
-    permission_classes = [HasClientsAccess]
+    permission_classes = [HasClientOrPesajeAccess]
     queryset = Conductor.objects.all()
     serializer_class = ConductorSerializer
 

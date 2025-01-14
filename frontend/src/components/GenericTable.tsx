@@ -51,6 +51,7 @@ export default function GenericTable<T extends Record<string, any>>({
   const [recordToDelete, setRecordToDelete] = useState<T | null>(null);
 
   const itemsPerPage = 10;
+  
 
   const parseDate = (date: string | undefined | null): Date => {
     if (!date || typeof date !== 'string') {

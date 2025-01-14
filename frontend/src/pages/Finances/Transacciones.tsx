@@ -21,18 +21,20 @@ export default function FinanceManager() {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [activeTab, setActiveTab] = useState("transactions");
   const refresh = useTableStore((state) => state.refreshTable1);
+  console.log("refresh desde transacciones", refresh);
 
   useEffect(() => {
-    console.log("se hizo trigger", refresh)
-    fetchTransactions();
+    // fetchTransactions();
     fetchClassifications();
     fetchSubcategories();
-  }, [refresh]);
+  },[refresh]);
 
-  const fetchTransactions = async () => {
+
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
     try {
       const data = await getTransactions();
-  
       setTransactions(
         data.map((transaction : Transaction) => ({
           id: transaction.id,
@@ -42,7 +44,9 @@ export default function FinanceManager() {
           description: transaction.comment,
           amount: transaction.price,
         }))
+
       );
+
     } catch (error) {
       console.error("Error fetching transactions:", error);
       toast({
@@ -52,6 +56,8 @@ export default function FinanceManager() {
       });
     }
   };
+  fetchTransactions();
+  }, [refresh]);
 
   const fetchClassifications = async () => {
     try {
@@ -116,8 +122,6 @@ export default function FinanceManager() {
 
         {/* Pestaña de Transacciones */}
         <TabsContent value="transactions">
-        
-         
           <GenericTable
             initialRecords={transactions}
             columns={[

@@ -65,8 +65,7 @@ export default function WelcomePage() {
   const [open, setOpen] = useState(false);
   const toggleRefreshFinance = useTableStore((state) => state.toggleRefreshTable1);
   const toggleRefreshInventory = useTableStore((state) => state.toggleRefreshTable2);
-
-
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

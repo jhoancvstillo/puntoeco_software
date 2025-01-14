@@ -10,11 +10,11 @@ from .serializers import (
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-from .permissions import HasTrabajadoresAccess
+from .permissions import HasTrabajadoresAccess, HasTrabajadorOrCombustibleAcess
 
 # Trabajador ViewSet
 class TrabajadorViewSet(ModelViewSet):
-    permission_classes = [HasTrabajadoresAccess]
+    permission_classes = [HasTrabajadorOrCombustibleAcess]
     queryset = Trabajador.objects.all()
     serializer_class = TrabajadorSerializer
 
