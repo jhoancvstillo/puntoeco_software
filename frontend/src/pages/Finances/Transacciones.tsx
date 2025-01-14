@@ -12,18 +12,22 @@ import {
   getSubcategories,
 } from "@/api/finanzas";
 import GenericTable from "@/components/GenericTable";
+import { useTableStore } from "../tableStore";
+
 
 export default function FinanceManager() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [classifications, setClassifications] = useState<Classification[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [activeTab, setActiveTab] = useState("transactions");
+  const refresh = useTableStore((state) => state.refreshTable1);
 
   useEffect(() => {
+    console.log("se hizo trigger", refresh)
     fetchTransactions();
     fetchClassifications();
     fetchSubcategories();
-  }, []);
+  }, [refresh]);
 
   const fetchTransactions = async () => {
     try {

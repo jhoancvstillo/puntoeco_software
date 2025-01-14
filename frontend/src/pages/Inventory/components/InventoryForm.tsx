@@ -23,7 +23,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { InventoryFormProps, InventoryFormSchema } from "./InventorySchema";
@@ -34,8 +33,9 @@ import { ProductSelect } from "./ProductSelect";
 
 interface InventoryProps {
   onChange: (value: boolean) => void;
+  onClick: () => void;
 }
-export default function InventoryForm({ onChange }: InventoryProps) {
+export default function InventoryForm({ onChange, onClick}: InventoryProps) {
   const form = useForm<InventoryFormProps>({
     resolver: zodResolver(InventoryFormSchema),
     defaultValues: {
@@ -175,18 +175,17 @@ export default function InventoryForm({ onChange }: InventoryProps) {
                 )}
               />
             </div>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter>
-        <Button
+            <Button
           type="submit"
-          onClick={form.handleSubmit(onSubmit)}
           className="w-full"
+          onClick={onClick}
         >
           Actualizar Inventario
         </Button>
-      </CardFooter>
+          </form>
+        </Form>
+      </CardContent>
+       
     </Card>
   );
 }

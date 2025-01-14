@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
-import { es } from "date-fns/locale"
-import { CalendarIcon, Clock } from 'lucide-react'
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { CalendarIcon, Clock } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,35 +15,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
-import { SearchableInput } from "@/components/forms/SearchabeInput"
-import { fuelFormSchema, type FuelFormValues } from "./schemas"
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { SearchableInput } from "@/components/forms/SearchabeInput";
+import { fuelFormSchema, type FuelFormValues } from "./schemas";
 
-import { createCombustible } from "@/api/combustible"
-import { Combustible, CombustibleSinTotal } from "@/types/combustible"
-import { Conductor } from "@/types/conductor"
+import { createCombustible } from "@/api/combustible";
+import { Combustible, CombustibleSinTotal } from "@/types/combustible";
+import { Conductor } from "@/types/conductor";
 
-import DialogConfirmation from "@/components/DialogConfirmation"
-
+import DialogConfirmation from "@/components/DialogConfirmation";
 
 interface FuelFormProps {
-  conductores: Conductor[],
+  conductores: Conductor[];
   // para enviar al componente padre la información del formulario
-  onFormSubmit: (data: Combustible) => void
+  onFormSubmit: (data: Combustible) => void;
 }
 
-export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [formData, setFormData] = useState<FuelFormValues | null>(null)
+export function FuelForm({ conductores, onFormSubmit }: FuelFormProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState<FuelFormValues | null>(null);
 
   const form = useForm<FuelFormValues>({
     resolver: zodResolver(fuelFormSchema),
@@ -53,7 +52,7 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
       litros: 0,
       valor_litro: 0,
     },
-  })
+  });
 
   const transformData = (data: FuelFormValues): CombustibleSinTotal => {
     return {
@@ -65,34 +64,37 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
       litros: data.litros.toString(),
       valor_litro: data.valor_litro.toString(),
       tarjeta: data.tarjeta,
-      observaciones: data.observaciones || ""
-    }
-  }
+      observaciones: data.observaciones || "",
+    };
+  };
 
   function onSubmit(data: FuelFormValues) {
-    setFormData(data)
-    setIsDialogOpen(true)
+    setFormData(data);
+    setIsDialogOpen(true);
+    // console.log("se esta enviando en onSubmit", data)
   }
 
   function handleConfirm() {
     if (formData) {
-      const transformedData = transformData(formData)
-      console.log("Datos enviados desde el formulario:", transformedData)
+      const transformedData = transformData(formData);
+      console.log("se va a enviar: ", transformedData);
       createCombustible(transformedData)
         .then((response) => {
-          console.log("Combustible creado:", response)
-          setIsDialogOpen(false)
-          form.reset()
-          onFormSubmit(response)
+          setIsDialogOpen(false);
+          form.reset();
+          onFormSubmit(response);
         })
         .catch((error) => {
-          console.error("Error al crear combustible:", error)
-          setIsDialogOpen(false)
-        })
+          console.error("Error al crear combustible:", error);
+          setIsDialogOpen(false);
+        });
     }
   }
 
-  const total = form.watch("litros") * form.watch("valor_litro") || 0
+  const total_neto = form.watch("litros") * form.watch("valor_litro") || 0;
+  const iva = total_neto * 0.19;
+  const total = total_neto + iva;
+  // total = litros * valor_litro + iva
 
   return (
     <Form {...form}>
@@ -226,7 +228,7 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           {/* Litros */}
           <FormField
             control={form.control}
@@ -235,18 +237,32 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
               <FormItem>
                 <FormLabel>Litros</FormLabel>
                 <FormControl>
-                  <Input 
+                  <Input
                     type="text"
                     inputMode="decimal"
                     placeholder="0"
                     {...field}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[^0-9.]/g, '')
-                      const parts = value.split('.')
-                      if (parts.length > 2) {
-                        return
+                      // Obtener el valor ingresado
+                      let value = e.target.value;
+
+                      // Permitir solo números y un único punto decimal
+                      value = value.replace(/[^0-9.]/g, "");
+
+                      // Si hay más de un punto decimal, ignorar el cambio
+                      if ((value.match(/\./g) || []).length > 1) {
+                        return;
                       }
-                      field.onChange(value === '' ? '' : parseFloat(value))
+
+                      // Actualizar el campo con el valor limpio
+                      field.onChange(value === "" ? "" : value);
+                    }}
+                    onBlur={(e) => {
+                      // Al salir del campo, convertir a número si es válido
+                      const value = parseFloat(e.target.value);
+                      if (!isNaN(value)) {
+                        field.onChange(value);
+                      }
                     }}
                   />
                 </FormControl>
@@ -263,18 +279,32 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
               <FormItem>
                 <FormLabel>Valor por Litro</FormLabel>
                 <FormControl>
-                  <Input 
+                  <Input
                     type="text"
                     inputMode="decimal"
                     placeholder="0"
                     {...field}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[^0-9.]/g, '')
-                      const parts = value.split('.')
-                      if (parts.length > 2) {
-                        return
+                      // Obtener el valor ingresado
+                      let value = e.target.value;
+
+                      // Permitir solo números y un único punto decimal
+                      value = value.replace(/[^0-9.]/g, "");
+
+                      // Si hay más de un punto decimal, ignorar el cambio
+                      if ((value.match(/\./g) || []).length > 1) {
+                        return;
                       }
-                      field.onChange(value === '' ? '' : parseFloat(value))
+
+                      // Actualizar el campo con el valor limpio
+                      field.onChange(value === "" ? "" : value);
+                    }}
+                    onBlur={(e) => {
+                      // Al salir del campo, convertir a número si es válido
+                      const value = parseFloat(e.target.value);
+                      if (!isNaN(value)) {
+                        field.onChange(value);
+                      }
                     }}
                   />
                 </FormControl>
@@ -282,16 +312,38 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
               </FormItem>
             )}
           />
+          {/* Totalneto  */}
+          <FormItem>
+            <FormLabel>Total Neto</FormLabel>
+            <Input
+              value={total_neto.toLocaleString("es-CL", {
+                style: "currency",
+                currency: "CLP",
+              })}
+              disabled
+            />
+          </FormItem>
+          {/* IVA */}
+          <FormItem>
+            <FormLabel>IVA</FormLabel>
+            <Input
+              value={iva.toLocaleString("es-CL", {
+                style: "currency",
+                currency: "CLP",
+              })}
+              disabled
+            />
+          </FormItem>
+          {/* Tota  l Neto */}
 
-          {/* Total */}
           <FormItem>
             <FormLabel>Total</FormLabel>
-            <Input 
-              value={total.toLocaleString('es-CL', { 
-                style: 'currency', 
-                currency: 'CLP' 
-              })} 
-              disabled 
+            <Input
+              value={total.toLocaleString("es-CL", {
+                style: "currency",
+                currency: "CLP",
+              })}
+              disabled
             />
           </FormItem>
         </div>
@@ -304,7 +356,7 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
             <FormItem>
               <FormLabel>Observaciones</FormLabel>
               <FormControl>
-                <Textarea 
+                <Textarea
                   placeholder="Observaciones adicionales"
                   className="min-h-[100px]"
                   {...field}
@@ -320,31 +372,34 @@ export function FuelForm( { conductores, onFormSubmit }: FuelFormProps ) {
         </Button>
       </form>
 
-      <DialogConfirmation 
-      list= {[
-        { key: "fecha", header: "Fecha" },
-        { key: "hora", header: "Hora" },
-        { key: "guia", header: "Guía" },
-        { key: "conductor", header: "Conductor" },
-        { key: "patente", header: "Patente" },
-        { key: "tarjeta", header: "Tarjeta" },
-        { key: "litros", header: "Litros" },
-        { key: "valor_litro", header: "Valor por Litro" },
-        { key: "observaciones", header: "Observaciones" },
-      ]}
-      isDialogOpen={isDialogOpen}
-      setIsDialogOpen={setIsDialogOpen}
-      formData={formData ? {
-        ...formData,
-        conductor: formData.conductor.nombre,
-        fecha: formData.fecha ? format(formData.fecha, "P", { locale: es }) : null,
-      } : null
-      }
-      handleDialogCancel={() => setIsDialogOpen(false)}
-      handleDialogConfirm={handleConfirm}
+      <DialogConfirmation
+        list={[
+          { key: "fecha", header: "Fecha" },
+          { key: "hora", header: "Hora" },
+          { key: "guia", header: "Guía" },
+          { key: "conductor", header: "Conductor" },
+          { key: "patente", header: "Patente" },
+          { key: "tarjeta", header: "Tarjeta" },
+          { key: "litros", header: "Litros" },
+          { key: "valor_litro", header: "Valor por Litro" },
+          { key: "observaciones", header: "Observaciones" },
+        ]}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        formData={
+          formData
+            ? {
+                ...formData,
+                conductor: formData.conductor.nombre,
+                fecha: formData.fecha
+                  ? format(formData.fecha, "P", { locale: es })
+                  : null,
+              }
+            : null
+        }
+        handleDialogCancel={() => setIsDialogOpen(false)}
+        handleDialogConfirm={handleConfirm}
       />
-      
     </Form>
-  )
+  );
 }
-

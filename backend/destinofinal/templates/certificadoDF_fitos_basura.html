@@ -140,6 +140,27 @@
             position: relative;
             z-index: 1;
         }
+
+
+        .combined-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .combined-table th,
+  .combined-table td {
+    border: 1px solid #e5e5e5;
+    padding: 0.5rem;
+    text-align: justify;
+  }
+
+  .combined-table th {
+    font-weight: 600;
+  }
+
+ 
+
     </style>
   </head>
   <body>
@@ -151,7 +172,6 @@
           <div class="title">
             <h1>CERTIFICADO</h1>
             <h2>DE DISPOSICIÓN FINAL</h2>
-            <h3>MATERIAL RECUPERADO</h3>
           </div>
           <div style="width: 80px"></div>
         </div>
@@ -176,36 +196,71 @@
           correspondiente a {{categoria}} que ha generado en sus instalaciones, según
           Ley 20.920 REP.
         </p>
-        <table>
-          <thead>
-            <tr>
-              <th>MATERIAL ENTREGADO</th>
-              <th>{{cantidad_kg}} kg</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>CLASIFICACIÓN CÓDIGO RESINAS</td>
-              <td>{{clasificacion}}</td>
-            </tr>
-            <tr>
-              <td>SEGÚN GUÍA N°</td>
-              <td>{{numero_guia}}</td>
-            </tr>
-            <tr>
-              <td>CERTIFICADO N°</td>
-              <td>{{numero_certificado}}</td>
-            </tr>
-            <tr>
-              <td>DESTINO FINAL</td>
-              <td>{{destino_final}}</td>
-            </tr>
-            <tr>
-              <td>PERÍODO</td>
-              <td>{{fecha}}</td>
-            </tr>
-          </tbody>
-        </table>
+          <!-- Info Table -->
+          <table class="combined-table">
+            <thead>
+              <tr>
+                <th colspan="5">SEGÚN GUIA N°</th>
+                <th colspan="5">{{ numero_guia }}</th>
+              </tr>
+              <tr>
+                <th colspan="5">DESTINO FINAL</th>
+                <th colspan="5">{{ destino_final }}</th>
+              </tr>
+              <tr>
+                <th colspan="5">PERIODO</th>
+                <th colspan="5">{{ fecha }}</th>
+              </tr>
+            </thead>
+                      <tbody>
+              <tr>
+                <th>LITROS</th>
+                <th>0.1</th>
+                <th>0.25</th>
+                <th>0.5</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>10</th>
+              </tr>
+              <tr>
+                <td>VALORES</td>
+                <td>{{ 01l }}</td>
+                <td>{{ 025l }}</td>
+                <td>{{ 05l }}</td>
+                <td>{{ 1l }}</td>
+                <td>{{ 2l }}</td>
+                <td>{{ 3l }}</td>
+                <td>{{ 4l }}</td>
+                <td>{{ 5l }}</td>
+                <td>{{ 10l }}</td>
+              </tr>
+              <tr>
+                <th>LITROS</th>
+                <th>15</th>
+                <th>20</th>
+                <th>25</th>
+                <th>30</th>
+                <th>60</th>
+                <th>100</th>
+                <th>200</th>
+                <th colspan="2">TAPAS</th>
+              </tr>
+              <tr>
+                <td>VALORES</td>
+                <td>{{ 15l }}</td>
+                <td>{{ 20l }}</td>
+                <td>{{ 25l }}</td>
+                <td>{{ 30l }}</td>
+                <td>{{ 60l }}</td>
+                <td>{{ 100l }}</td>
+                <td>{{ 200l }}</td>
+                <td colspan="2">{{ tapas }}</td>
+              </tr>
+            </tbody>
+                      </table>
         <p>
           Se extiende el presente Certificado a solicitud del interesado para
           los fines que estime conveniente.

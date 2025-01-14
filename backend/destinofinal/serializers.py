@@ -15,6 +15,7 @@ class CertificadoSerializer(serializers.ModelSerializer):
             'fecha',
             'numero_guia',
             'destino_final',
+            'esBasura',
             'file',  # Campo para almacenar el PDF generado
         ]
 

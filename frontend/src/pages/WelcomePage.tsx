@@ -32,6 +32,9 @@ import InventoryForm from "./Inventory/components/InventoryForm";
 import { ButtonTitle } from "./ButtonTitle";
 import { TransactionForm } from "./Finances/components/TransactionForm";
 
+import { useTableStore } from "./tableStore";
+
+
 interface User {
   id: number;
   username: string;
@@ -60,6 +63,10 @@ export default function WelcomePage() {
   const [title, setTitle] = useState("Dashboard");
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [open, setOpen] = useState(false);
+  const toggleRefreshFinance = useTableStore((state) => state.toggleRefreshTable1);
+  const toggleRefreshInventory = useTableStore((state) => state.toggleRefreshTable2);
+
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -176,7 +183,7 @@ export default function WelcomePage() {
                     title="Añadir transacción"
                     description="Ingrese los detalles de la transacción."
                   >
-                    <TransactionForm onChange={setOpen} />
+                    <TransactionForm onChange={setOpen} onClick={toggleRefreshFinance} />
                   </ButtonTitle>
                 )}
                 {activePage === "products" && (
@@ -185,7 +192,7 @@ export default function WelcomePage() {
                     setOpen={setOpen}
                     buttonName="Transacción"
                   >
-                    <InventoryForm onChange={setOpen} />
+                    <InventoryForm onChange={setOpen} onClick={toggleRefreshInventory} />
                   </ButtonTitle>
                 )}
                 <Button

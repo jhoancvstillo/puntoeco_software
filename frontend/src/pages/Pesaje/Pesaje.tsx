@@ -103,7 +103,6 @@ export default function Pesaje() {
     }
   }
 
-  console.log(certificadosWithNames)
   return (
     <div>
       <DashTableForm

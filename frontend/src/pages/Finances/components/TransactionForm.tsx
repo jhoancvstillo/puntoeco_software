@@ -40,10 +40,10 @@ type TransactionFormData = z.infer<typeof transactionSchema>;
 
 interface TransactionFormProps {
   onChange: (value: boolean) => void;
-
+  onClick: () => void;
 }
 
-export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange }) => {
+export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange, onClick }) => {
   const form = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -268,10 +268,12 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onChange }) =>
         />
 
         <div className="flex justify-end space-x-2">
-          <Button type="button" variant="outline">
+          <Button type="button" variant="outline" >
             Cancelar
           </Button>
-          <Button type="submit">Guardar</Button>
+          <Button type="submit" onClick={
+            onClick
+          }>Guardar</Button>
         </div>
       </form>
     </Form>

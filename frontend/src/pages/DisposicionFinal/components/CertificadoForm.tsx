@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Categoria } from "../types/certificado";
 import { SearchableInput } from "@/components/forms/SearchabeInput";
 import { Cliente } from "@/types/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // IMPORTS DE REACT-HOOK-FORM Y ZOD
 import { useForm, Controller } from "react-hook-form";
@@ -68,7 +69,7 @@ const certificateFormSchema = z.object({
   destinoFinal: z.string().optional(),
   periodo: z.string().optional(),
   fecha: z.date(), // Added fecha field
-
+  esBasura: z.boolean().optional(),
   // Cliente
   client: z.object({
     id: z.number(),
@@ -218,6 +219,7 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
         numero_guia: data.guiaNro || "S/G",
         destino_final: data.destinoFinal || "",
         fecha: data.fecha.toISOString().slice(0, 10), // Format date as YYYY-MM-DD
+        esBasura: data.esBasura || false,
       };
       const certificadoCreado = await createCertificado(certificadoData);
       // Guardamos el ID del certificado creado
@@ -240,7 +242,9 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
           ...LITROS_OPTIONS.reduce((acc, option) => {
             const key = `cantidad_${option.key.toLowerCase()}_l`; // Usamos la clave interna (key)
             acc[key] = parseInt(
-              (data.cantidades as Record<string, number>)?.[option.key]?.toString() || "0",
+              (data.cantidades as Record<string, number>)?.[
+                option.key
+              ]?.toString() || "0",
               10
             );
             return acc;
@@ -251,7 +255,7 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
         } catch (error) {
           console.error("Error al crear fitosanitarios: ", error);
         }
-              } else {
+      } else {
         // Metales o Fibras
         const material = {
           certificado: certificadoId,
@@ -264,7 +268,7 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
 
       await generate_pdf(certificadoId); // Generar PDF después de crear el certificado y su detalle
       await onUpdate(data);
-      
+
       alert("Certificado y detalle creados exitosamente!");
     } catch (error) {
       console.error(error);
@@ -285,7 +289,7 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
           className="space-y-6"
         >
           {/* Fila 1: Folio, Categoría, CertificadoNro */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="folio">Folio</Label>
               <Input
@@ -341,6 +345,29 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
                 <p className="text-red-500 text-sm">
                   {errors.certificadoNro.message}
                 </p>
+              )}
+            </div>
+
+            {/* boolean si es basura o no */}
+            <div className="space-y-2 flex  items-center mt-8">
+              <div className="flex items-center space-x-2">
+                <Controller
+                  control={control}
+                  name="esBasura"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="esBasura"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <Label htmlFor="esBasura" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Es Basura
+                </Label>
+              </div>
+              {errors.esBasura && (
+                <p className="text-red-500 text-sm">{errors.esBasura.message}</p>
               )}
             </div>
           </div>
@@ -553,3 +580,4 @@ export function CertificadoForm({ clients, onUpdate }: CertificadoFormProps) {
     </Card>
   );
 }
+

@@ -27,7 +27,7 @@ export const EditTransactionDialog: React.FC<EditTransactionDialogProps> = ({
         </DialogHeader>
         <TransactionForm
         onChange={onClose}
-
+        onClick={() => {}}
         />
       </DialogContent>
     </Dialog>

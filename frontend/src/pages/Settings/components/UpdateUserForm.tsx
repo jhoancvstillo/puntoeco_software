@@ -28,6 +28,9 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Por favor, introduce una dirección de correo electrónico válida.",
   }),
+  password: z.string().min(8, {
+    message: "La contraseña debe tener al menos 8 caracteres.",
+  }),
   // role_input: z.enum(["user", "admin"]),
   role: z.enum(["user", "admin"]),
   permisos: z.object({
@@ -46,6 +49,8 @@ const formSchema = z.object({
     clientes: z.boolean().default(false),
     finanzas: z.boolean().default(false),
     configuracion: z.boolean().default(false),
+
+
   }),
 });
 
@@ -134,6 +139,23 @@ export function UpdateUserForm({ user, onSubmit }: UpdateUserFormProps) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contraseña</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+
+        
+
 
      
         <FormItem>

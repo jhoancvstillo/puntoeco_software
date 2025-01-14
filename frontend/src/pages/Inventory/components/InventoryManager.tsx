@@ -6,6 +6,7 @@ import { ProductManager } from './ProductManager';
 import { CategoryManager } from './CategoryManager';
 import { BrandManager } from './BrandManager';
 import GenericTable from "@/components/GenericTable";
+import { useTableStore } from "@/pages/tableStore";
 
 export function InventoryManager() {
   const [productos, setProductos] = useState<Producto[]>([
@@ -36,7 +37,7 @@ export function InventoryManager() {
 
   const [movimientos, setMovimientos] = useState<any[]>([]);
   
-
+  const refresh = useTableStore((state) => state.refreshTable2);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,13 +53,27 @@ export function InventoryManager() {
         setMarcas(marcasData);
         setMovimientos(movimientosData);
 
-        console.log("Movimientos", movimientosData);
       } catch (error) {
         console.error("Error al obtener datos", error);
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
+
+      // llamamos al historial de movimientos
+
+  useEffect(() => {
+    const fetchMovimientos = async () => {
+      try {
+        const data = await getMovimientos();
+        setMovimientos(data);
+      } catch (error) {
+        console.error("Error fetching movimientos:", error);
+      }
+    }
+    fetchMovimientos();
+  }
+  , [refresh  ]);
 
 
   return (
@@ -112,8 +127,7 @@ export function InventoryManager() {
             ]}
             title="Historial de Movimientos"
             description="Descripción de la tabla general"
-            onDelete={() => {}
-            }
+            onDelete={() => {}}
             />
 
           </div>

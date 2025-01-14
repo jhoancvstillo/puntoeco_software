@@ -16,6 +16,7 @@ class Certificado(models.Model):
     numero_certificado = models.CharField(max_length=20, blank=True, null=True)
     client = models.ForeignKey(Clients, on_delete=models.CASCADE)
     fecha  = models.DateField()
+    esBasura = models.BooleanField(default=False)
 
     numero_guia = models.CharField(max_length=50, default='S/G')
     destino_final = models.CharField(max_length=255, blank=True, null=True)

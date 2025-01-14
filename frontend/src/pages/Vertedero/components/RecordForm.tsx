@@ -17,6 +17,8 @@ import { VertederoData, VertederoDataForm } from "../types/Vertedero";
 import DialogConfirmation from "@/components/DialogConfirmation";
 
 const formSchema = z.object({
+  // nombre: z.string().nonempty("El nombre no puede estar vacío"),
+  // folio: z.string().nonempty("El folio no puede estar vacío"),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Formato de fecha inválido"),
   weight_kg: z.number().min(0, "El peso debe ser mayor o igual a 0").multipleOf(0.01),
   value: z.number().multipleOf(0.01),

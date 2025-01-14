@@ -10,6 +10,7 @@ import { getTrabajadores } from '@/api/trabajadores';
 
 
 const COLUMNS_TABLE_CERTIFICATES: Array<{key: keyof Combustible; header: string}> = [
+  { key: 'id', header: 'N°' },
   { key: 'fecha', header: 'Fecha' },
   { key: 'hora', header: 'Hora' },
   { key: 'patente', header: 'Patente' },

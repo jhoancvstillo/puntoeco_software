@@ -48,97 +48,219 @@ def generate_pdf_certificado(certificado):
 
         rut = certificado.client.rut
         domicilio = certificado.client.address
-
-        image_path = os.path.join(settings.BASE_DIR, 'static/images/logo_nbg.png')
-        absolute_path = f"file:///{image_path}"
-
+        esBasura = certificado.esBasura
+      
+        image_path_logo = os.path.join(settings.BASE_DIR, 'static/images/logo_nbg.png')
+        absolute_path = f"file:///{image_path_logo}"
+        timbre_1 = os.path.join(settings.BASE_DIR, 'static/images/timbre1.jpg')
+        timbre_2 = os.path.join(settings.BASE_DIR, 'static/images/timbre2.jpg')
+        timbre_3 = os.path.join(settings.BASE_DIR, 'static/images/timbre3.jpg')
+        absolute_path_timbre_1 = f"file:///{timbre_1}"
+        absolute_path_timbre_2 = f"file:///{timbre_2}"
+        absolute_path_timbre_3 = f"file:///{timbre_3}"
         template = None
-        if certificado.categoria == 'Plásticos':
-            detalle = PlasticoDetalle.objects.filter(certificado=certificado).first()
-            if not detalle:
-                return None
-
-            cantidad_kg = detalle.cantidad_kg or 0
-            clasificacion = detalle.clasificacion_resinas or "Sin clasificación"
-            template = render_to_string('certificadoDF_plasticos.html', {
-                'categoria': toUpperCase(categoria),
-                'folio': folio,
-                'numero_certificado': numero_certificado,
-                'client': client,
-                'fecha': only_month(fecha),
-                'numero_guia': numero_guia,
-                'destino_final': destino_final,
-                'id': id,
-                'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
-                'rut': format_rut(rut),
-                'domicilio': domicilio,
-                'clasificacion': clasificacion,
-                'image': absolute_path
-            })
-
-        elif certificado.categoria == 'Fitosanitarios':
-            detalle = FitosanitarioDetalle.objects.filter(certificado=certificado).first()
-            if not detalle:
-                return None
-
-            context =  {
-                'categoria': "FITOS SANITARIOS",
-                'folio': folio,
-                'numero_certificado': numero_certificado,
-                'client': client,
-                'fecha': only_month(fecha),
-                'numero_guia': numero_guia,
-                'destino_final': destino_final,
-                'id': id,
-                '01l': detalle.cantidad_01_l if detalle.cantidad_01_l else 0,
-                '025l': detalle.cantidad_025_l if detalle.cantidad_025_l else 0,
-                '05l': detalle.cantidad_05_l if detalle.cantidad_05_l else 0,
-                '1l': detalle.cantidad_1_l if detalle.cantidad_1_l else 0,
-                '2l': detalle.cantidad_2_l if detalle.cantidad_2_l else 0,
-                '3l': detalle.cantidad_3_l if detalle.cantidad_3_l else 0,
-                '4l': detalle.cantidad_4_l if detalle.cantidad_4_l else 0,
-                '5l': detalle.cantidad_5_l if detalle.cantidad_5_l else 0,
-                '10l': detalle.cantidad_10_l if detalle.cantidad_10_l else 0,
-                '15l': detalle.cantidad_15_l if detalle.cantidad_15_l else 0,
-                '20l': detalle.cantidad_20_l if detalle.cantidad_20_l else 0,
-                '25l': detalle.cantidad_25_l if detalle.cantidad_25_l else 0,
-                '30l': detalle.cantidad_30_l if detalle.cantidad_30_l else 0,
-                '60l': detalle.cantidad_60_l if detalle.cantidad_60_l else 0,
-                '100l': detalle.cantidad_100_l if detalle.cantidad_100_l else 0,
-                '200l': detalle.cantidad_200_l if detalle.cantidad_200_l else 0,
-                'tapas': detalle.cantidad_tapas_l if detalle.cantidad_tapas_l else 0,
-
-                'rut': format_rut(rut),
-                'domicilio': domicilio,
-                'image': absolute_path
-            }
+        
+        
+        
+        
+        if(esBasura):
             
-            template = render_to_string('certificadoDF_fitos.html',context)
+            if certificado.categoria == 'Plásticos':
+                detalle = PlasticoDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
 
-        elif certificado.categoria in ['Metales', 'Fibras']:
-            detalle = MaterialDetalle.objects.filter(certificado=certificado).first()
-            if not detalle:
-                return None
+                cantidad_kg = detalle.cantidad_kg or 0
+                clasificacion = detalle.clasificacion_resinas or "Sin clasificación"
+                template = render_to_string('certificadoDF_plasticos_basura.html', {
+                    'categoria': toUpperCase(categoria),
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'clasificacion': clasificacion,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                    
+                })
 
-            cantidad_kg = detalle.cantidad_kg or 0
-            template = render_to_string('certificadoDF.html', {
-                'categoria': toUpperCase(categoria),
-                'folio': folio,
-                'numero_certificado': numero_certificado,
-                'client': client,
-                'fecha': only_month(fecha),
-                'numero_guia': numero_guia,
-                'destino_final': destino_final,
-                'id': id,
-                'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
-                'rut': format_rut(rut),
-                'domicilio': domicilio,
-                'image': absolute_path
-            })
+            elif certificado.categoria == 'Fitosanitarios':
+                detalle = FitosanitarioDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
+
+                context =  {
+                    'categoria': "FITOS SANITARIOS",
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    '01l': detalle.cantidad_01_l if detalle.cantidad_01_l else 0,
+                    '025l': detalle.cantidad_025_l if detalle.cantidad_025_l else 0,
+                    '05l': detalle.cantidad_05_l if detalle.cantidad_05_l else 0,
+                    '1l': detalle.cantidad_1_l if detalle.cantidad_1_l else 0,
+                    '2l': detalle.cantidad_2_l if detalle.cantidad_2_l else 0,
+                    '3l': detalle.cantidad_3_l if detalle.cantidad_3_l else 0,
+                    '4l': detalle.cantidad_4_l if detalle.cantidad_4_l else 0,
+                    '5l': detalle.cantidad_5_l if detalle.cantidad_5_l else 0,
+                    '10l': detalle.cantidad_10_l if detalle.cantidad_10_l else 0,
+                    '15l': detalle.cantidad_15_l if detalle.cantidad_15_l else 0,
+                    '20l': detalle.cantidad_20_l if detalle.cantidad_20_l else 0,
+                    '25l': detalle.cantidad_25_l if detalle.cantidad_25_l else 0,
+                    '30l': detalle.cantidad_30_l if detalle.cantidad_30_l else 0,
+                    '60l': detalle.cantidad_60_l if detalle.cantidad_60_l else 0,
+                    '100l': detalle.cantidad_100_l if detalle.cantidad_100_l else 0,
+                    '200l': detalle.cantidad_200_l if detalle.cantidad_200_l else 0,
+                    'tapas': detalle.cantidad_tapas_l if detalle.cantidad_tapas_l else 0,
+
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                }
+                
+                template = render_to_string('certificadoDF_fitos_basura.html',context)
+
+            elif certificado.categoria in ['Metales', 'Fibras']:
+                detalle = MaterialDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
+
+                cantidad_kg = detalle.cantidad_kg or 0
+                template = render_to_string('certificadoDF_basura.html', {
+                    'categoria': toUpperCase(categoria),
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                    
+                })
+
+            else:
+                print(f"Categoría '{certificado.categoria}' no reconocida.")
+                raise ValueError(f"La categoría '{certificado.categoria}' no está soportada.")
 
         else:
-            print(f"Categoría '{certificado.categoria}' no reconocida.")
-            raise ValueError(f"La categoría '{certificado.categoria}' no está soportada.")
+            if certificado.categoria == 'Plásticos':
+                detalle = PlasticoDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
+
+                cantidad_kg = detalle.cantidad_kg or 0
+                clasificacion = detalle.clasificacion_resinas or "Sin clasificación"
+                template = render_to_string('certificadoDF_plasticos.html', {
+                    'categoria': toUpperCase(categoria),
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'clasificacion': clasificacion,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                    
+                })
+
+            elif certificado.categoria == 'Fitosanitarios':
+                detalle = FitosanitarioDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
+
+                context =  {
+                    'categoria': "FITOS SANITARIOS",
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    '01l': detalle.cantidad_01_l if detalle.cantidad_01_l else 0,
+                    '025l': detalle.cantidad_025_l if detalle.cantidad_025_l else 0,
+                    '05l': detalle.cantidad_05_l if detalle.cantidad_05_l else 0,
+                    '1l': detalle.cantidad_1_l if detalle.cantidad_1_l else 0,
+                    '2l': detalle.cantidad_2_l if detalle.cantidad_2_l else 0,
+                    '3l': detalle.cantidad_3_l if detalle.cantidad_3_l else 0,
+                    '4l': detalle.cantidad_4_l if detalle.cantidad_4_l else 0,
+                    '5l': detalle.cantidad_5_l if detalle.cantidad_5_l else 0,
+                    '10l': detalle.cantidad_10_l if detalle.cantidad_10_l else 0,
+                    '15l': detalle.cantidad_15_l if detalle.cantidad_15_l else 0,
+                    '20l': detalle.cantidad_20_l if detalle.cantidad_20_l else 0,
+                    '25l': detalle.cantidad_25_l if detalle.cantidad_25_l else 0,
+                    '30l': detalle.cantidad_30_l if detalle.cantidad_30_l else 0,
+                    '60l': detalle.cantidad_60_l if detalle.cantidad_60_l else 0,
+                    '100l': detalle.cantidad_100_l if detalle.cantidad_100_l else 0,
+                    '200l': detalle.cantidad_200_l if detalle.cantidad_200_l else 0,
+                    'tapas': detalle.cantidad_tapas_l if detalle.cantidad_tapas_l else 0,
+
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                }
+                
+                template = render_to_string('certificadoDF_fitos.html',context)
+
+            elif certificado.categoria in ['Metales', 'Fibras']:
+                detalle = MaterialDetalle.objects.filter(certificado=certificado).first()
+                if not detalle:
+                    return None
+
+                cantidad_kg = detalle.cantidad_kg or 0
+                template = render_to_string('certificadoDF.html', {
+                    'categoria': toUpperCase(categoria),
+                    'folio': folio,
+                    'numero_certificado': numero_certificado,
+                    'client': client,
+                    'fecha': only_month(fecha),
+                    'numero_guia': numero_guia,
+                    'destino_final': destino_final,
+                    'id': id,
+                    'cantidad_kg': convertir_numero_a_miles(cantidad_kg),
+                    'rut': format_rut(rut),
+                    'domicilio': domicilio,
+                    'image': absolute_path,
+                    'timbre_1': absolute_path_timbre_1,
+                    'timbre_2': absolute_path_timbre_2,
+                    'timbre_3': absolute_path_timbre_3
+                    
+                })
+
+            else:
+                print(f"Categoría '{certificado.categoria}' no reconocida.")
+                raise ValueError(f"La categoría '{certificado.categoria}' no está soportada.")
 
 
         # Generar el PDF

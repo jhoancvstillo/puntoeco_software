@@ -7,7 +7,7 @@ class Production(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculate estimated weight on save
-        self.estimated_weight = self.bales * 230  # Assuming BALE_WEIGHT = 230
+        self.estimated_weight = self.bales * 410  # 
         super().save(*args, **kwargs)
 
 class Dispatch(models.Model):
@@ -18,7 +18,7 @@ class Dispatch(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculate weight on save
-        self.weight = self.bales * 230  # Assuming BALE_WEIGHT = 230
+        self.weight = self.bales * 410  # Assuming BALE_WEIGHT = 230
         super().save(*args, **kwargs)
 
 class Debt(models.Model):
